@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1125">
+  <rect width="900" height="1125" fill="#111"/>
+  <path d="M185 760 715 255" stroke="#c9f3ff" stroke-width="18"/>
+  <rect x="270" y="470" width="360" height="250" rx="18" fill="#edf1f3"/>
+  <text x="450" y="1040" text-anchor="middle" font-family="Arial" font-size="36" fill="#edf1f3">STATIC CROSSBODY</text>
+</svg>

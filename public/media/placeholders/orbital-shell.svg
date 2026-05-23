@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1125">
+  <rect width="900" height="1125" fill="#e8ecef"/>
+  <path d="M235 1010V310l130-95h170l130 95v700H235Z" fill="#111"/>
+  <path d="M365 215l85 210 85-210" fill="none" stroke="#d8f5ff" stroke-width="18"/>
+  <text x="450" y="1040" text-anchor="middle" font-family="Arial" font-size="36" fill="#111">ORBITAL SHELL</text>
+</svg>

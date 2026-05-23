@@ -8,4 +8,6 @@ playwright-report/
 .env*.local
 .tools/
 .superpowers/
+*.db
+*.db-journal
 .DS_Store
