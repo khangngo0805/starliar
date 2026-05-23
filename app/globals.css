@@ -333,6 +333,87 @@ textarea {
   width: 100%;
 }
 
+.admin-login {
+  align-items: center;
+  display: flex;
+  min-height: 100svh;
+  justify-content: center;
+  padding: 24px;
+}
+
+.admin-card,
+.admin-form {
+  display: grid;
+  gap: 14px;
+  width: min(520px, 100%);
+}
+
+.admin-card {
+  border: 1px solid var(--starliar-line);
+  padding: 34px;
+}
+
+.admin-shell {
+  padding: 40px clamp(20px, 5vw, 64px) 90px;
+}
+
+.admin-nav {
+  border-bottom: 1px solid var(--starliar-line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px;
+  margin-bottom: 44px;
+  padding-bottom: 18px;
+}
+
+.admin-heading {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.admin-list {
+  border-top: 1px solid var(--starliar-line);
+  margin-top: 28px;
+}
+
+.admin-row {
+  align-items: center;
+  border-bottom: 1px solid var(--starliar-line);
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  padding: 16px 0;
+}
+
+.admin-form input,
+.admin-form textarea,
+.admin-form select,
+.admin-card input {
+  border: 1px solid var(--starliar-line);
+  min-height: 44px;
+  padding: 10px 12px;
+  width: 100%;
+}
+
+.admin-form-row {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.status-badge {
+  background: #111;
+  border-radius: 999px;
+  color: white;
+  display: inline-flex;
+  font-size: 12px;
+  justify-content: center;
+  padding: 6px 12px;
+  text-transform: uppercase;
+}
+
 @media (max-width: 820px) {
   .site-header {
     grid-template-columns: 1fr auto;
@@ -348,7 +429,9 @@ textarea {
 
   .product-grid,
   .product-detail,
-  .checkout-shell {
+  .checkout-shell,
+  .admin-row,
+  .admin-form-row {
     grid-template-columns: 1fr;
   }
 
