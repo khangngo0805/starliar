@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Search, ShoppingBag, UserRound } from "lucide-react";
+import { ShoppingBag, UserRound } from "lucide-react";
+import { SearchDialog } from "./search-dialog";
 
 export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
   return (
@@ -13,7 +14,7 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
         STARLIAR
       </Link>
       <div className="site-header-actions">
-        <Search aria-label="Search" size={21} />
+        <SearchDialog />
         <UserRound aria-label="Account" size={21} />
         <Link aria-label="Cart" href="/cart">
           <ShoppingBag size={21} />
