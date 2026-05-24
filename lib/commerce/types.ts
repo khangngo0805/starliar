@@ -18,6 +18,7 @@ export type ProductCard = {
   id: string;
   slug: string;
   name: string;
+  category: string;
   priceVnd: number;
   media: string[];
 };

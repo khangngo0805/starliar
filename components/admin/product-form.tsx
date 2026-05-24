@@ -15,6 +15,7 @@ export function ProductForm({ action, method = "POST" }: { action: string; metho
       body: JSON.stringify({
         slug: formData.get("slug"),
         name: formData.get("name"),
+        category: formData.get("category"),
         description: formData.get("description"),
         priceVnd: Number(formData.get("priceVnd")),
         published: formData.get("published") === "on",
@@ -29,6 +30,7 @@ export function ProductForm({ action, method = "POST" }: { action: string; metho
     <form action={submit} className="admin-form">
       <input name="slug" placeholder="slug" required />
       <input name="name" placeholder="name" required />
+      <input name="category" placeholder="category" required />
       <textarea name="description" placeholder="description" required />
       <input name="priceVnd" placeholder="price VND" required type="number" />
       <textarea name="media" placeholder="/media/placeholders/example.svg" required />

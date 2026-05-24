@@ -17,6 +17,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     data: {
       slug: data.slug,
       name: data.name,
+      category: data.category,
       description: data.description,
       priceVnd: data.priceVnd,
       published: data.published,

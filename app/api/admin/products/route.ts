@@ -13,6 +13,7 @@ export async function POST(request: Request) {
     data: {
       slug: data.slug,
       name: data.name,
+      category: data.category,
       description: data.description,
       priceVnd: data.priceVnd,
       published: data.published,

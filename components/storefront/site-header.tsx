@@ -1,12 +1,22 @@
 import Link from "next/link";
 import { ShoppingBag, UserRound } from "lucide-react";
 import { SearchDialog } from "./search-dialog";
+import { categoryToParam, shopCategories } from "@/lib/commerce/catalog";
 
 export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
   return (
     <header className={`site-header ${overlay ? "site-header-overlay" : ""}`}>
       <nav className="site-header-nav" aria-label="Primary navigation">
-        <Link href="/shop">Shop</Link>
+        <div className="nav-dropdown">
+          <Link href="/shop">Shop</Link>
+          <div className="nav-dropdown-panel">
+            {shopCategories.map((category) => (
+              <Link href={`/shop?category=${categoryToParam(category)}`} key={category}>
+                {category}
+              </Link>
+            ))}
+          </div>
+        </div>
         <Link href="/#campaign">Campaign</Link>
         <Link href="/admin/products">Admin</Link>
       </nav>

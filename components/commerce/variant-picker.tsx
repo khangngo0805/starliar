@@ -7,6 +7,8 @@ type VariantProduct = {
   id: string;
   slug: string;
   name: string;
+  category?: string;
+  media?: string[];
   priceVnd: number;
   variants: { id: string; size: string; stock: number }[];
 };

@@ -3,6 +3,8 @@ export type CartItem = {
   productId: string;
   name: string;
   slug: string;
+  category?: string;
+  media?: string;
   size: string;
   priceVnd: number;
   quantity: number;

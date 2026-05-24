@@ -3,6 +3,7 @@ import { z } from "zod";
 export const adminProductSchema = z.object({
   slug: z.string().min(2).regex(/^[a-z0-9-]+$/),
   name: z.string().min(2),
+  category: z.string().min(2),
   description: z.string().min(10),
   priceVnd: z.number().int().positive(),
   published: z.boolean(),

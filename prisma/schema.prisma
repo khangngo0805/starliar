@@ -11,6 +11,7 @@ model Product {
   id           String           @id @default(cuid())
   slug         String           @unique
   name         String
+  category     String           @default("T-Shirt")
   description  String
   priceVnd     Int
   published    Boolean          @default(false)

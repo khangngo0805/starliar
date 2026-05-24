@@ -5,6 +5,7 @@ type GridProduct = {
   id: string;
   slug: string;
   name: string;
+  category: string;
   priceVnd: number;
   media: string[];
 };
@@ -27,7 +28,10 @@ export function ProductGrid({ products }: { products: GridProduct[] }) {
             )}
           </div>
           <div className="product-card-meta">
-            <span>{product.name}</span>
+            <div>
+              <small>{product.category}</small>
+              <span>{product.name}</span>
+            </div>
             <span>{formatVnd(product.priceVnd)}</span>
           </div>
         </Link>

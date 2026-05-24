@@ -11,7 +11,7 @@ export function AddToCartButton({
   product,
   variant
 }: {
-  product: { id: string; name: string; slug: string; priceVnd: number };
+  product: { id: string; name: string; slug: string; category?: string; media?: string[]; priceVnd: number };
   variant: { id: string; size: string; stock: number };
 }) {
   return (
@@ -24,6 +24,8 @@ export function AddToCartButton({
           productId: product.id,
           name: product.name,
           slug: product.slug,
+          category: product.category,
+          media: product.media?.[0],
           size: variant.size,
           priceVnd: product.priceVnd,
           quantity: 1

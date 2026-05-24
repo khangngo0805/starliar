@@ -20,44 +20,75 @@ export function CartView() {
 
   if (!items.length) {
     return (
-      <section className="page-shell">
-        <h1>Your cart is empty.</h1>
-        <Link className="text-link" href="/shop">
-          Enter the shop
-        </Link>
+      <section className="cart-shell empty-cart">
+        <div>
+          <p className="eyebrow">Cart</p>
+          <h1>Your cart is empty.</h1>
+          <p className="muted">Add sample products from the expanded shop catalog to test checkout.</p>
+          <Link className="primary-link" href="/shop">
+            Enter the shop
+          </Link>
+        </div>
       </section>
     );
   }
 
   return (
-    <section className="page-shell">
-      <h1>Cart</h1>
-      <div className="cart-lines">
-        {items.map((item) => (
-          <article className="cart-line" key={item.variantId}>
-            <div>
-              <Link href={`/shop/${item.slug}`}>{item.name}</Link>
-              <p>
-                {item.size} / {formatVnd(item.priceVnd)}
-              </p>
-            </div>
-            <input
-              aria-label={`Quantity for ${item.name}`}
-              min="0"
-              onChange={(event) => setQuantity(item.variantId, Number(event.target.value))}
-              type="number"
-              value={item.quantity}
-            />
-          </article>
-        ))}
+    <section className="cart-shell">
+      <div className="cart-main">
+        <p className="eyebrow">Cart</p>
+        <h1>{items.length} item{items.length > 1 ? "s" : ""}</h1>
+        <div className="cart-lines">
+          {items.map((item) => (
+            <article className="cart-line" key={item.variantId}>
+              <div className="cart-line-media">
+                {item.media ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img alt={item.name} src={item.media} />
+                ) : (
+                  <span>{item.name.slice(0, 2)}</span>
+                )}
+              </div>
+              <div className="cart-line-copy">
+                <Link href={`/shop/${item.slug}`}>{item.name}</Link>
+                <p>
+                  {item.category ?? "Starliar"} / Size {item.size}
+                </p>
+                <button type="button" onClick={() => setQuantity(item.variantId, 0)}>
+                  Remove
+                </button>
+              </div>
+              <div className="cart-line-quantity">
+                <input
+                  aria-label={`Quantity for ${item.name}`}
+                  min="0"
+                  onChange={(event) => setQuantity(item.variantId, Number(event.target.value))}
+                  type="number"
+                  value={item.quantity}
+                />
+                <span>{formatVnd(item.priceVnd * item.quantity)}</span>
+              </div>
+            </article>
+          ))}
+        </div>
       </div>
-      <div className="cart-total">
-        <span>Subtotal</span>
-        <strong>{formatVnd(getCartSubtotal(items))}</strong>
+      <div className="cart-summary">
+        <p className="eyebrow">Summary</p>
+        <div>
+          <span>Subtotal</span>
+          <strong>{formatVnd(getCartSubtotal(items))}</strong>
+        </div>
+        <div>
+          <span>Estimated shipping</span>
+          <strong>Calculated at checkout</strong>
+        </div>
+        <Link className="primary-link" href="/checkout">
+          Checkout
+        </Link>
+        <Link className="text-link" href="/shop">
+          Continue shopping
+        </Link>
       </div>
-      <Link className="primary-link" href="/checkout">
-        Checkout
-      </Link>
     </section>
   );
 }
