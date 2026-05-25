@@ -104,7 +104,7 @@ textarea {
   display: grid;
   gap: 10px;
   left: 0;
-  min-width: 230px;
+  min-width: 150px;
   opacity: 0;
   padding: 34px 0 0;
   pointer-events: none;
@@ -125,9 +125,9 @@ textarea {
   border: 0;
   border-radius: 999px;
   color: currentColor;
-  font-size: 24px;
+  font-size: 14px;
   line-height: 1;
-  padding: 8px 13px;
+  padding: 8px 11px;
   width: max-content;
 }
 
