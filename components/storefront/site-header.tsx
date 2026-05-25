@@ -11,6 +11,7 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
         <div className="nav-dropdown">
           <Link href="/shop">Shop</Link>
           <div className="nav-dropdown-panel">
+            <Link href="/shop">View all</Link>
             {shopCategories.map((category) => (
               <Link href={`/shop?category=${categoryToParam(category)}`} key={category}>
                 {category}
