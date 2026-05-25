@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { FavoriteButton } from "@/components/commerce/favorite-button";
 import { formatVnd } from "@/lib/commerce/cart";
 
 type GridProduct = {
@@ -18,23 +19,26 @@ export function ProductGrid({ products }: { products: GridProduct[] }) {
   return (
     <div className="product-grid">
       {products.map((product) => (
-        <Link className="product-card" href={`/shop/${product.slug}`} key={product.id}>
-          <div className="product-card-media">
-            {product.media[0] ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img alt={product.name} src={product.media[0]} />
-            ) : (
-              <div className="media-fallback">{product.name}</div>
-            )}
-          </div>
-          <div className="product-card-meta">
-            <div>
-              <small>{product.category}</small>
-              <span>{product.name}</span>
+        <article className="product-card" key={product.id}>
+          <FavoriteButton compact productId={product.id} productName={product.name} />
+          <Link className="product-card-link" href={`/shop/${product.slug}`}>
+            <div className="product-card-media">
+              {product.media[0] ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img alt={product.name} src={product.media[0]} />
+              ) : (
+                <div className="media-fallback">{product.name}</div>
+              )}
             </div>
-            <span>{formatVnd(product.priceVnd)}</span>
-          </div>
-        </Link>
+            <div className="product-card-meta">
+              <div>
+                <small>{product.category}</small>
+                <span>{product.name}</span>
+              </div>
+              <span>{formatVnd(product.priceVnd)}</span>
+            </div>
+          </Link>
+        </article>
       ))}
     </div>
   );

@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { SiteHeader } from "@/components/storefront/site-header";
 import { VariantPicker } from "@/components/commerce/variant-picker";
+import { FavoriteButton } from "@/components/commerce/favorite-button";
 import { formatVnd } from "@/lib/commerce/cart";
 import { getPublishedProduct } from "@/lib/commerce/catalog";
 
@@ -22,7 +23,10 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         <section className="product-detail-copy">
           <p className="eyebrow">{product.collection?.name}</p>
           <h1>{product.name}</h1>
-          <p className="price">{formatVnd(product.priceVnd)}</p>
+          <div className="product-detail-price-row">
+            <p className="price">{formatVnd(product.priceVnd)}</p>
+            <FavoriteButton productId={product.id} productName={product.name} />
+          </div>
           <p>{product.description}</p>
           <VariantPicker product={product} />
         </section>
