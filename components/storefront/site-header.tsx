@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { ShoppingBag, UserRound } from "lucide-react";
+import { UserRound } from "lucide-react";
 import { SearchDialog } from "./search-dialog";
+import { CartLink } from "./cart-link";
 import { categoryToParam, shopCategories } from "@/lib/commerce/catalog";
 
 export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
@@ -26,9 +27,7 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
       <div className="site-header-actions">
         <SearchDialog />
         <UserRound aria-label="Account" size={21} />
-        <Link aria-label="Cart" href="/cart">
-          <ShoppingBag size={21} />
-        </Link>
+        <CartLink />
       </div>
     </header>
   );
