@@ -20,6 +20,7 @@ model Product {
   images       ProductImage[]
   variants     ProductVariant[]
   orderItems   OrderItem[]
+  favorites    Favorite[]
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
 }
@@ -66,6 +67,8 @@ model CampaignMedia {
 model Order {
   id           String      @id @default(cuid())
   orderNumber  String      @unique
+  user         User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId       String?
   email        String
   customerName String
   phone        String
@@ -83,6 +86,17 @@ model Order {
   payments     Payment[]
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
+}
+
+model Favorite {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+  createdAt DateTime @default(now())
+
+  @@unique([userId, productId])
 }
 
 model OrderItem {
@@ -110,6 +124,17 @@ model Payment {
   rawPayload  String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model User {
+  id           String     @id @default(cuid())
+  email        String     @unique
+  name         String?
+  passwordHash String
+  orders       Order[]
+  favorites    Favorite[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
 }
 
 model AdminUser {

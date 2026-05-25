@@ -27,7 +27,9 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
       </Link>
       <div className="site-header-actions">
         <SearchDialog />
-        <UserRound aria-label="Account" size={21} />
+        <Link aria-label="Account" className="icon-link" href="/account">
+          <UserRound size={21} />
+        </Link>
         <CartLink />
       </div>
     </header>

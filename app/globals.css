@@ -158,6 +158,13 @@ textarea {
   position: relative;
 }
 
+.icon-link {
+  align-items: center;
+  color: inherit;
+  display: inline-flex;
+  justify-content: center;
+}
+
 .cart-badge {
   align-items: center;
   background: #c8142f;
@@ -810,12 +817,126 @@ textarea {
 
 .checkout-form input,
 .checkout-form textarea,
-.checkout-form select {
+.checkout-form select,
+.account-card input {
   background: rgba(255, 255, 255, 0.6);
   border: 1px solid var(--starliar-line);
   min-height: 48px;
   padding: 0 14px;
   width: 100%;
+}
+
+.account-auth-shell {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-height: 100svh;
+  padding: 24px;
+}
+
+.account-card {
+  border: 1px solid var(--starliar-line);
+  display: grid;
+  gap: 14px;
+  padding: 34px;
+  width: min(520px, 100%);
+}
+
+.account-card h1 {
+  font-size: clamp(38px, 6vw, 72px);
+  font-weight: 500;
+  line-height: 0.95;
+  margin: 0 0 12px;
+  text-transform: uppercase;
+}
+
+.account-shell {
+  padding: 118px clamp(20px, 5vw, 64px) 100px;
+}
+
+.account-guest {
+  max-width: 760px;
+}
+
+.account-guest h1,
+.account-hero h1 {
+  font-size: clamp(40px, 7vw, 96px);
+  font-weight: 500;
+  line-height: 0.95;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.account-actions,
+.account-hero,
+.account-panel-heading {
+  align-items: center;
+  display: flex;
+  gap: 18px;
+  justify-content: space-between;
+}
+
+.account-actions {
+  justify-content: flex-start;
+}
+
+.account-hero {
+  border-bottom: 1px solid var(--starliar-line);
+  margin-bottom: 34px;
+  padding-bottom: 36px;
+}
+
+.account-hero p:last-child {
+  color: #65707a;
+}
+
+.text-button {
+  background: transparent;
+  border: 0;
+  color: #65707a;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.account-grid {
+  display: grid;
+  gap: 22px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.account-panel {
+  background: rgba(255, 255, 255, 0.42);
+  border: 1px solid rgba(199, 204, 212, 0.72);
+  padding: 24px;
+}
+
+.account-panel h2 {
+  font-size: 24px;
+  font-weight: 500;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.account-product-list,
+.account-order-list {
+  border-top: 1px solid rgba(199, 204, 212, 0.72);
+  display: grid;
+  margin-top: 20px;
+}
+
+.account-product-row,
+.account-order-row {
+  border-bottom: 1px solid rgba(199, 204, 212, 0.72);
+  display: grid;
+  gap: 6px;
+  padding: 16px 0;
+}
+
+.account-product-row small,
+.account-order-row small {
+  color: #65707a;
+  text-transform: uppercase;
 }
 
 .search-overlay {
@@ -1010,6 +1131,7 @@ textarea {
   .shop-hero,
   .cart-shell,
   .order-grid,
+  .account-grid,
   .admin-row,
   .admin-form-row {
     grid-template-columns: 1fr;

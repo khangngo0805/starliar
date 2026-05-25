@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { getCurrentUser } from "@/lib/auth/user";
 import { createCheckoutOrder } from "@/lib/commerce/orders";
 
 const buyNowSchema = z.object({
@@ -10,15 +11,16 @@ const buyNowSchema = z.object({
 export async function POST(request: Request) {
   try {
     const data = buyNowSchema.parse(await request.json());
+    const user = await getCurrentUser();
     const order = await createCheckoutOrder({
-      email: "guest@starliar.local",
-      customerName: "Starliar Guest",
+      email: user?.email ?? "guest@starliar.local",
+      customerName: user?.name ?? "Starliar Guest",
       phone: "0900000000",
       country: "VN",
       addressLine1: "Quick buy order",
       city: "Ho Chi Minh",
       items: [{ variantId: data.variantId, quantity: data.quantity }]
-    });
+    }, user?.id);
 
     return NextResponse.json(
       {

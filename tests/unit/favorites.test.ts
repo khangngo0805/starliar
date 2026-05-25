@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { isFavorite, toggleFavoriteId } from "@/lib/commerce/favorites";
+import { favoriteProductIds, isFavorite } from "@/lib/commerce/favorites";
 
 describe("favorite helpers", () => {
-  it("toggles product ids", () => {
-    const added = toggleFavoriteId("p1", []);
-    expect(isFavorite("p1", added)).toBe(true);
-    expect(toggleFavoriteId("p1", added)).toEqual([]);
+  it("maps database favorite records into product ids", () => {
+    const ids = favoriteProductIds([{ productId: "p1" }, { productId: "p2" }]);
+    expect(ids).toEqual(["p1", "p2"]);
+    expect(isFavorite("p1", ids)).toBe(true);
   });
 });

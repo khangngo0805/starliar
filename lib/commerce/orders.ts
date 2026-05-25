@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { checkoutInputSchema } from "./checkout-schema";
 
-export async function createCheckoutOrder(input: unknown) {
+export async function createCheckoutOrder(input: unknown, userId?: string) {
   const data = checkoutInputSchema.parse(input);
   const variantIds = data.items.map((item) => item.variantId);
   const variants = await prisma.productVariant.findMany({
@@ -27,6 +27,7 @@ export async function createCheckoutOrder(input: unknown) {
   return prisma.order.create({
     data: {
       orderNumber: `STL-${Date.now()}`,
+      userId,
       email: data.email,
       customerName: data.customerName,
       phone: data.phone,

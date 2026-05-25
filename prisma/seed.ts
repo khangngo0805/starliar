@@ -4,6 +4,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
+  await prisma.favorite.deleteMany();
   await prisma.payment.deleteMany();
   await prisma.orderItem.deleteMany();
   await prisma.order.deleteMany();
@@ -12,6 +13,7 @@ async function main() {
   await prisma.productVariant.deleteMany();
   await prisma.product.deleteMany();
   await prisma.collection.deleteMany();
+  await prisma.user.deleteMany();
 
   const collection = await prisma.collection.create({
     data: {
@@ -213,6 +215,16 @@ async function main() {
       }
     });
   }
+
+  await prisma.user.upsert({
+    where: { email: "user@starliar.local" },
+    update: {},
+    create: {
+      email: "user@starliar.local",
+      name: "Starliar User",
+      passwordHash: await bcrypt.hash("change-this-password", 12)
+    }
+  });
 }
 
 main().finally(async () => prisma.$disconnect());
