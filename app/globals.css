@@ -499,6 +499,48 @@ textarea {
   justify-items: start;
 }
 
+.product-actions {
+  align-items: start;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.buy-now-control {
+  display: grid;
+  gap: 12px;
+}
+
+.buy-now-button {
+  align-items: center;
+  background: var(--starliar-ink);
+  border: 1px solid rgba(9, 9, 9, 0.72);
+  border-radius: 999px;
+  color: var(--starliar-paper);
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 30px;
+  transition: background 180ms ease, border-color 180ms ease, transform 180ms ease;
+}
+
+.buy-now-button:hover {
+  background: rgba(9, 9, 9, 0.82);
+  transform: translateY(-1px);
+}
+
+.buy-now-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+  transform: none;
+}
+
+.form-error {
+  color: #c8142f;
+  margin: 0;
+}
+
 .cart-toast {
   background: rgba(9, 9, 9, 0.84);
   border: 1px solid rgba(244, 245, 247, 0.22);

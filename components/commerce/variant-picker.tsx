@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { AddToCartButton } from "./add-to-cart-button";
+import { BuyNowButton } from "./buy-now-button";
 
 type VariantProduct = {
   id: string;
@@ -35,7 +36,12 @@ export function VariantPicker({ product }: { product: VariantProduct }) {
           ))}
         </div>
       </fieldset>
-      {selected ? <AddToCartButton product={product} variant={selected} /> : null}
+      {selected ? (
+        <div className="product-actions">
+          <BuyNowButton variant={selected} />
+          <AddToCartButton product={product} variant={selected} />
+        </div>
+      ) : null}
     </div>
   );
 }
