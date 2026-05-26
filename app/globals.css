@@ -933,6 +933,33 @@ textarea {
   padding: 16px 0;
 }
 
+.account-product-row {
+  align-items: center;
+  gap: 16px;
+  grid-template-columns: minmax(0, 1fr) 58px;
+}
+
+.account-product-copy {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.account-product-thumb {
+  aspect-ratio: 4 / 5;
+  background: #dde3e8;
+  display: block;
+  overflow: hidden;
+  width: 58px;
+}
+
+.account-product-thumb img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
 .account-product-row small,
 .account-order-row small {
   color: #65707a;

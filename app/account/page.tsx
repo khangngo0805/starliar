@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { SiteHeader } from "@/components/storefront/site-header";
 import { clearUserSession, getCurrentUser } from "@/lib/auth/user";
 import { formatVnd } from "@/lib/commerce/cart";
+import { favoritePreviewImage } from "@/lib/commerce/favorites";
 import { prisma } from "@/lib/prisma";
 
 async function logout() {
@@ -43,7 +44,7 @@ export default async function AccountPage() {
     }),
     prisma.favorite.findMany({
       where: { userId: user.id },
-      include: { product: true },
+      include: { product: { include: { images: { orderBy: { position: "asc" }, take: 1 } } } },
       orderBy: { createdAt: "desc" }
     })
   ]);
@@ -75,12 +76,24 @@ export default async function AccountPage() {
             </div>
             <div className="account-product-list">
               {favorites.length ? (
-                favorites.map((favorite) => (
-                  <Link className="account-product-row" href={`/shop/${favorite.product.slug}`} key={favorite.id}>
-                    <span>{favorite.product.name}</span>
-                    <small>{formatVnd(favorite.product.priceVnd)}</small>
-                  </Link>
-                ))
+                favorites.map((favorite) => {
+                  const previewImage = favoritePreviewImage(favorite);
+
+                  return (
+                    <Link className="account-product-row" href={`/shop/${favorite.product.slug}`} key={favorite.id}>
+                      <span className="account-product-copy">
+                        <span>{favorite.product.name}</span>
+                        <small>{formatVnd(favorite.product.priceVnd)}</small>
+                      </span>
+                      <span className="account-product-thumb" aria-hidden="true">
+                        {previewImage ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img alt="" src={previewImage} />
+                        ) : null}
+                      </span>
+                    </Link>
+                  );
+                })
               ) : (
                 <p className="muted">No favorites yet.</p>
               )}
