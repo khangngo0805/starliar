@@ -374,3 +374,39 @@ In addition to the existing quality gates:
    permits.
 5. Verify that the three evidence cards are explicitly attributed to Zhang et
    al. (2021).
+
+## V4 Selective Typography Enlargement Amendment
+
+### Revision Goal
+
+Improve readability from a distance without removing, rewriting, or shortening
+any approved V3 poster content.
+
+### Approved Direction
+
+Use selective typography enlargement rather than a global font increase:
+
+- Preserve the V3 exhibition-style hero, content order, scientific figures,
+  wording, attribution, evidence descriptions, application language, proposal
+  language, reference, and A0 portrait format.
+- Increase typography by approximately `15-20%` in the three evidence cards.
+- Increase body copy and visible labels in `Why It Matters`, `How It Works`,
+  `Published Evidence`, and `Our Experimental Proposal`.
+- Increase the mechanism flow-step labels and near-term application labels.
+- Keep the existing hero typography because it is already the dominant visual
+  entry point.
+- Keep the scientific figure captions and reference block close to the V3 size
+  to protect layout stability.
+- Allow small spacing and panel-height adjustments when needed to prevent
+  clipping, but do not delete or rewrite content.
+
+### V4 Quality Gates
+
+In addition to the existing quality gates:
+
+1. Verify that every approved V3 content anchor remains present in V4.
+2. Verify that the evidence-card descriptions remain complete and unmodified.
+3. Verify that the enlarged text does not visibly clip, overlap, or escape its
+   panel.
+4. Verify that the hero, figures, captions, and reference remain intact.
+5. Verify that V4 exports separately and does not overwrite the V3 deliverables.
