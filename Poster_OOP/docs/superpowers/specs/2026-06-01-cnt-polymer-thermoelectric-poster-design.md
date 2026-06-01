@@ -256,3 +256,121 @@ Before delivery:
 8. Confirm all body text and captions remain readable on the A0 composition.
 9. Confirm the primary PowerPoint artifact remains editable.
 
+## V2 Targeted Polish Amendment
+
+### Revision Goal
+
+Improve distance readability and visual variety while preserving the approved
+application-led narrative, Planet template identity, scientific claims, source
+figures, and A0 portrait format.
+
+### Approved Scope
+
+- Keep the existing V1 panel structure and content order.
+- Increase body text, captions, labels, and section headings by approximately
+  `20-25%`.
+- Shorten long supporting sentences where needed so increased typography does
+  not create crowding.
+- Increase the prominence of application-card labels and published-evidence KPI
+  cards.
+- Add restrained visual variety with editable accent bands, numbered section
+  badges, and alternating soft panel fills.
+- Preserve all existing scientific figures, reported values, proposal wording,
+  presenter name, reference, and realistic application language.
+
+### Visual Constraint
+
+The V2 polish must remain a refinement of V1 rather than a complete redesign.
+Avoid adding dense decoration, excessive gradients, or new claims. The poster
+should feel more energetic and readable without losing the clean template-led
+structure.
+
+## V3 Exhibition-Style Showcase Amendment
+
+### Revision Goal
+
+Replace the even card-grid feeling of V2 with a stronger exhibition-style
+composition that is memorable from a distance while preserving enough
+scientific explanation for a mixed audience.
+
+### Approved Direction
+
+Use an **exhibition-style showcase with balanced content density**:
+
+- Retain the A0 portrait format, Planet template identity, deep-green event
+  background, flowing fiber lines, and VinUniversity branding.
+- Build a visually dominant hero region occupying approximately the top
+  quarter of the light content canvas.
+- Use the accessible headline:
+  `A SOFT FIBER THAT HARVESTS BODY HEAT`.
+- Add a circular visual statement:
+  `BODY HEAT -> POWER`.
+- Place the three published evidence cards immediately below the hero so they
+  create a strong visual bridge into the scientific content.
+- Use a two-column lower composition with intentionally uneven panel heights.
+  Avoid returning to a uniform dashboard-like grid.
+- Use larger scientific figures and fewer small cards. Allow selected panels
+  to use dark-green or tinted backgrounds to create visual rhythm.
+
+### Required Evidence Cards
+
+Each published evidence card must contain a large number, a plain-language
+label, and a short description. Explicitly identify the cards as results
+reported by Zhang et al. (2021).
+
+1. `44.0 μV/K`
+   - Label: `Stable thermoelectric response`
+   - Description: `Shows how effectively the fiber converts a temperature
+     difference into voltage after annealing.`
+2. `~30% strain`
+   - Label: `Stretchable while working`
+   - Description: `The fiber maintains thermoelectric performance while being
+     stretched.`
+3. `0.66 mV`
+   - Label: `Stable wearable output`
+   - Description: `A skin-mounted demonstration generated a small but stable
+     voltage output.`
+
+Do not present the published evidence cards as results produced by the
+presenter's proposed reproduction experiment.
+
+### Required Content Blocks
+
+Keep all of the following blocks, but allow their sizes and placement to vary
+to support the exhibition-style hierarchy:
+
+1. `Why It Matters`
+2. `How It Works`
+3. `How the Fiber Is Made`
+4. `Published Evidence`
+5. `Near-Term Applications`
+6. `Our Experimental Proposal`
+7. `Future Potential`
+8. `Reference`
+
+### Content Density
+
+Use balanced content density:
+
+- Keep the hero visually bold and easy to understand within approximately
+  `15 seconds`.
+- Keep concise explanations for the mechanism, wet-spinning process, published
+  evidence, and proposed experiment.
+- Preserve enough technical detail for an academic conversation without
+  reducing the poster to an exhibition advertisement.
+- Prefer short explanatory sentences, visible labels, and selective figure
+  captions over dense paragraphs.
+
+### V3 Quality Gates
+
+In addition to the existing quality gates:
+
+1. Verify that the hero region is the dominant visual entry point at thumbnail
+   size.
+2. Verify that the evidence cards remain understandable without prior
+   materials-science knowledge.
+3. Verify that the lower content area does not resemble an even dashboard grid.
+4. Verify that scientific figures are materially larger than in V2 where space
+   permits.
+5. Verify that the three evidence cards are explicitly attributed to Zhang et
+   al. (2021).
