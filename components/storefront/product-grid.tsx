@@ -33,9 +33,9 @@ export function ProductGrid({ products }: { products: GridProduct[] }) {
             <div className="product-card-meta">
               <div>
                 <small>{product.category}</small>
-                <span>{product.name}</span>
+                <span className="product-card-name">{product.name}</span>
               </div>
-              <span>{formatVnd(product.priceVnd)}</span>
+              <span className="product-card-price">{formatVnd(product.priceVnd)}</span>
             </div>
           </Link>
         </article>

@@ -20,7 +20,6 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
           </div>
         </div>
         <Link href="/#campaign">Campaign</Link>
-        <Link href="/admin/products">Admin</Link>
       </nav>
       <Link className="site-logo" href="/">
         STARLIAR

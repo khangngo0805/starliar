@@ -8,19 +8,54 @@ export default async function HomePage() {
 
   return (
     <main>
-      <HeroVideo src="/media/starliar-hero.mp4" />
-      <section className="home-section">
+      <HeroVideo src="/media/starliar-hero-editorial.png" />
+      <section className="editorial-intro" aria-label="Starliar direction">
+        <p>Quiet luxury structure. Dark streetwear attitude. Built for the first signal after midnight.</p>
         <div>
-          <h2>Latest: Starliar New Arrival</h2>
+          <span>01</span>
+          <span>Cold silhouettes</span>
+        </div>
+      </section>
+      <section className="home-section featured-section">
+        <div className="section-heading-row">
+          <div>
+            <p className="section-kicker">New arrival</p>
+            <h2>Latest silhouettes</h2>
+          </div>
           <Link className="text-link" href="/shop">
-            More
+            View all
           </Link>
         </div>
         <ProductGrid products={products} />
       </section>
       <section className="campaign-section" id="campaign">
-        <p>Cold silhouettes for a first signal after dark.</p>
-        <span>2026 Collection</span>
+        <div className="campaign-copy">
+          <p className="section-kicker">Campaign 2026</p>
+          <h2>After dark uniform</h2>
+          <p>Monochrome layers, quiet hardware, and silhouettes made for low light.</p>
+        </div>
+        <div className="campaign-details" aria-label="Campaign details">
+          <span>Night release</span>
+          <span>Structured cotton</span>
+          <span>Limited run</span>
+        </div>
+        <Link className="campaign-link" href="/shop">
+          Enter the drop
+        </Link>
+      </section>
+      <section className="material-notes" aria-label="Collection notes">
+        <article>
+          <span>Material</span>
+          <p>Poplin, mesh, and compact fleece balanced for sharp everyday wear.</p>
+        </article>
+        <article>
+          <span>Palette</span>
+          <p>Paper, ink, frost gray, and small cold-blue signals.</p>
+        </article>
+        <article>
+          <span>Fit</span>
+          <p>Relaxed volume with clean shoulders, cropped layers, and utility lines.</p>
+        </article>
       </section>
     </main>
   );
