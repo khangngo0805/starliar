@@ -14,6 +14,15 @@ type SearchProduct = {
   media: string[];
 };
 
+function safelyAbort(controller: AbortController) {
+  try {
+    controller.abort();
+  } catch (error) {
+    if (error instanceof DOMException && error.name === "AbortError") return;
+    throw error;
+  }
+}
+
 export function SearchDialog() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -37,7 +46,7 @@ export function SearchDialog() {
 
     return () => {
       window.clearTimeout(timeout);
-      controller.abort();
+      safelyAbort(controller);
     };
   }, [open, query]);
 
