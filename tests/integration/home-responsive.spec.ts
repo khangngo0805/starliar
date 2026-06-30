@@ -16,7 +16,7 @@ test("checkout page exposes QR payment action", async ({ page }) => {
 test("search overlay finds seeded products", async ({ page }) => {
   await page.goto("/shop");
   await page.getByRole("button", { name: "Search" }).click();
-  await page.getByPlaceholder("Search Starliar").fill("shell");
+  await page.getByPlaceholder("Please enter the search term(s)").fill("shell");
   await expect(page.getByRole("link", { name: /Orbital Shell Jacket/i })).toBeVisible();
 });
 

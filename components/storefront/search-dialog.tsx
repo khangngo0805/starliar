@@ -14,6 +14,56 @@ type SearchProduct = {
   media: string[];
 };
 
+type SearchPreviewProduct = Omit<SearchProduct, "id"> & { id?: string };
+
+const searchTrendProducts: SearchPreviewProduct[] = [
+  {
+    slug: "trace-cap",
+    name: "Trace Cap",
+    priceVnd: 690000,
+    collection: "First Signal",
+    media: ["/media/placeholders/static-crossbody.svg"]
+  },
+  {
+    slug: "orbital-shell-jacket",
+    name: "Orbital Shell",
+    priceVnd: 2890000,
+    collection: "First Signal",
+    media: ["/media/placeholders/orbital-shell.svg"]
+  },
+  {
+    slug: "lowlight-cargo-trouser",
+    name: "Lowlight Cargo",
+    priceVnd: 2190000,
+    collection: "First Signal",
+    media: ["/media/placeholders/signal-trouser.svg"]
+  },
+  {
+    slug: "nocturne-layer-shirt",
+    name: "Nocturne Layer",
+    priceVnd: 1590000,
+    collection: "First Signal",
+    media: ["/media/placeholders/nocturne-shirt.svg"]
+  },
+  {
+    slug: "cold-cut-short",
+    name: "Cold Cut Short",
+    priceVnd: 1490000,
+    collection: "First Signal",
+    media: ["/media/placeholders/signal-trouser.svg"]
+  }
+];
+
+const recentlyViewedProducts: SearchPreviewProduct[] = [
+  {
+    slug: "cold-cut-short",
+    name: "Cold Cut Short",
+    priceVnd: 1490000,
+    collection: "First Signal",
+    media: ["/media/placeholders/signal-trouser.svg"]
+  }
+];
+
 function safelyAbort(controller: AbortController) {
   try {
     controller.abort();
@@ -23,19 +73,47 @@ function safelyAbort(controller: AbortController) {
   }
 }
 
+function SearchProductTile({ product, compact = false }: { product: SearchPreviewProduct; compact?: boolean }) {
+  return (
+    <Link
+      className={compact ? "search-product-tile search-product-tile-compact" : "search-product-tile"}
+      href={`/shop/${product.slug}`}
+    >
+      <span className="search-product-media" aria-hidden="true">
+        {product.media[0] ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img alt="" src={product.media[0]} />
+        ) : null}
+      </span>
+      <span className="search-product-copy">
+        <strong>{product.name}</strong>
+        {compact ? <small>{formatVnd(product.priceVnd)}</small> : null}
+      </span>
+    </Link>
+  );
+}
+
 export function SearchDialog() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [products, setProducts] = useState<SearchProduct[]>([]);
+  const trimmedQuery = query.trim();
+  const hasSearchQuery = trimmedQuery.length >= 2;
+
+  function closeSearch() {
+    setOpen(false);
+    setProducts([]);
+    setQuery("");
+  }
 
   useEffect(() => {
-    if (!open || query.trim().length < 2) {
+    if (!open || !hasSearchQuery) {
       return;
     }
 
     const controller = new AbortController();
     const timeout = window.setTimeout(async () => {
-      const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`, {
+      const response = await fetch(`/api/search?q=${encodeURIComponent(trimmedQuery)}`, {
         signal: controller.signal
       });
       if (response.ok) {
@@ -48,7 +126,7 @@ export function SearchDialog() {
       window.clearTimeout(timeout);
       safelyAbort(controller);
     };
-  }, [open, query]);
+  }, [hasSearchQuery, open, trimmedQuery]);
 
   return (
     <>
@@ -62,6 +140,27 @@ export function SearchDialog() {
       </button>
       {open ? (
         <div className="search-overlay" role="dialog" aria-modal="true" aria-label="Search products">
+          <div className="search-overlay-header" aria-hidden="true">
+            <nav>
+              <span>Shop</span>
+              <span>Campaign</span>
+              <span>Collections</span>
+              <span>Explore</span>
+            </nav>
+            <span>STARLIAR</span>
+            <div>
+              <span>Cold Cut Short</span>
+              <Search size={21} />
+            </div>
+          </div>
+          <button
+            aria-label="Close search"
+            className="search-close-button"
+            onClick={closeSearch}
+            type="button"
+          >
+            <X size={26} />
+          </button>
           <div className="search-panel">
             <div className="search-input-row">
               <Search size={22} />
@@ -73,46 +172,52 @@ export function SearchDialog() {
                     setProducts([]);
                   }
                 }}
-                placeholder="Search Starliar"
+                placeholder="Please enter the search term(s)"
                 value={query}
               />
-              <button
-                aria-label="Close search"
-                className="icon-button"
-                onClick={() => {
-                  setOpen(false);
-                  setProducts([]);
-                  setQuery("");
-                }}
-                type="button"
-              >
-                <X size={22} />
-              </button>
             </div>
-            <div className="search-results">
-              {query.trim().length < 2 ? <p>Type at least 2 characters.</p> : null}
-              {query.trim().length >= 2 && !products.length ? <p>No matching products yet.</p> : null}
-              {products.map((product) => (
-                <Link
-                  className="search-result"
-                  href={`/shop/${product.slug}`}
-                  key={product.id}
-                  onClick={() => setOpen(false)}
-                >
-                  <div className="search-result-media">
-                    {product.media[0] ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img alt={product.name} src={product.media[0]} />
-                    ) : null}
+            {hasSearchQuery ? (
+              <section className="search-section">
+                <div className="search-section-heading">
+                  <h2>SEARCH RESULTS</h2>
+                </div>
+                {products.length ? (
+                  <div className="search-product-grid">
+                    {products.map((product) => (
+                      <SearchProductTile product={product} key={product.id} compact />
+                    ))}
                   </div>
-                  <div>
-                    <span>{product.collection}</span>
-                    <strong>{product.name}</strong>
-                    <small>{formatVnd(product.priceVnd)}</small>
+                ) : (
+                  <p className="search-empty">No matching products yet.</p>
+                )}
+              </section>
+            ) : (
+              <>
+                <section className="search-section">
+                  <div className="search-section-heading">
+                    <h2>SEARCH TRENDS</h2>
                   </div>
-                </Link>
-              ))}
-            </div>
+                  <div className="search-product-grid search-trends-grid">
+                    {searchTrendProducts.map((product) => (
+                      <SearchProductTile product={product} key={product.slug} />
+                    ))}
+                  </div>
+                </section>
+                <section className="search-section search-recent-section">
+                  <div className="search-section-heading">
+                    <h2>RECENTLY VIEWED</h2>
+                    <button aria-label="Remove recently viewed products" className="text-button" type="button">
+                      REMOVE
+                    </button>
+                  </div>
+                  <div className="search-product-grid search-recent-grid">
+                    {recentlyViewedProducts.map((product) => (
+                      <SearchProductTile product={product} key={product.slug} compact />
+                    ))}
+                  </div>
+                </section>
+              </>
+            )}
           </div>
         </div>
       ) : null}
