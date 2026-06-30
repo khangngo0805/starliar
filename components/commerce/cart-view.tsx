@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { formatVnd, getCartSubtotal, updateCartQuantity, type CartItem } from "@/lib/commerce/cart";
 
 function readCart(): CartItem[] {
@@ -10,12 +10,25 @@ function readCart(): CartItem[] {
 }
 
 export function CartView() {
-  const [items, setItems] = useState<CartItem[]>(readCart);
+  const [items, setItems] = useState<CartItem[]>([]);
+
+  useEffect(() => {
+    const syncCart = () => setItems(readCart());
+    const frame = window.requestAnimationFrame(syncCart);
+    window.addEventListener("storage", syncCart);
+    window.addEventListener("starliar-cart-updated", syncCart);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("storage", syncCart);
+      window.removeEventListener("starliar-cart-updated", syncCart);
+    };
+  }, []);
 
   function setQuantity(variantId: string, quantity: number) {
     const next = updateCartQuantity(items, variantId, quantity);
     setItems(next);
     window.localStorage.setItem("starliar-cart", JSON.stringify(next));
+    window.dispatchEvent(new Event("starliar-cart-updated"));
   }
 
   if (!items.length) {
@@ -74,20 +87,22 @@ export function CartView() {
       </div>
       <div className="cart-summary">
         <p className="eyebrow">Summary</p>
-        <div>
+        <div className="cart-summary-row">
           <span>Subtotal</span>
           <strong>{formatVnd(getCartSubtotal(items))}</strong>
         </div>
-        <div>
+        <div className="cart-summary-row">
           <span>Estimated shipping</span>
           <strong>Calculated at checkout</strong>
         </div>
-        <Link className="primary-link" href="/checkout">
-          Checkout
-        </Link>
-        <Link className="text-link" href="/shop">
-          Continue shopping
-        </Link>
+        <div className="cart-summary-actions">
+          <Link className="primary-link" href="/checkout">
+            Checkout
+          </Link>
+          <Link className="text-link" href="/shop">
+            Continue shopping
+          </Link>
+        </div>
       </div>
     </section>
   );

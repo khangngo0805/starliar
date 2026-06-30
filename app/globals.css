@@ -740,7 +740,7 @@ textarea {
   top: 96px;
 }
 
-.cart-summary div,
+.cart-summary-row,
 .status-row {
   border-bottom: 1px solid rgba(199, 204, 212, 0.72);
   display: flex;
@@ -749,9 +749,22 @@ textarea {
   padding: 16px 0;
 }
 
-.cart-summary .text-link {
-  display: inline-block;
-  margin-top: 20px;
+.cart-summary-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-top: 24px;
+}
+
+.cart-summary-actions .primary-link,
+.cart-summary-actions .text-link {
+  margin-top: 0;
+}
+
+.cart-summary-actions .text-link {
+  justify-self: start;
+  width: max-content;
 }
 
 .order-shell {
@@ -1624,11 +1637,43 @@ textarea {
 
   .cart-line {
     grid-template-columns: 76px minmax(0, 1fr);
+    align-items: start;
+    column-gap: 18px;
+    row-gap: 12px;
+  }
+
+  .cart-line-media {
+    grid-row: span 2;
   }
 
   .cart-line-quantity {
-    grid-column: 1 / -1;
+    align-items: center;
+    display: flex;
+    gap: 12px;
+    grid-column: 2;
+    justify-content: space-between;
     justify-items: stretch;
+  }
+
+  .cart-line input {
+    max-width: 64px;
+    min-height: 38px;
+    padding: 8px;
+  }
+
+  .cart-line-quantity span {
+    font-size: 14px;
+    text-align: right;
+  }
+
+  .cart-summary-actions {
+    align-items: stretch;
+    display: grid;
+    gap: 14px;
+  }
+
+  .cart-summary-actions .primary-link {
+    justify-self: start;
   }
 
   .hero-progress {
