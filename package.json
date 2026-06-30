@@ -9,8 +9,10 @@
     "lint": "eslint .",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "db:push": "prisma db push",
-    "db:setup": "sqlite3 dev.db < prisma/local-schema.sql && tsx prisma/seed.ts",
+    "db:deploy": "prisma migrate deploy",
+    "db:migrate": "prisma migrate dev",
+    "db:push": "prisma db push && prisma db seed",
+    "db:setup": "prisma migrate dev && prisma db seed",
     "db:seed": "tsx prisma/seed.ts"
   },
   "dependencies": {

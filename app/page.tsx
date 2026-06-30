@@ -3,6 +3,8 @@ import { HeroVideo } from "@/components/storefront/hero-video";
 import { ProductGrid } from "@/components/storefront/product-grid";
 import { getFeaturedProducts } from "@/lib/commerce/catalog";
 
+export const dynamic = "force-dynamic";
+
 export default async function HomePage() {
   const products = await getFeaturedProducts();
 

@@ -20,6 +20,17 @@ npm run dev
 
 The app runs at `http://localhost:3000`.
 
+Starliar now expects PostgreSQL for local and production data. Before running
+`npm run db:setup`, set `DATABASE_URL` in `.env` to a reachable database, for
+example:
+
+```env
+DATABASE_URL="postgresql://starliar:starliar@localhost:5432/starliar?schema=public"
+```
+
+For production, use a managed PostgreSQL database, run `npm run db:deploy`, then
+seed only the data you actually want available in the live store.
+
 ## Admin
 
 Seeded credentials come from `.env`:
