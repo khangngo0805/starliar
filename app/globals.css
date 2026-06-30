@@ -5,6 +5,13 @@
   --starliar-muted: #6c6a63;
   --starliar-line: #d4cec3;
   --starliar-accent: #b8dce5;
+  --starliar-soft-line: rgba(8, 8, 8, 0.12);
+  --starliar-panel-glass: rgba(255, 255, 255, 0.44);
+  --starliar-panel-strong: rgba(255, 255, 255, 0.64);
+  --starliar-shadow-soft: 0 18px 42px rgba(30, 26, 20, 0.08);
+  --starliar-shadow-hover: 0 22px 58px rgba(30, 26, 20, 0.12);
+  --starliar-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --starliar-radius: 6px;
 }
 
 * {
@@ -33,6 +40,19 @@ input,
 select,
 textarea {
   font: inherit;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 2px solid rgba(8, 8, 8, 0.62);
+  outline-offset: 3px;
 }
 
 .site-header {
@@ -70,7 +90,13 @@ textarea {
 .site-logo,
 .text-link,
 .product-card {
-  transition: opacity 180ms ease, transform 180ms ease, border-color 180ms ease, background 180ms ease, color 180ms ease;
+  transition:
+    opacity 220ms var(--starliar-ease),
+    transform 220ms var(--starliar-ease),
+    border-color 220ms var(--starliar-ease),
+    background 220ms var(--starliar-ease),
+    color 220ms var(--starliar-ease),
+    box-shadow 220ms var(--starliar-ease);
 }
 
 .site-header-nav a:hover,
@@ -98,10 +124,11 @@ textarea {
 }
 
 .nav-dropdown-panel {
-  background: rgba(244, 245, 247, 0.96);
-  backdrop-filter: blur(14px);
-  border: 1px solid rgba(199, 204, 212, 0.72);
-  box-shadow: 0 18px 54px rgba(9, 9, 9, 0.14);
+  background: rgba(243, 241, 236, 0.82);
+  backdrop-filter: blur(18px);
+  border: 1px solid var(--starliar-soft-line);
+  border-radius: var(--starliar-radius);
+  box-shadow: var(--starliar-shadow-soft);
   color: var(--starliar-ink);
   display: grid;
   gap: 10px;
@@ -113,7 +140,7 @@ textarea {
   position: absolute;
   top: calc(100% + 24px);
   transform: translateY(6px);
-  transition: opacity 180ms ease, transform 180ms ease;
+  transition: opacity 220ms var(--starliar-ease), transform 220ms var(--starliar-ease);
 }
 
 .site-header-overlay .nav-dropdown-panel {
@@ -132,17 +159,18 @@ textarea {
 
 .nav-dropdown-panel a {
   border: 0;
-  border-radius: 999px;
+  border-radius: var(--starliar-radius);
   color: currentColor;
   font-size: 14px;
   line-height: 1;
-  padding: 8px 11px;
+  padding: 9px 11px;
   width: max-content;
 }
 
 .nav-dropdown-panel a:hover {
-  background: rgba(9, 9, 9, 0.08);
+  background: rgba(8, 8, 8, 0.07);
   opacity: 1;
+  transform: translateX(2px);
 }
 
 .site-header-overlay .nav-dropdown-panel a:hover {
@@ -155,6 +183,7 @@ textarea {
 
 .cart-icon-link {
   align-items: center;
+  border-radius: 999px;
   display: inline-flex;
   justify-content: center;
   position: relative;
@@ -162,6 +191,7 @@ textarea {
 
 .icon-link {
   align-items: center;
+  border-radius: 999px;
   color: inherit;
   display: inline-flex;
   justify-content: center;
@@ -257,7 +287,14 @@ textarea {
   justify-content: center;
   padding: 0 28px;
   backdrop-filter: blur(10px);
-  transition: background 180ms ease, color 180ms ease, transform 180ms ease, opacity 180ms ease, border-color 180ms ease;
+  position: relative;
+  transition:
+    background 240ms var(--starliar-ease),
+    color 240ms var(--starliar-ease),
+    transform 240ms var(--starliar-ease),
+    opacity 240ms var(--starliar-ease),
+    border-color 240ms var(--starliar-ease),
+    box-shadow 240ms var(--starliar-ease);
 }
 
 .primary-link,
@@ -270,7 +307,7 @@ textarea {
 .pill-button:hover,
 .primary-link:hover,
 .primary-button:hover {
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
 .pill-button:hover {
@@ -281,8 +318,9 @@ textarea {
 
 .primary-link:hover,
 .primary-button:hover {
-  background: rgba(9, 9, 9, 0.08);
-  border-color: rgba(9, 9, 9, 0.42);
+  background: rgba(8, 8, 8, 0.07);
+  border-color: rgba(8, 8, 8, 0.5);
+  box-shadow: 0 12px 28px rgba(30, 26, 20, 0.08);
   color: var(--starliar-ink);
 }
 
@@ -301,10 +339,14 @@ textarea {
   display: inline-flex;
   justify-content: center;
   padding: 0;
-  transition: opacity 180ms ease, transform 180ms ease;
+  border-radius: 999px;
+  min-height: 34px;
+  min-width: 34px;
+  transition: background 220ms var(--starliar-ease), opacity 220ms var(--starliar-ease), transform 220ms var(--starliar-ease);
 }
 
 .icon-button:hover {
+  background: rgba(8, 8, 8, 0.06);
   opacity: 0.76;
   transform: translateY(-1px);
 }
@@ -370,7 +412,12 @@ textarea {
   border-radius: 999px;
   color: #49515a;
   padding: 9px 15px;
-  transition: background 180ms ease, border-color 180ms ease, color 180ms ease;
+  transition:
+    background 220ms var(--starliar-ease),
+    border-color 220ms var(--starliar-ease),
+    color 220ms var(--starliar-ease),
+    transform 220ms var(--starliar-ease),
+    box-shadow 220ms var(--starliar-ease);
 }
 
 .category-chip:hover,
@@ -378,6 +425,10 @@ textarea {
   background: rgba(255, 255, 255, 0.56);
   border-color: rgba(9, 9, 9, 0.34);
   color: var(--starliar-ink);
+}
+
+.category-chip:hover {
+  transform: translateY(-1px);
 }
 
 .home-section h2,
@@ -409,6 +460,10 @@ textarea {
 
 .product-card-media {
   border: 1px solid rgba(199, 204, 212, 0.62);
+  transition:
+    border-color 260ms var(--starliar-ease),
+    box-shadow 260ms var(--starliar-ease),
+    transform 260ms var(--starliar-ease);
 }
 
 .product-card-media img,
@@ -416,13 +471,18 @@ textarea {
   display: block;
   height: 100%;
   object-fit: cover;
-  transition: transform 260ms ease, filter 260ms ease;
+  transition: transform 360ms var(--starliar-ease), filter 360ms var(--starliar-ease);
   width: 100%;
 }
 
 .product-card:hover {
   opacity: 0.92;
   transform: translateY(-1px);
+}
+
+.product-card:hover .product-card-media {
+  border-color: rgba(8, 8, 8, 0.2);
+  box-shadow: var(--starliar-shadow-soft);
 }
 
 .product-card-link:hover img {
@@ -450,12 +510,19 @@ textarea {
   height: 42px;
   justify-content: center;
   min-width: 42px;
-  transition: background 180ms ease, color 180ms ease, transform 180ms ease;
+  transition:
+    background 220ms var(--starliar-ease),
+    border-color 220ms var(--starliar-ease),
+    color 220ms var(--starliar-ease),
+    transform 220ms var(--starliar-ease),
+    box-shadow 220ms var(--starliar-ease);
 }
 
 .favorite-button:hover,
 .favorite-button[aria-pressed="true"] {
   background: rgba(9, 9, 9, 0.84);
+  border-color: rgba(9, 9, 9, 0.84);
+  box-shadow: 0 12px 28px rgba(8, 8, 8, 0.14);
   color: white;
   transform: translateY(-1px);
 }
@@ -592,12 +659,17 @@ textarea {
   justify-content: center;
   min-height: 46px;
   padding: 0 30px;
-  transition: background 180ms ease, border-color 180ms ease, transform 180ms ease;
+  transition:
+    background 240ms var(--starliar-ease),
+    border-color 240ms var(--starliar-ease),
+    box-shadow 240ms var(--starliar-ease),
+    transform 240ms var(--starliar-ease);
 }
 
 .buy-now-button:hover {
   background: rgba(9, 9, 9, 0.82);
-  transform: translateY(-1px);
+  box-shadow: 0 14px 30px rgba(8, 8, 8, 0.16);
+  transform: translateY(-2px);
 }
 
 .buy-now-button:disabled {
@@ -614,6 +686,8 @@ textarea {
 .cart-toast {
   background: rgba(9, 9, 9, 0.84);
   border: 1px solid rgba(244, 245, 247, 0.22);
+  border-radius: var(--starliar-radius);
+  box-shadow: var(--starliar-shadow-soft);
   color: white;
   margin: 0;
   padding: 12px 16px;
@@ -638,8 +712,18 @@ textarea {
   aspect-ratio: 1;
   background: transparent;
   border: 1px solid var(--starliar-line);
+  border-radius: var(--starliar-radius);
   cursor: pointer;
   min-width: 48px;
+  transition:
+    background 220ms var(--starliar-ease),
+    border-color 220ms var(--starliar-ease),
+    color 220ms var(--starliar-ease),
+    transform 220ms var(--starliar-ease);
+}
+
+.size-options button:hover:not(:disabled) {
+  transform: translateY(-1px);
 }
 
 .size-options button.selected {
@@ -678,17 +762,28 @@ textarea {
   gap: 18px;
   grid-template-columns: 96px minmax(0, 1fr) auto;
   padding: 18px 0;
+  transition: background 220ms var(--starliar-ease), padding 220ms var(--starliar-ease);
+}
+
+.cart-line:hover {
+  background: rgba(255, 255, 255, 0.22);
 }
 
 .cart-line input {
+  background: rgba(255, 255, 255, 0.56);
+  border: 1px solid rgba(8, 8, 8, 0.18);
+  border-radius: var(--starliar-radius);
   max-width: 86px;
   padding: 10px;
+  transition: border-color 220ms var(--starliar-ease), box-shadow 220ms var(--starliar-ease), background 220ms var(--starliar-ease);
 }
 
 .cart-line-media {
   align-items: center;
   aspect-ratio: 4 / 5;
   background: #dde3e8;
+  border: 1px solid rgba(8, 8, 8, 0.06);
+  border-radius: var(--starliar-radius);
   display: flex;
   justify-content: center;
   overflow: hidden;
@@ -718,6 +813,11 @@ textarea {
   justify-self: start;
   padding: 0;
   text-decoration: underline;
+  transition: color 220ms var(--starliar-ease), opacity 220ms var(--starliar-ease);
+}
+
+.cart-line-copy button:hover {
+  color: var(--starliar-ink);
 }
 
 .cart-line-quantity {
@@ -730,8 +830,11 @@ textarea {
 .cart-summary,
 .order-panel {
   align-self: start;
-  background: rgba(255, 255, 255, 0.48);
-  border: 1px solid rgba(199, 204, 212, 0.72);
+  background: var(--starliar-panel-glass);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--starliar-soft-line);
+  border-radius: var(--starliar-radius);
+  box-shadow: var(--starliar-shadow-soft);
   padding: 24px;
 }
 
@@ -742,7 +845,7 @@ textarea {
 
 .cart-summary-row,
 .status-row {
-  border-bottom: 1px solid rgba(199, 204, 212, 0.72);
+  border-bottom: 1px solid rgba(8, 8, 8, 0.1);
   display: flex;
   gap: 18px;
   justify-content: space-between;
@@ -797,16 +900,21 @@ textarea {
 }
 
 .order-lines {
-  border-top: 1px solid rgba(199, 204, 212, 0.72);
+  border-top: 1px solid rgba(8, 8, 8, 0.1);
 }
 
 .order-line {
   align-items: center;
-  border-bottom: 1px solid rgba(199, 204, 212, 0.72);
+  border-bottom: 1px solid rgba(8, 8, 8, 0.1);
   display: flex;
   gap: 20px;
   justify-content: space-between;
   padding: 18px 0;
+  transition: background 220ms var(--starliar-ease);
+}
+
+.order-line:hover {
+  background: rgba(255, 255, 255, 0.22);
 }
 
 .order-line p {
@@ -830,19 +938,55 @@ textarea {
 }
 
 .checkout-form {
+  background: var(--starliar-panel-glass);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--starliar-soft-line);
+  border-radius: var(--starliar-radius);
+  box-shadow: var(--starliar-shadow-soft);
   display: grid;
   gap: 14px;
+  padding: 24px;
 }
 
 .checkout-form input,
 .checkout-form textarea,
 .checkout-form select,
 .account-card input {
-  background: rgba(255, 255, 255, 0.6);
-  border: 1px solid var(--starliar-line);
+  background: rgba(255, 255, 255, 0.58);
+  border: 1px solid rgba(8, 8, 8, 0.14);
+  border-radius: var(--starliar-radius);
   min-height: 48px;
   padding: 0 14px;
+  transition:
+    background 220ms var(--starliar-ease),
+    border-color 220ms var(--starliar-ease),
+    box-shadow 220ms var(--starliar-ease);
   width: 100%;
+}
+
+.checkout-form input:hover,
+.checkout-form textarea:hover,
+.checkout-form select:hover,
+.account-card input:hover,
+.admin-form input:hover,
+.admin-form textarea:hover,
+.admin-form select:hover,
+.admin-card input:hover {
+  border-color: rgba(8, 8, 8, 0.28);
+}
+
+.checkout-form input:focus,
+.checkout-form textarea:focus,
+.checkout-form select:focus,
+.account-card input:focus,
+.admin-form input:focus,
+.admin-form textarea:focus,
+.admin-form select:focus,
+.admin-card input:focus {
+  background: rgba(255, 255, 255, 0.78);
+  border-color: rgba(8, 8, 8, 0.46);
+  box-shadow: 0 0 0 4px rgba(8, 8, 8, 0.06);
+  outline: 0;
 }
 
 .account-auth-shell {
@@ -854,7 +998,10 @@ textarea {
 }
 
 .account-card {
-  border: 1px solid var(--starliar-line);
+  background: var(--starliar-panel-glass);
+  border: 1px solid var(--starliar-soft-line);
+  border-radius: var(--starliar-radius);
+  box-shadow: var(--starliar-shadow-soft);
   display: grid;
   gap: 14px;
   padding: 34px;
@@ -916,6 +1063,12 @@ textarea {
   cursor: pointer;
   padding: 0;
   text-decoration: underline;
+  transition: color 220ms var(--starliar-ease), opacity 220ms var(--starliar-ease), transform 220ms var(--starliar-ease);
+}
+
+.text-button:hover {
+  color: var(--starliar-ink);
+  transform: translateY(-1px);
 }
 
 .account-grid {
@@ -925,8 +1078,10 @@ textarea {
 }
 
 .account-panel {
-  background: rgba(255, 255, 255, 0.42);
-  border: 1px solid rgba(199, 204, 212, 0.72);
+  background: var(--starliar-panel-glass);
+  border: 1px solid var(--starliar-soft-line);
+  border-radius: var(--starliar-radius);
+  box-shadow: var(--starliar-shadow-soft);
   padding: 24px;
 }
 
@@ -939,17 +1094,25 @@ textarea {
 
 .account-product-list,
 .account-order-list {
-  border-top: 1px solid rgba(199, 204, 212, 0.72);
+  border-top: 1px solid rgba(8, 8, 8, 0.1);
   display: grid;
   margin-top: 20px;
 }
 
 .account-product-row,
 .account-order-row {
-  border-bottom: 1px solid rgba(199, 204, 212, 0.72);
+  border-bottom: 1px solid rgba(8, 8, 8, 0.1);
   display: grid;
   gap: 6px;
   padding: 16px 0;
+  transition: background 220ms var(--starliar-ease), padding 220ms var(--starliar-ease);
+}
+
+.account-product-row:hover,
+.account-order-row:hover {
+  background: rgba(255, 255, 255, 0.24);
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .account-product-row {
@@ -967,6 +1130,8 @@ textarea {
 .account-product-thumb {
   aspect-ratio: 4 / 5;
   background: #dde3e8;
+  border: 1px solid rgba(8, 8, 8, 0.06);
+  border-radius: var(--starliar-radius);
   display: block;
   overflow: hidden;
   width: 58px;
@@ -998,9 +1163,11 @@ textarea {
 }
 
 .search-panel {
-  background: rgba(244, 245, 247, 0.98);
-  border: 1px solid rgba(199, 204, 212, 0.8);
-  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.2);
+  background: rgba(243, 241, 236, 0.92);
+  backdrop-filter: blur(18px);
+  border: 1px solid var(--starliar-soft-line);
+  border-radius: var(--starliar-radius);
+  box-shadow: 0 26px 86px rgba(0, 0, 0, 0.22);
   max-width: 760px;
   width: min(760px, 100%);
 }
@@ -1042,16 +1209,18 @@ textarea {
   gap: 18px;
   grid-template-columns: 88px 1fr;
   padding: 14px 18px;
-  transition: background 180ms ease;
+  transition: background 220ms var(--starliar-ease), padding 220ms var(--starliar-ease);
 }
 
 .search-result:hover {
-  background: rgba(255, 255, 255, 0.48);
+  background: rgba(255, 255, 255, 0.52);
+  padding-left: 22px;
 }
 
 .search-result-media {
   aspect-ratio: 4 / 5;
   background: #dde3e8;
+  border-radius: var(--starliar-radius);
   overflow: hidden;
 }
 
@@ -1356,6 +1525,7 @@ textarea {
     linear-gradient(145deg, rgba(255, 255, 255, 0.34), rgba(8, 8, 8, 0.06)),
     var(--starliar-panel);
   border: 1px solid rgba(8, 8, 8, 0.11);
+  border-radius: var(--starliar-radius);
 }
 
 .product-card-link {
@@ -1400,7 +1570,7 @@ textarea {
 
 .product-card:hover {
   opacity: 1;
-  transform: translateY(-2px);
+  transform: translateY(-3px);
 }
 
 .product-card-link:hover img {
@@ -1465,6 +1635,17 @@ textarea {
   justify-content: center;
   justify-self: start;
   padding: 0 28px;
+  transition:
+    background 240ms var(--starliar-ease),
+    border-color 240ms var(--starliar-ease),
+    color 240ms var(--starliar-ease),
+    transform 240ms var(--starliar-ease);
+}
+
+.campaign-link:hover {
+  background: rgba(243, 241, 236, 0.12);
+  border-color: rgba(243, 241, 236, 0.72);
+  transform: translateY(-2px);
 }
 
 .material-notes {
@@ -1522,6 +1703,7 @@ textarea {
 .category-chip.active {
   background: var(--starliar-ink);
   border-color: var(--starliar-ink);
+  box-shadow: 0 12px 26px rgba(8, 8, 8, 0.12);
   color: var(--starliar-paper);
 }
 
@@ -1537,11 +1719,14 @@ textarea {
     linear-gradient(145deg, rgba(255, 255, 255, 0.42), rgba(8, 8, 8, 0.08)),
     var(--starliar-panel);
   border: 1px solid rgba(8, 8, 8, 0.12);
+  border-radius: var(--starliar-radius);
 }
 
 .product-detail-copy {
   background: rgba(243, 241, 236, 0.72);
   border-left: 1px solid rgba(8, 8, 8, 0.1);
+  border-radius: var(--starliar-radius);
+  box-shadow: var(--starliar-shadow-soft);
   display: grid;
   max-width: 520px;
   padding: 34px;
@@ -1575,7 +1760,11 @@ textarea {
 .size-options button {
   background: rgba(255, 255, 255, 0.24);
   border-color: rgba(8, 8, 8, 0.18);
-  transition: background 180ms ease, border-color 180ms ease, color 180ms ease, transform 180ms ease;
+  transition:
+    background 220ms var(--starliar-ease),
+    border-color 220ms var(--starliar-ease),
+    color 220ms var(--starliar-ease),
+    transform 220ms var(--starliar-ease);
 }
 
 .size-options button:hover:not(:disabled) {
@@ -1592,6 +1781,8 @@ textarea {
   align-items: start;
   background: rgba(255, 255, 255, 0.32);
   border: 1px solid rgba(8, 8, 8, 0.12);
+  border-radius: var(--starliar-radius);
+  box-shadow: 0 12px 30px rgba(30, 26, 20, 0.06);
   padding: 12px;
 }
 
