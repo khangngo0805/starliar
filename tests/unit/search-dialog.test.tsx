@@ -19,6 +19,9 @@ describe("SearchDialog", () => {
     expect(screen.getByPlaceholderText("Please enter the search term(s)")).toBeInTheDocument();
     expect(screen.getByText("SEARCH TRENDS")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /Trace Cap/i })).toHaveAttribute("href", "/shop/trace-cap");
+    expect(screen.getByRole("link", { name: "Shop" })).toHaveAttribute("href", "/shop");
+    expect(screen.getByRole("link", { name: "Campaign" })).toHaveAttribute("href", "/#campaign");
+    expect(screen.getByRole("link", { name: "STARLIAR" })).toHaveAttribute("href", "/");
     expect(screen.getByText("RECENTLY VIEWED")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Remove recently viewed products" })).toBeInTheDocument();
   });
@@ -53,6 +56,15 @@ describe("SearchDialog", () => {
     await waitFor(() => expect(screen.getByRole("link", { name: /Orbital Shell Jacket/i })).toBeInTheDocument());
     expect(screen.getByText("SEARCH RESULTS")).toBeInTheDocument();
     expect(screen.queryByText("SEARCH TRENDS")).not.toBeInTheDocument();
+  });
+
+  it("closes the search overlay with escape", () => {
+    render(<SearchDialog />);
+    fireEvent.click(screen.getByRole("button", { name: "Search" }));
+
+    fireEvent.keyDown(window, { key: "Escape" });
+
+    expect(screen.queryByRole("dialog", { name: "Search products" })).not.toBeInTheDocument();
   });
 
   it("does not crash when search cleanup aborts a pending request", () => {

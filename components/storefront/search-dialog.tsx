@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Search, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { formatVnd } from "@/lib/commerce/cart";
 
 type SearchProduct = {
@@ -73,11 +73,20 @@ function safelyAbort(controller: AbortController) {
   }
 }
 
-function SearchProductTile({ product, compact = false }: { product: SearchPreviewProduct; compact?: boolean }) {
+function SearchProductTile({
+  product,
+  compact = false,
+  onNavigate
+}: {
+  product: SearchPreviewProduct;
+  compact?: boolean;
+  onNavigate?: () => void;
+}) {
   return (
     <Link
       className={compact ? "search-product-tile search-product-tile-compact" : "search-product-tile"}
       href={`/shop/${product.slug}`}
+      onClick={onNavigate}
     >
       <span className="search-product-media" aria-hidden="true">
         {product.media[0] ? (
@@ -94,9 +103,11 @@ function SearchProductTile({ product, compact = false }: { product: SearchPrevie
 }
 
 export function SearchDialog() {
+  const searchInputId = useId();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [products, setProducts] = useState<SearchProduct[]>([]);
+  const [loading, setLoading] = useState(false);
   const trimmedQuery = query.trim();
   const hasSearchQuery = trimmedQuery.length >= 2;
 
@@ -104,6 +115,7 @@ export function SearchDialog() {
     setOpen(false);
     setProducts([]);
     setQuery("");
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -113,12 +125,19 @@ export function SearchDialog() {
 
     const controller = new AbortController();
     const timeout = window.setTimeout(async () => {
-      const response = await fetch(`/api/search?q=${encodeURIComponent(trimmedQuery)}`, {
-        signal: controller.signal
-      });
-      if (response.ok) {
-        const data = (await response.json()) as { products: SearchProduct[] };
-        setProducts(data.products);
+      setLoading(true);
+      try {
+        const response = await fetch(`/api/search?q=${encodeURIComponent(trimmedQuery)}`, {
+          signal: controller.signal
+        });
+        if (response.ok) {
+          const data = (await response.json()) as { products: SearchProduct[] };
+          setProducts(data.products);
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
       }
     }, 180);
 
@@ -127,6 +146,19 @@ export function SearchDialog() {
       safelyAbort(controller);
     };
   }, [hasSearchQuery, open, trimmedQuery]);
+
+  useEffect(() => {
+    if (!open) return;
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        closeSearch();
+      }
+    }
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open]);
 
   return (
     <>
@@ -140,16 +172,16 @@ export function SearchDialog() {
       </button>
       {open ? (
         <div className="search-overlay" role="dialog" aria-modal="true" aria-label="Search products">
-          <div className="search-overlay-header" aria-hidden="true">
+          <div className="search-overlay-header">
             <nav>
-              <span>Shop</span>
-              <span>Campaign</span>
-              <span>Collections</span>
-              <span>Explore</span>
+              <Link href="/shop" onClick={closeSearch}>Shop</Link>
+              <Link href="/#campaign" onClick={closeSearch}>Campaign</Link>
+              <Link href="/shop?category=jacket" onClick={closeSearch}>Jackets</Link>
+              <Link href="/shop?category=accessories" onClick={closeSearch}>Accessories</Link>
             </nav>
-            <span>STARLIAR</span>
+            <Link className="search-overlay-logo" href="/" onClick={closeSearch}>STARLIAR</Link>
             <div>
-              <span>Cold Cut Short</span>
+              <Link href="/shop/cold-cut-short" onClick={closeSearch}>Cold Cut Short</Link>
               <Search size={21} />
             </div>
           </div>
@@ -164,12 +196,15 @@ export function SearchDialog() {
           <div className="search-panel">
             <div className="search-input-row">
               <Search size={22} />
+              <label className="sr-only" htmlFor={searchInputId}>Search products</label>
               <input
                 autoFocus
+                id={searchInputId}
                 onChange={(event) => {
                   setQuery(event.target.value);
                   if (event.target.value.trim().length < 2) {
                     setProducts([]);
+                    setLoading(false);
                   }
                 }}
                 placeholder="Please enter the search term(s)"
@@ -180,15 +215,24 @@ export function SearchDialog() {
               <section className="search-section">
                 <div className="search-section-heading">
                   <h2>SEARCH RESULTS</h2>
+                  <p aria-live="polite">
+                    {loading ? "Searching..." : `${products.length} result${products.length === 1 ? "" : "s"}`}
+                  </p>
                 </div>
-                {products.length ? (
+                {loading ? (
+                  <div className="search-loading" aria-hidden="true">
+                    <span />
+                    <span />
+                    <span />
+                  </div>
+                ) : products.length ? (
                   <div className="search-product-grid">
                     {products.map((product) => (
-                      <SearchProductTile product={product} key={product.id} compact />
+                      <SearchProductTile product={product} key={product.id} compact onNavigate={closeSearch} />
                     ))}
                   </div>
                 ) : (
-                  <p className="search-empty">No matching products yet.</p>
+                  <p className="search-empty">No exact match yet. Try product names, categories, collection names, or material words.</p>
                 )}
               </section>
             ) : (
@@ -199,7 +243,7 @@ export function SearchDialog() {
                   </div>
                   <div className="search-product-grid search-trends-grid">
                     {searchTrendProducts.map((product) => (
-                      <SearchProductTile product={product} key={product.slug} />
+                      <SearchProductTile product={product} key={product.slug} onNavigate={closeSearch} />
                     ))}
                   </div>
                 </section>
@@ -212,7 +256,7 @@ export function SearchDialog() {
                   </div>
                   <div className="search-product-grid search-recent-grid">
                     {recentlyViewedProducts.map((product) => (
-                      <SearchProductTile product={product} key={product.slug} compact />
+                      <SearchProductTile product={product} key={product.slug} compact onNavigate={closeSearch} />
                     ))}
                   </div>
                 </section>

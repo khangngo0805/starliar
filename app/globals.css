@@ -42,6 +42,16 @@ textarea {
   font: inherit;
 }
 
+.sr-only {
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
 button,
 a,
 input,
@@ -1168,7 +1178,6 @@ textarea {
   font-weight: 500;
   grid-template-columns: 1fr auto 1fr;
   left: 56px;
-  pointer-events: none;
   position: fixed;
   right: 56px;
   top: 36px;
@@ -1182,7 +1191,16 @@ textarea {
   gap: 28px;
 }
 
-.search-overlay-header > span {
+.search-overlay-header a {
+  transition: opacity 220ms var(--starliar-ease), transform 220ms var(--starliar-ease);
+}
+
+.search-overlay-header a:hover {
+  opacity: 0.62;
+  transform: translateY(-1px);
+}
+
+.search-overlay-logo {
   font-family: var(--font-display), Georgia, serif;
   font-size: clamp(2rem, 3vw, 3.2rem);
   letter-spacing: 0;
@@ -1265,6 +1283,13 @@ textarea {
   text-transform: uppercase;
 }
 
+.search-section-heading p {
+  color: rgba(8, 8, 8, 0.48);
+  font-size: 13px;
+  margin: 0;
+  text-transform: uppercase;
+}
+
 .search-section-heading .text-button {
   color: var(--starliar-ink);
   font-size: 15px;
@@ -1339,7 +1364,42 @@ textarea {
 .search-empty {
   color: rgba(8, 8, 8, 0.48);
   font-size: 15px;
+  line-height: 1.5;
   margin: 0;
+}
+
+.search-loading {
+  display: flex;
+  gap: 9px;
+}
+
+.search-loading span {
+  animation: searchPulse 900ms ease-in-out infinite;
+  background: rgba(8, 8, 8, 0.62);
+  border-radius: 999px;
+  height: 8px;
+  width: 8px;
+}
+
+.search-loading span:nth-child(2) {
+  animation-delay: 120ms;
+}
+
+.search-loading span:nth-child(3) {
+  animation-delay: 240ms;
+}
+
+@keyframes searchPulse {
+  0%,
+  100% {
+    opacity: 0.22;
+    transform: translateY(0);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
 }
 
 .admin-login {
@@ -1987,7 +2047,7 @@ textarea {
     display: none;
   }
 
-  .search-overlay-header > span {
+  .search-overlay-logo {
     display: block;
     font-size: 2.15rem;
   }
