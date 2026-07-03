@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { normalizeProductMediaInput } from "@/lib/commerce/product-presentation";
 
 type VariantDraft = { size: string; sku: string; stock: number };
 
 export function ProductForm({ action, method = "POST" }: { action: string; method?: "POST" | "PATCH" }) {
   const [variants, setVariants] = useState<VariantDraft[]>([{ size: "M", sku: "", stock: 0 }]);
+  const [media, setMedia] = useState(["/media/placeholders/nocturne-shirt.svg"]);
   const [message, setMessage] = useState("");
 
   async function submit(formData: FormData) {
@@ -19,7 +21,7 @@ export function ProductForm({ action, method = "POST" }: { action: string; metho
         description: formData.get("description"),
         priceVnd: Number(formData.get("priceVnd")),
         published: formData.get("published") === "on",
-        media: String(formData.get("media")).split("\n").filter(Boolean),
+        media: normalizeProductMediaInput(media),
         variants
       })
     });
@@ -33,7 +35,40 @@ export function ProductForm({ action, method = "POST" }: { action: string; metho
       <input name="category" placeholder="category" required />
       <textarea name="description" placeholder="description" required />
       <input name="priceVnd" placeholder="price VND" required type="number" />
-      <textarea name="media" placeholder="/media/placeholders/example.svg" required />
+      <div className="admin-media-manager">
+        <div className="admin-form-label-row">
+          <span>Images</span>
+          <button type="button" onClick={() => setMedia((rows) => [...rows, ""])}>
+            Add image
+          </button>
+        </div>
+        {media.map((src, index) => (
+          <div className="admin-media-row" key={index}>
+            <span className="admin-media-preview" aria-hidden="true">
+              {src ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img alt="" src={src} />
+              ) : null}
+            </span>
+            <input
+              placeholder="/media/placeholders/nocturne-shirt.svg or https://..."
+              required={index === 0}
+              value={src}
+              onChange={(event) =>
+                setMedia((rows) => rows.map((row, rowIndex) => (rowIndex === index ? event.target.value : row)))
+              }
+            />
+            <button
+              aria-label="Remove image"
+              disabled={media.length === 1}
+              type="button"
+              onClick={() => setMedia((rows) => rows.filter((_, rowIndex) => rowIndex !== index))}
+            >
+              Remove
+            </button>
+          </div>
+        ))}
+      </div>
       <label>
         <input name="published" type="checkbox" /> Published
       </label>

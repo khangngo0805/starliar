@@ -1537,6 +1537,46 @@ textarea {
   grid-template-columns: repeat(3, 1fr);
 }
 
+.admin-form-label-row {
+  align-items: center;
+  display: flex;
+  gap: 14px;
+  justify-content: space-between;
+}
+
+.admin-form-label-row span {
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.admin-media-manager {
+  border: 1px solid var(--starliar-line);
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+}
+
+.admin-media-row {
+  align-items: center;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 72px minmax(0, 1fr) auto;
+}
+
+.admin-media-preview {
+  aspect-ratio: 1;
+  background: var(--starliar-surface);
+  border: 1px solid var(--starliar-line);
+  display: block;
+  overflow: hidden;
+}
+
+.admin-media-preview img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
 .status-badge {
   background: #111;
   border-radius: 999px;
@@ -1931,8 +1971,14 @@ textarea {
 .product-detail {
   align-items: stretch;
   background: linear-gradient(90deg, #e8e2d8 0%, var(--starliar-paper) 52%);
+  grid-template-columns: minmax(0, 1.08fr) minmax(360px, 0.72fr);
   min-height: 100svh;
   padding-top: 122px;
+}
+
+.product-gallery {
+  display: grid;
+  gap: 14px;
 }
 
 .product-hero-media {
@@ -1941,6 +1987,27 @@ textarea {
     var(--starliar-panel);
   border: 1px solid rgba(8, 8, 8, 0.12);
   border-radius: var(--starliar-radius);
+}
+
+.product-gallery-thumbs {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.product-gallery-thumb {
+  aspect-ratio: 4 / 5;
+  background: var(--starliar-panel);
+  border: 1px solid rgba(8, 8, 8, 0.12);
+  border-radius: var(--starliar-radius);
+  overflow: hidden;
+}
+
+.product-gallery-thumb img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
 }
 
 .product-detail-copy {
@@ -1952,6 +2019,35 @@ textarea {
   max-width: 520px;
   padding: 34px;
   text-align: left;
+}
+
+.product-copy-topline {
+  align-items: center;
+  display: flex;
+  gap: 14px;
+  justify-content: space-between;
+}
+
+.product-copy-topline .eyebrow {
+  margin: 0;
+}
+
+.availability-pill {
+  border: 1px solid rgba(8, 8, 8, 0.14);
+  border-radius: 999px;
+  color: #3f3b35;
+  font-size: 12px;
+  padding: 7px 11px;
+}
+
+.availability-pill.low-stock {
+  border-color: rgba(150, 94, 18, 0.34);
+  color: #7c4f16;
+}
+
+.availability-pill.sold-out {
+  border-color: rgba(120, 24, 24, 0.24);
+  color: #8a1f1f;
 }
 
 .product-detail-copy h1 {
@@ -1971,6 +2067,63 @@ textarea {
 .size-options,
 .product-actions {
   justify-content: flex-start;
+}
+
+.product-service-notes {
+  border-bottom: 1px solid rgba(8, 8, 8, 0.12);
+  border-top: 1px solid rgba(8, 8, 8, 0.12);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 20px;
+}
+
+.product-service-notes article {
+  display: grid;
+  gap: 8px;
+  padding: 16px 14px;
+}
+
+.product-service-notes article + article {
+  border-left: 1px solid rgba(8, 8, 8, 0.12);
+}
+
+.product-service-notes span {
+  color: var(--starliar-muted);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.product-service-notes strong {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.product-info-panels {
+  border-top: 1px solid rgba(8, 8, 8, 0.12);
+  margin-top: 18px;
+}
+
+.product-info-panels details {
+  border-bottom: 1px solid rgba(8, 8, 8, 0.12);
+  padding: 16px 0;
+}
+
+.product-info-panels summary {
+  cursor: pointer;
+  font-size: 13px;
+  list-style: none;
+  text-transform: uppercase;
+}
+
+.product-info-panels summary::-webkit-details-marker {
+  display: none;
+}
+
+.product-info-panels p {
+  color: var(--starliar-muted);
+  line-height: 1.55;
+  margin: 12px 0 0;
 }
 
 .variant-picker legend {
@@ -2033,15 +2186,26 @@ textarea {
 
   .product-grid,
   .product-detail,
+  .product-service-notes,
   .checkout-shell,
   .shop-hero,
   .cart-shell,
   .order-grid,
   .account-grid,
   .admin-detail-hero,
+  .admin-media-row,
   .admin-row,
   .admin-form-row {
     grid-template-columns: 1fr;
+  }
+
+  .product-gallery-thumbs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .product-service-notes article + article {
+    border-left: 0;
+    border-top: 1px solid rgba(8, 8, 8, 0.12);
   }
 
   .admin-metrics {
