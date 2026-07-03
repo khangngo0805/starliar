@@ -1456,6 +1456,71 @@ textarea {
   padding: 16px 0;
 }
 
+.admin-row small,
+.admin-detail-hero small {
+  color: var(--starliar-muted);
+  display: block;
+  margin-top: 5px;
+}
+
+.admin-row-five {
+  grid-template-columns: 1.5fr repeat(4, minmax(0, 1fr));
+}
+
+.admin-row-product {
+  grid-template-columns: 74px 1.5fr repeat(2, minmax(0, 1fr));
+}
+
+.admin-detail-hero {
+  align-items: end;
+  border-bottom: 1px solid var(--starliar-line);
+  display: grid;
+  gap: 24px;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.8fr);
+  margin-top: 22px;
+  padding-bottom: 28px;
+}
+
+.admin-metrics {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.admin-metrics span {
+  border: 1px solid var(--starliar-line);
+  display: grid;
+  gap: 6px;
+  min-height: 84px;
+  padding: 14px;
+}
+
+.admin-metrics strong {
+  font-size: 18px;
+}
+
+.admin-section {
+  margin-top: 44px;
+}
+
+.admin-empty {
+  color: var(--starliar-muted);
+  padding: 18px 0;
+}
+
+.admin-product-thumb {
+  aspect-ratio: 1;
+  background: var(--starliar-surface);
+  display: block;
+  overflow: hidden;
+}
+
+.admin-product-thumb img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
 .admin-form input,
 .admin-form textarea,
 .admin-form select,
@@ -1973,8 +2038,13 @@ textarea {
   .cart-shell,
   .order-grid,
   .account-grid,
+  .admin-detail-hero,
   .admin-row,
   .admin-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-metrics {
     grid-template-columns: 1fr;
   }
 

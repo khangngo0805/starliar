@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
-import { getAdminSessionEmail } from "@/lib/auth/admin";
+import { requireAdminSessionEmail } from "@/lib/auth/admin";
 import { adminProductSchema } from "@/lib/commerce/admin-products";
 import { prisma } from "@/lib/prisma";
 
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
-  if (!(await getAdminSessionEmail())) {
+  if (!(await requireAdminSessionEmail())) {
     return NextResponse.json({ error: "UNAUTHORIZED" }, { status: 401 });
   }
 
@@ -30,7 +30,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
 }
 
 export async function DELETE(_request: Request, { params }: { params: Promise<{ id: string }> }) {
-  if (!(await getAdminSessionEmail())) {
+  if (!(await requireAdminSessionEmail())) {
     return NextResponse.json({ error: "UNAUTHORIZED" }, { status: 401 });
   }
   const { id } = await params;

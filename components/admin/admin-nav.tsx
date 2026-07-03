@@ -5,6 +5,7 @@ export function AdminNav() {
     <nav className="admin-nav">
       <Link href="/admin/products">Products</Link>
       <Link href="/admin/orders">Orders</Link>
+      <Link href="/admin/customers">Customers</Link>
       <Link href="/admin/campaign">Campaign</Link>
       <Link href="/">Storefront</Link>
     </nav>

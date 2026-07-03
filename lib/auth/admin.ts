@@ -1,10 +1,11 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { prisma } from "@/lib/prisma";
 
 export const adminCookieName = "starliar-admin";
 
-export function isAdminEmail(email: string | null | undefined) {
-  return Boolean(email && email.includes("@"));
+export function isAdminEmail(email: string | null | undefined): email is string {
+  return Boolean(email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
 }
 
 export async function getAdminSessionEmail() {
@@ -12,10 +13,21 @@ export async function getAdminSessionEmail() {
   return jar.get(adminCookieName)?.value ?? null;
 }
 
-export async function requireAdmin() {
+export async function getCurrentAdmin() {
   const email = await getAdminSessionEmail();
-  if (!isAdminEmail(email)) {
+  if (!isAdminEmail(email)) return null;
+  return prisma.adminUser.findUnique({ where: { email } });
+}
+
+export async function requireAdminSessionEmail() {
+  const admin = await getCurrentAdmin();
+  return admin?.email ?? null;
+}
+
+export async function requireAdmin() {
+  const admin = await getCurrentAdmin();
+  if (!admin) {
     redirect("/admin/login");
   }
-  return email;
+  return admin;
 }

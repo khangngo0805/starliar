@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
-import { getAdminSessionEmail } from "@/lib/auth/admin";
+import { requireAdminSessionEmail } from "@/lib/auth/admin";
 import { adminProductSchema } from "@/lib/commerce/admin-products";
 import { prisma } from "@/lib/prisma";
 
 export async function POST(request: Request) {
-  if (!(await getAdminSessionEmail())) {
+  if (!(await requireAdminSessionEmail())) {
     return NextResponse.json({ error: "UNAUTHORIZED" }, { status: 401 });
   }
 

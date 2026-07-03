@@ -86,4 +86,24 @@ describe("SearchDialog", () => {
 
     expect(() => unmount()).not.toThrow();
   });
+
+  it("does not crash when abort cleanup throws a non-DOM abort error", () => {
+    class ThrowingAbortController {
+      signal = {} as AbortSignal;
+
+      abort() {
+        throw new Error("signal is aborted without reason");
+      }
+    }
+
+    vi.stubGlobal("AbortController", ThrowingAbortController);
+
+    const { unmount } = render(<SearchDialog />);
+    fireEvent.click(screen.getByRole("button", { name: "Search" }));
+    fireEvent.change(screen.getByPlaceholderText("Please enter the search term(s)"), {
+      target: { value: "shell" }
+    });
+
+    expect(() => unmount()).not.toThrow();
+  });
 });

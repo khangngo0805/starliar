@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { SiteHeader } from "@/components/storefront/site-header";
 import { isUserEmail, normalizeCustomerRedirect, setUserSession } from "@/lib/auth/user";
 import { prisma } from "@/lib/prisma";
 
@@ -41,22 +42,25 @@ export default async function SignupPage({
   const next = normalizeCustomerRedirect(params.next);
 
   return (
-    <main className="account-auth-shell">
-      <form action={signup} className="account-card">
-        <p className="eyebrow">Starliar account</p>
-        <h1>Create account</h1>
-        {params.error ? <p className="form-error">Use a valid email and a password of at least 6 characters.</p> : null}
-        <input name="name" placeholder="Name" />
-        <input name="email" placeholder="Email" required type="email" />
-        <input name="password" placeholder="Password" required type="password" />
-        <input name="next" type="hidden" value={next} />
-        <button className="primary-button" type="submit">
-          Create account
-        </button>
-        <Link className="text-link" href={`/account/login?next=${encodeURIComponent(next)}`}>
-          Already have an account
-        </Link>
-      </form>
-    </main>
+    <>
+      <SiteHeader />
+      <main className="account-auth-shell">
+        <form action={signup} className="account-card">
+          <p className="eyebrow">Starliar account</p>
+          <h1>Create account</h1>
+          {params.error ? <p className="form-error">Use a valid email and a password of at least 6 characters.</p> : null}
+          <input name="name" placeholder="Name" />
+          <input name="email" placeholder="Email" required type="email" />
+          <input name="password" placeholder="Password" required type="password" />
+          <input name="next" type="hidden" value={next} />
+          <button className="primary-button" type="submit">
+            Create account
+          </button>
+          <Link className="text-link" href={`/account/login?next=${encodeURIComponent(next)}`}>
+            Already have an account
+          </Link>
+        </form>
+      </main>
+    </>
   );
 }

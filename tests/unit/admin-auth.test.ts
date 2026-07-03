@@ -4,6 +4,7 @@ import { isAdminEmail } from "@/lib/auth/admin";
 describe("admin auth helpers", () => {
   it("requires an admin identity", () => {
     expect(isAdminEmail("admin@starliar.local")).toBe(true);
+    expect(isAdminEmail("admin@")).toBe(false);
     expect(isAdminEmail(undefined)).toBe(false);
   });
 });

@@ -68,9 +68,17 @@ function safelyAbort(controller: AbortController) {
   try {
     controller.abort();
   } catch (error) {
-    if (error instanceof DOMException && error.name === "AbortError") return;
+    if (isAbortCleanupError(error)) return;
     throw error;
   }
+}
+
+function isAbortCleanupError(error: unknown) {
+  if (error instanceof DOMException && error.name === "AbortError") return true;
+  if (error instanceof Error) {
+    return error.name === "AbortError" || error.message.toLowerCase().includes("signal is aborted");
+  }
+  return false;
 }
 
 function SearchProductTile({
