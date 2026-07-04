@@ -42,11 +42,23 @@ Change these before any real deployment.
 
 ## Payment Notes
 
-payOS is wired as the first QR payment provider. Without merchant credentials,
-checkout creates the order and stores a pending payment row, then returns to the
-local order page. With real `PAYOS_CLIENT_ID`, `PAYOS_API_KEY`, and
-`PAYOS_CHECKSUM_KEY`, checkout redirects to payOS and the webhook route at
-`/api/payments/payos/webhook` verifies callbacks before marking payments paid.
+SePay is wired as the QR payment provider. Checkout creates the order, stores a
+pending `sepay` payment row, and returns to the order page with a dynamic VietQR
+image. Configure these variables locally and on Vercel:
+
+```env
+SEPAY_BANK_NAME="ACB"
+SEPAY_ACCOUNT_NUMBER="23965057"
+SEPAY_ACCOUNT_HOLDER="NGO QUY KHANG"
+SEPAY_WEBHOOK_SECRET=""
+SEPAY_API_KEY=""
+```
+
+The webhook endpoint is `/api/payments/sepay/webhook`. Use HMAC-SHA256 in SePay
+when possible and set `SEPAY_WEBHOOK_SECRET` to the same value. If you choose API
+Key authentication instead, set `SEPAY_API_KEY`.
+
+The older payOS provider code is still present, but checkout now uses SePay.
 
 ## Verification
 

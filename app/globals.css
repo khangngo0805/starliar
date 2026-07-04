@@ -967,6 +967,31 @@ textarea {
   grid-row: span 2;
 }
 
+.order-payment-panel {
+  display: grid;
+  gap: 18px;
+}
+
+.order-payment-panel img {
+  aspect-ratio: 1;
+  background: #fff;
+  border: 1px solid rgba(8, 8, 8, 0.1);
+  border-radius: 18px;
+  display: block;
+  max-width: 320px;
+  padding: 12px;
+  width: 100%;
+}
+
+.payment-transfer-lines {
+  border-top: 1px solid rgba(8, 8, 8, 0.1);
+}
+
+.payment-transfer-lines .status-row strong {
+  text-align: right;
+  word-break: break-word;
+}
+
 .status-row.total {
   border-bottom: 0;
   font-size: 18px;
