@@ -22,3 +22,34 @@ export const adminProductSchema = z.object({
 export const adminProductVisibilitySchema = z.object({
   published: z.boolean()
 });
+
+export function adminProductErrorMessage(error: unknown) {
+  if (error instanceof z.ZodError) {
+    const issue = error.issues[0];
+    const path = issue?.path.join(".");
+
+    if (path?.startsWith("variants.") && path.endsWith(".sku")) {
+      return "Add a SKU with at least 3 characters for every size.";
+    }
+
+    if (path === "slug") {
+      return "Use a slug with lowercase letters, numbers, and hyphens only.";
+    }
+
+    if (path === "description") {
+      return "Add a description with at least 10 characters.";
+    }
+
+    if (path === "media") {
+      return "Add at least one product image.";
+    }
+
+    return "Check the product details and try again.";
+  }
+
+  if (error instanceof Error && error.message.includes("Unique constraint")) {
+    return "Use a unique slug and SKU. One of them already exists.";
+  }
+
+  return "Could not save product.";
+}

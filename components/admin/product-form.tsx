@@ -25,7 +25,8 @@ export function ProductForm({ action, method = "POST" }: { action: string; metho
         variants
       })
     });
-    setMessage(response.ok ? "Saved" : "Could not save product");
+    const result = (await response.json().catch(() => null)) as { error?: string } | null;
+    setMessage(response.ok ? "Saved" : result?.error ?? "Could not save product.");
   }
 
   return (
@@ -112,7 +113,7 @@ export function ProductForm({ action, method = "POST" }: { action: string; metho
       <button className="primary-button" type="submit">
         Save product
       </button>
-      {message ? <p>{message}</p> : null}
+      {message ? <p className={message === "Saved" ? undefined : "form-error"}>{message}</p> : null}
     </form>
   );
 }
