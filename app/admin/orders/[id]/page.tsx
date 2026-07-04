@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { AdminNav } from "@/components/admin/admin-nav";
+import { OrderDeleteButton } from "@/components/admin/order-delete-button";
 import { OrderStatusBadge } from "@/components/admin/order-status-badge";
 import { requireAdmin } from "@/lib/auth/admin";
 import { formatOrderTotal } from "@/lib/commerce/admin-orders";
@@ -14,7 +15,13 @@ export default async function AdminOrderPage({ params }: { params: Promise<{ id:
   return (
     <main className="admin-shell">
       <AdminNav />
-      <h1>{order.orderNumber}</h1>
+      <div className="admin-heading">
+        <div>
+          <p className="eyebrow">Order</p>
+          <h1>{order.orderNumber}</h1>
+        </div>
+        <OrderDeleteButton orderId={order.id} />
+      </div>
       <OrderStatusBadge status={order.status} />
       <p>
         {order.customerName} / {order.email} / {order.phone}

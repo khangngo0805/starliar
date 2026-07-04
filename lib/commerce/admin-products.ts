@@ -23,6 +23,37 @@ export const adminProductVisibilitySchema = z.object({
   published: z.boolean()
 });
 
+export type ProductFormInitialValue = z.infer<typeof adminProductSchema>;
+
+export function buildProductFormInitialValue(product: {
+  slug: string;
+  name: string;
+  category: string;
+  description: string;
+  priceVnd: number;
+  published: boolean;
+  images: Array<{ src: string; position: number }>;
+  variants: Array<{ size: string; sku: string; stock: number }>;
+}): ProductFormInitialValue {
+  return {
+    slug: product.slug,
+    name: product.name,
+    category: product.category,
+    description: product.description,
+    priceVnd: product.priceVnd,
+    published: product.published,
+    media: product.images
+      .slice()
+      .sort((a, b) => a.position - b.position)
+      .map((image) => image.src),
+    variants: product.variants.map((variant) => ({
+      size: variant.size,
+      sku: variant.sku,
+      stock: variant.stock
+    }))
+  };
+}
+
 export function adminProductErrorMessage(error: unknown) {
   if (error instanceof z.ZodError) {
     const issue = error.issues[0];

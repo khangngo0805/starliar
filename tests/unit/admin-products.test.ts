@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   adminProductErrorMessage,
+  buildProductFormInitialValue,
   adminProductSchema,
   adminProductVisibilitySchema
 } from "@/lib/commerce/admin-products";
@@ -31,5 +32,38 @@ describe("adminProductSchema", () => {
     if (!parsed.success) {
       expect(adminProductErrorMessage(parsed.error)).toBe("Add a SKU with at least 3 characters for every size.");
     }
+  });
+
+  it("maps an existing product into editable form defaults", () => {
+    expect(
+      buildProductFormInitialValue({
+        slug: "silent-poplin-shirt",
+        name: "Silent Poplin Shirt",
+        category: "Shirt",
+        description: "Crisp poplin shirt with a quiet structured fit.",
+        priceVnd: 1290000,
+        published: true,
+        images: [
+          { src: "/media/products/silent-front.jpg", position: 1 },
+          { src: "/media/products/silent-back.jpg", position: 0 }
+        ],
+        variants: [
+          { size: "L", sku: "STL-SILENT-L", stock: 4 },
+          { size: "M", sku: "STL-SILENT-M", stock: 9 }
+        ]
+      })
+    ).toEqual({
+      slug: "silent-poplin-shirt",
+      name: "Silent Poplin Shirt",
+      category: "Shirt",
+      description: "Crisp poplin shirt with a quiet structured fit.",
+      priceVnd: 1290000,
+      published: true,
+      media: ["/media/products/silent-back.jpg", "/media/products/silent-front.jpg"],
+      variants: [
+        { size: "L", sku: "STL-SILENT-L", stock: 4 },
+        { size: "M", sku: "STL-SILENT-M", stock: 9 }
+      ]
+    });
   });
 });

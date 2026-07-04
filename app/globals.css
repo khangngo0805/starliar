@@ -1004,6 +1004,13 @@ textarea {
   word-break: break-word;
 }
 
+.payment-panel-heading {
+  align-items: center;
+  display: flex;
+  gap: 14px;
+  justify-content: space-between;
+}
+
 .status-row.total {
   border-bottom: 0;
   font-size: 18px;
@@ -1018,6 +1025,195 @@ textarea {
   font-weight: 700;
   margin: 4px 0 12px;
   padding: 8px 12px;
+}
+
+.payment-countdown {
+  color: #1b764c;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.payment-countdown.expired {
+  color: #9b2f20;
+}
+
+.payment-qr-expired {
+  align-content: center;
+  aspect-ratio: 1;
+  background: rgba(155, 47, 32, 0.07);
+  border: 1px solid rgba(155, 47, 32, 0.18);
+  border-radius: 18px;
+  color: #39130d;
+  display: grid;
+  gap: 8px;
+  max-width: 320px;
+  padding: 24px;
+  text-align: center;
+  width: 100%;
+}
+
+.payment-qr-expired p {
+  color: var(--starliar-muted);
+  margin: 0;
+}
+
+.payment-success-overlay {
+  align-items: center;
+  animation: paymentOverlayIn 220ms var(--starliar-ease) both;
+  background: rgba(8, 8, 8, 0.34);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  padding: 20px;
+  position: fixed;
+  z-index: 80;
+}
+
+.payment-success-modal {
+  animation: paymentModalIn 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 28px 90px rgba(8, 8, 8, 0.24);
+  color: #080808;
+  display: grid;
+  gap: 18px;
+  justify-items: center;
+  max-width: 560px;
+  padding: clamp(34px, 6vw, 58px);
+  position: relative;
+  text-align: center;
+  width: min(100%, 560px);
+}
+
+.payment-success-modal h2 {
+  color: #17b974;
+  font-size: clamp(34px, 5vw, 54px);
+  letter-spacing: 0;
+  line-height: 1.02;
+  margin: 4px 0 0;
+}
+
+.payment-success-modal p {
+  color: #66707a;
+  font-size: 18px;
+  line-height: 1.65;
+  margin: 0;
+  max-width: 470px;
+}
+
+.payment-success-close {
+  align-items: center;
+  background: #6b6b6b;
+  border: 0;
+  border-radius: 999px;
+  color: #fff;
+  display: inline-flex;
+  font-size: 34px;
+  height: 56px;
+  justify-content: center;
+  line-height: 1;
+  position: absolute;
+  right: -18px;
+  top: -18px;
+  width: 56px;
+}
+
+.payment-success-mark {
+  display: block;
+  height: 112px;
+  width: 112px;
+}
+
+.payment-success-mark svg {
+  display: block;
+  height: 100%;
+  overflow: visible;
+  width: 100%;
+}
+
+.payment-success-mark circle {
+  animation: successCirclePop 520ms cubic-bezier(0.2, 1.2, 0.2, 1) both;
+  fill: #3bbf7d;
+  stroke: rgba(59, 191, 125, 0.22);
+  stroke-width: 6;
+  transform-origin: center;
+}
+
+.payment-success-mark path {
+  animation: successCheckDraw 540ms 240ms ease-out both;
+  fill: none;
+  stroke: #fff;
+  stroke-dasharray: 64;
+  stroke-dashoffset: 64;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 7;
+}
+
+.payment-success-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.payment-success-actions .primary-link {
+  margin-top: 0;
+}
+
+.payment-success-actions button {
+  background: #284a6d;
+  border: 1px solid #284a6d;
+  color: #fff;
+  min-height: 46px;
+  padding: 0 28px;
+}
+
+@keyframes paymentOverlayIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes paymentModalIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes successCirclePop {
+  0% {
+    opacity: 0;
+    transform: scale(0.72);
+  }
+
+  68% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes successCheckDraw {
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 
 .checkout-shell {
@@ -1532,6 +1728,25 @@ textarea {
 .admin-product-actions .primary-button,
 .admin-product-actions .text-link {
   margin-top: 0;
+}
+
+.admin-danger-action {
+  display: grid;
+  gap: 8px;
+  justify-items: end;
+}
+
+.danger-button {
+  background: #7a1c14;
+  border: 1px solid #7a1c14;
+  color: #fff;
+  min-height: 42px;
+  padding: 0 18px;
+}
+
+.danger-button:disabled {
+  cursor: wait;
+  opacity: 0.58;
 }
 
 .admin-list {

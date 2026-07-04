@@ -3,6 +3,7 @@ import { AdminNav } from "@/components/admin/admin-nav";
 import { ProductForm } from "@/components/admin/product-form";
 import { ProductVisibilityActions } from "@/components/admin/product-visibility-actions";
 import { requireAdmin } from "@/lib/auth/admin";
+import { buildProductFormInitialValue } from "@/lib/commerce/admin-products";
 import { prisma } from "@/lib/prisma";
 
 export default async function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
@@ -21,7 +22,11 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
         </div>
         <ProductVisibilityActions productId={product.id} productSlug={product.slug} published={product.published} />
       </div>
-      <ProductForm action={`/api/admin/products/${product.id}`} method="PATCH" />
+      <ProductForm
+        action={`/api/admin/products/${product.id}`}
+        initialProduct={buildProductFormInitialValue(product)}
+        method="PATCH"
+      />
     </main>
   );
 }

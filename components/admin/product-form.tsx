@@ -1,13 +1,33 @@
 "use client";
 
 import { useState } from "react";
+import type { ProductFormInitialValue } from "@/lib/commerce/admin-products";
 import { normalizeProductMediaInput } from "@/lib/commerce/product-presentation";
 
 type VariantDraft = { size: string; sku: string; stock: number };
 
-export function ProductForm({ action, method = "POST" }: { action: string; method?: "POST" | "PATCH" }) {
-  const [variants, setVariants] = useState<VariantDraft[]>([{ size: "M", sku: "", stock: 0 }]);
-  const [media, setMedia] = useState(["/media/placeholders/nocturne-shirt.svg"]);
+const defaultProductDraft: ProductFormInitialValue = {
+  slug: "",
+  name: "",
+  category: "",
+  description: "",
+  priceVnd: 0,
+  published: false,
+  media: ["/media/placeholders/nocturne-shirt.svg"],
+  variants: [{ size: "M", sku: "", stock: 0 }]
+};
+
+export function ProductForm({
+  action,
+  method = "POST",
+  initialProduct = defaultProductDraft
+}: {
+  action: string;
+  method?: "POST" | "PATCH";
+  initialProduct?: ProductFormInitialValue;
+}) {
+  const [variants, setVariants] = useState<VariantDraft[]>(initialProduct.variants);
+  const [media, setMedia] = useState(initialProduct.media.length ? initialProduct.media : defaultProductDraft.media);
   const [message, setMessage] = useState("");
 
   async function submit(formData: FormData) {
@@ -31,11 +51,11 @@ export function ProductForm({ action, method = "POST" }: { action: string; metho
 
   return (
     <form action={submit} className="admin-form">
-      <input name="slug" placeholder="slug" required />
-      <input name="name" placeholder="name" required />
-      <input name="category" placeholder="category" required />
-      <textarea name="description" placeholder="description" required />
-      <input name="priceVnd" placeholder="price VND" required type="number" />
+      <input defaultValue={initialProduct.slug} name="slug" placeholder="slug" required />
+      <input defaultValue={initialProduct.name} name="name" placeholder="name" required />
+      <input defaultValue={initialProduct.category} name="category" placeholder="category" required />
+      <textarea defaultValue={initialProduct.description} name="description" placeholder="description" required />
+      <input defaultValue={initialProduct.priceVnd || ""} name="priceVnd" placeholder="price VND" required type="number" />
       <div className="admin-media-manager">
         <div className="admin-form-label-row">
           <span>Images</span>
@@ -71,7 +91,7 @@ export function ProductForm({ action, method = "POST" }: { action: string; metho
         ))}
       </div>
       <label>
-        <input name="published" type="checkbox" /> Published
+        <input defaultChecked={initialProduct.published} name="published" type="checkbox" /> Published
       </label>
       {variants.map((variant, index) => (
         <div className="admin-form-row" key={index}>
