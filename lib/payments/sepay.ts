@@ -15,6 +15,8 @@ export type SePayWebhookPayload = {
   description?: string;
   transferType?: string;
   transferAmount?: number;
+  amount?: number | string;
+  creditAmount?: number | string;
   referenceCode?: string;
 };
 
@@ -69,11 +71,16 @@ export function isValidSePayIncomingPayment(
     expectedAmountVnd: number;
   }
 ) {
+  const transferAmount = Number(payload.transferAmount ?? payload.creditAmount ?? payload.amount);
+  const transferType = payload.transferType?.toLowerCase();
+  const accountNumber = payload.accountNumber?.replace(/\D/g, "");
+  const expectedAccount = expectedAccountNumber.replace(/\D/g, "");
+
   return (
-    payload.transferType === "in" &&
-    payload.accountNumber === expectedAccountNumber &&
-    typeof payload.transferAmount === "number" &&
-    payload.transferAmount >= expectedAmountVnd
+    (transferType === "in" || (!transferType && transferAmount > 0)) &&
+    accountNumber === expectedAccount &&
+    Number.isFinite(transferAmount) &&
+    transferAmount >= expectedAmountVnd
   );
 }
 

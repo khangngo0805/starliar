@@ -57,6 +57,23 @@ describe("SePay helpers", () => {
     ).toBe(false);
   });
 
+  it("accepts common SePay payload formatting variations", () => {
+    expect(
+      isValidSePayIncomingPayment(
+        {
+          accountNumber: " 23965057 ",
+          code: "STL1783164076238",
+          transferType: "IN",
+          transferAmount: "50000" as unknown as number
+        },
+        {
+          expectedAccountNumber: "23965057",
+          expectedAmountVnd: 50000
+        }
+      )
+    ).toBe(true);
+  });
+
   it("normalizes bank transfer codes when the hyphen is removed", () => {
     expect(
       extractSePayOrderNumber({
