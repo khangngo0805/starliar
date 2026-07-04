@@ -50,8 +50,11 @@ export function buildSePayQrUrl({
 export function extractSePayOrderNumber(payload: SePayWebhookPayload) {
   const candidates = [payload.code, payload.content, payload.description].filter(Boolean);
   for (const candidate of candidates) {
-    const match = String(candidate).match(/\bSTL-\d+\b/i);
-    if (match) return match[0].toUpperCase();
+    const match = String(candidate).match(/\bSTL-?\d+\b/i);
+    if (match) {
+      const digits = match[0].replace(/\D/g, "");
+      return `STL-${digits}`;
+    }
   }
   return null;
 }

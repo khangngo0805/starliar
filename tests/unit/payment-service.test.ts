@@ -57,6 +57,15 @@ describe("SePay helpers", () => {
     ).toBe(false);
   });
 
+  it("normalizes bank transfer codes when the hyphen is removed", () => {
+    expect(
+      extractSePayOrderNumber({
+        code: "STL1783164076238",
+        content: "STL1783164076238 thanh toan"
+      })
+    ).toBe("STL-1783164076238");
+  });
+
   it("verifies SePay HMAC signatures from the raw request body", () => {
     const body = JSON.stringify({ id: 92704, code: "STL-123" });
     const timestamp = "1800000000";
