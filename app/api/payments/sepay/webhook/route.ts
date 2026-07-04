@@ -12,6 +12,39 @@ function success(details: Record<string, unknown> = {}) {
   return NextResponse.json({ success: true, ...details });
 }
 
+async function findSePayOrder(orderNumber: string) {
+  const include = { payments: { where: { provider: "sepay" }, orderBy: { createdAt: "desc" as const }, take: 1 } };
+  const exactOrder = await prisma.order.findUnique({
+    where: { orderNumber },
+    include
+  });
+
+  if (exactOrder) {
+    return { order: exactOrder, matchedBy: "exact" };
+  }
+
+  const digits = orderNumber.replace(/\D/g, "");
+  if (digits.length < 10) {
+    return { order: null, matchedBy: "none" };
+  }
+
+  const candidates = await prisma.order.findMany({
+    where: {
+      orderNumber: { startsWith: orderNumber },
+      status: "PENDING_PAYMENT"
+    },
+    include,
+    orderBy: { createdAt: "desc" },
+    take: 2
+  });
+
+  if (candidates.length === 1) {
+    return { order: candidates[0], matchedBy: "prefix" };
+  }
+
+  return { order: null, matchedBy: candidates.length > 1 ? "ambiguous-prefix" : "none" };
+}
+
 export async function POST(request: Request) {
   const body = await request.text();
   const authorized = isAuthorizedSePayRequest({
@@ -37,14 +70,11 @@ export async function POST(request: Request) {
   if (!config) return success({ ignored: "MISSING_SEPAY_CONFIG" });
   if (!orderNumber) return success({ ignored: "ORDER_CODE_NOT_FOUND" });
 
-  const order = await prisma.order.findUnique({
-    where: { orderNumber },
-    include: { payments: { where: { provider: "sepay" }, orderBy: { createdAt: "desc" }, take: 1 } }
-  });
+  const { order, matchedBy } = await findSePayOrder(orderNumber);
 
-  if (!order) return success({ ignored: "ORDER_NOT_FOUND", orderNumber });
+  if (!order) return success({ ignored: "ORDER_NOT_FOUND", orderNumber, matchedBy });
   const payment = order.payments[0];
-  if (payment?.status === "PAID") return success({ status: "ALREADY_PAID", orderNumber });
+  if (payment?.status === "PAID") return success({ status: "ALREADY_PAID", orderNumber: order.orderNumber, matchedBy });
 
   const isPaid = isValidSePayIncomingPayment(payload, {
     expectedAccountNumber: config.accountNumber,
@@ -58,7 +88,7 @@ export async function POST(request: Request) {
     });
   }
 
-  if (!isPaid) return success({ ignored: "PAYMENT_NOT_MATCHED", orderNumber });
+  if (!isPaid) return success({ ignored: "PAYMENT_NOT_MATCHED", orderNumber: order.orderNumber, matchedBy });
 
   const providerRef = payload.referenceCode ? `${order.orderNumber}:${payload.referenceCode}` : order.orderNumber;
 
@@ -89,5 +119,5 @@ export async function POST(request: Request) {
     })
   ]);
 
-  return success({ status: "PAID", orderNumber });
+  return success({ status: "PAID", orderNumber: order.orderNumber, matchedBy });
 }
