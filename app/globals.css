@@ -1009,6 +1009,17 @@ textarea {
   font-size: 18px;
 }
 
+.payment-confirmed {
+  background: rgba(27, 118, 76, 0.1);
+  border: 1px solid rgba(27, 118, 76, 0.24);
+  border-radius: 999px;
+  color: #1b764c;
+  display: inline-flex;
+  font-weight: 700;
+  margin: 4px 0 12px;
+  padding: 8px 12px;
+}
+
 .checkout-shell {
   display: grid;
   gap: 40px;
