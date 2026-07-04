@@ -18,3 +18,7 @@ export const adminProductSchema = z.object({
     )
     .min(1)
 });
+
+export const adminProductVisibilitySchema = z.object({
+  published: z.boolean()
+});

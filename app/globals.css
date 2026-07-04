@@ -340,6 +340,37 @@ textarea {
   transform: none;
 }
 
+.danger-button {
+  align-items: center;
+  background: transparent;
+  border: 1px solid #9f1d1d;
+  border-radius: 999px;
+  color: #9f1d1d;
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 28px;
+  transition:
+    background 240ms var(--starliar-ease),
+    box-shadow 240ms var(--starliar-ease),
+    color 240ms var(--starliar-ease),
+    opacity 240ms var(--starliar-ease),
+    transform 240ms var(--starliar-ease);
+}
+
+.danger-button:hover {
+  background: rgba(159, 29, 29, 0.08);
+  box-shadow: 0 12px 28px rgba(159, 29, 29, 0.1);
+  transform: translateY(-2px);
+}
+
+.danger-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+  transform: none;
+}
+
 .icon-button {
   align-items: center;
   background: transparent;
@@ -1440,6 +1471,19 @@ textarea {
   display: flex;
   justify-content: space-between;
   gap: 20px;
+}
+
+.admin-product-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: flex-end;
+}
+
+.admin-product-actions .primary-button,
+.admin-product-actions .text-link {
+  margin-top: 0;
 }
 
 .admin-list {
