@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getCurrentUser } from "@/lib/auth/user";
+import { createBuyNowResponse } from "@/lib/commerce/buy-now-response";
 import { createCheckoutOrder } from "@/lib/commerce/orders";
+import { startSePayPayment } from "@/lib/payments/payment-service";
 
 const buyNowSchema = z.object({
   variantId: z.string().min(1),
@@ -22,14 +24,9 @@ export async function POST(request: Request) {
       items: [{ variantId: data.variantId, quantity: data.quantity }]
     }, user?.id);
 
-    return NextResponse.json(
-      {
-        orderId: order.id,
-        orderNumber: order.orderNumber,
-        orderUrl: `/order/${order.orderNumber}`
-      },
-      { status: 201 }
-    );
+    const checkout = await startSePayPayment(order.id);
+
+    return NextResponse.json(createBuyNowResponse(order, checkout), { status: 201 });
   } catch (error) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "BUY_NOW_FAILED" },

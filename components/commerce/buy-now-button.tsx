@@ -24,7 +24,7 @@ export function BuyNowButton({ variant }: { variant: { id: string; stock: number
       return;
     }
 
-    router.push(result.orderUrl);
+    router.push(result.checkoutUrl ?? result.orderUrl);
   }
 
   return (
