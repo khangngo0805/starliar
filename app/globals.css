@@ -934,6 +934,18 @@ textarea {
   max-width: 620px;
 }
 
+.order-hero-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 26px;
+}
+
+.order-hero-actions .primary-link {
+  margin-top: 0;
+}
+
 .order-grid {
   display: grid;
   gap: 22px;

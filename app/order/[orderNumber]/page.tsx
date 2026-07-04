@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import { SiteHeader } from "@/components/storefront/site-header";
 import { prisma } from "@/lib/prisma";
 import { formatVnd } from "@/lib/commerce/cart";
@@ -32,6 +33,11 @@ export default async function OrderPage({ params }: { params: Promise<{ orderNum
           <p>
             We created the order and are tracking payment status through the provider callback.
           </p>
+          <div className="order-hero-actions">
+            <Link className="primary-link" href="/shop">
+              Continue shopping
+            </Link>
+          </div>
         </section>
         <section className="order-grid">
           <div className="order-panel">
