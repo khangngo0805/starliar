@@ -29,6 +29,19 @@ export default async function AdminOrderPage({ params }: { params: Promise<{ id:
       <p>
         {order.addressLine1}, {order.city}, {order.country}
       </p>
+      {order.deliveryNote ? <p className="muted">{order.deliveryNote}</p> : null}
+      {order.deliveryLatitude && order.deliveryLongitude ? (
+        <p>
+          <a
+            className="text-link"
+            href={`https://www.google.com/maps?q=${order.deliveryLatitude},${order.deliveryLongitude}`}
+            rel="noreferrer"
+            target="_blank"
+          >
+            Open delivery pin
+          </a>
+        </p>
+      ) : null}
       <h2>Items</h2>
       {order.items.map((item) => (
         <article className="admin-row" key={item.id}>

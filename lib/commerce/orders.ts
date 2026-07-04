@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { checkoutInputSchema } from "./checkout-schema";
+import { normalizeOrderPhone } from "./order-history";
 
 export async function createCheckoutOrder(input: unknown, userId?: string) {
   const data = checkoutInputSchema.parse(input);
@@ -28,15 +29,18 @@ export async function createCheckoutOrder(input: unknown, userId?: string) {
     data: {
       orderNumber: `STL-${Date.now()}`,
       userId,
-      email: data.email,
+      email: data.email.trim().toLowerCase(),
       customerName: data.customerName,
-      phone: data.phone,
+      phone: normalizeOrderPhone(data.phone),
       country: data.country.toUpperCase(),
       addressLine1: data.addressLine1,
       addressLine2: data.addressLine2,
       city: data.city,
       province: data.province,
       postalCode: data.postalCode,
+      deliveryLatitude: data.deliveryLatitude,
+      deliveryLongitude: data.deliveryLongitude,
+      deliveryNote: data.deliveryNote,
       subtotalVnd,
       shippingVnd,
       totalVnd,

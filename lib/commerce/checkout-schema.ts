@@ -10,6 +10,9 @@ export const checkoutInputSchema = z.object({
   city: z.string().min(2),
   province: z.string().optional(),
   postalCode: z.string().optional(),
+  deliveryLatitude: z.number().min(-90).max(90).optional(),
+  deliveryLongitude: z.number().min(-180).max(180).optional(),
+  deliveryNote: z.string().max(500).optional(),
   items: z
     .array(
       z.object({

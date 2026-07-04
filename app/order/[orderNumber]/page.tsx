@@ -80,9 +80,21 @@ export default async function OrderPage({ params }: { params: Promise<{ orderNum
             <h2>Shipping</h2>
             <p>{order.customerName}</p>
             <p>{order.addressLine1}</p>
+            {order.addressLine2 ? <p>{order.addressLine2}</p> : null}
             <p>
               {order.city}, {order.country}
             </p>
+            {order.deliveryNote ? <p className="muted">{order.deliveryNote}</p> : null}
+            {order.deliveryLatitude && order.deliveryLongitude ? (
+              <Link
+                className="text-link"
+                href={`https://www.google.com/maps?q=${order.deliveryLatitude},${order.deliveryLongitude}`}
+                rel="noreferrer"
+                target="_blank"
+              >
+                Open delivery pin
+              </Link>
+            ) : null}
           </aside>
         </section>
       </main>

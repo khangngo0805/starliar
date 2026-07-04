@@ -29,6 +29,9 @@ export default async function AccountPage() {
             <Link className="text-link" href="/account/signup">
               Create account
             </Link>
+            <Link className="text-link" href="/orders">
+              Find guest orders
+            </Link>
           </div>
         </main>
       </>
@@ -103,8 +106,8 @@ export default async function AccountPage() {
           <div className="account-panel">
             <div className="account-panel-heading">
               <h2>Orders</h2>
-              <Link className="text-link" href="/cart">
-                Cart
+              <Link className="text-link" href="/orders">
+                View all
               </Link>
             </div>
             <div className="account-order-list">

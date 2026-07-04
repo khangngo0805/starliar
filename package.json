@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build",
+    "build": "prisma migrate deploy && prisma generate && next build",
     "start": "next start",
     "lint": "eslint .",
     "test": "vitest run",
@@ -19,7 +19,9 @@
     "@auth/prisma-adapter": "^2.11.1",
     "@payos/node": "^2.0.5",
     "@prisma/client": "^6.19.0",
+    "@types/leaflet": "^1.9.21",
     "bcryptjs": "^3.0.3",
+    "leaflet": "^1.9.4",
     "lucide-react": "^0.555.0",
     "next": "^16.2.6",
     "next-auth": "^5.0.0-beta.30",

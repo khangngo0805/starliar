@@ -38,7 +38,7 @@ export function VariantPicker({ product }: { product: VariantProduct }) {
       </fieldset>
       {selected ? (
         <div className="product-actions">
-          <BuyNowButton variant={selected} />
+          <BuyNowButton product={product} variant={selected} />
           <AddToCartButton product={product} variant={selected} />
         </div>
       ) : null}

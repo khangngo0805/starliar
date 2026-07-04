@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { addCartItem, type CartItem } from "@/lib/commerce/cart";
+import { addCartItem, CART_STORAGE_KEY, type CartItem } from "@/lib/commerce/cart";
 
 function readCart(): CartItem[] {
   if (typeof window === "undefined") return [];
-  return JSON.parse(window.localStorage.getItem("starliar-cart") ?? "[]") as CartItem[];
+  return JSON.parse(window.localStorage.getItem(CART_STORAGE_KEY) ?? "[]") as CartItem[];
 }
 
 export function AddToCartButton({
@@ -34,7 +34,7 @@ export function AddToCartButton({
             priceVnd: product.priceVnd,
             quantity: 1
           });
-          window.localStorage.setItem("starliar-cart", JSON.stringify(next));
+          window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(next));
           window.dispatchEvent(new Event("starliar-cart-updated"));
           setToast(`${product.name} added to cart`);
           window.setTimeout(() => setToast(""), 1800);

@@ -78,6 +78,9 @@ model Order {
   city         String
   province     String?
   postalCode   String?
+  deliveryLatitude  Float?
+  deliveryLongitude Float?
+  deliveryNote      String?
   subtotalVnd  Int
   shippingVnd  Int
   totalVnd     Int

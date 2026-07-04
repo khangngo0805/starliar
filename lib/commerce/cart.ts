@@ -10,6 +10,9 @@ export type CartItem = {
   quantity: number;
 };
 
+export const CART_STORAGE_KEY = "starliar-cart";
+export const BUY_NOW_STORAGE_KEY = "starliar-buy-now";
+
 export function addCartItem(items: CartItem[], next: CartItem) {
   const existing = items.find((item) => item.variantId === next.variantId);
   if (!existing) return [...items, next];

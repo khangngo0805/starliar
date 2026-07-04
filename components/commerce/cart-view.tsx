@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { formatVnd, getCartSubtotal, updateCartQuantity, type CartItem } from "@/lib/commerce/cart";
+import { CART_STORAGE_KEY, formatVnd, getCartSubtotal, updateCartQuantity, type CartItem } from "@/lib/commerce/cart";
 
 function readCart(): CartItem[] {
   if (typeof window === "undefined") return [];
-  return JSON.parse(window.localStorage.getItem("starliar-cart") ?? "[]") as CartItem[];
+  return JSON.parse(window.localStorage.getItem(CART_STORAGE_KEY) ?? "[]") as CartItem[];
 }
 
 export function CartView() {
@@ -27,7 +27,7 @@ export function CartView() {
   function setQuantity(variantId: string, quantity: number) {
     const next = updateCartQuantity(items, variantId, quantity);
     setItems(next);
-    window.localStorage.setItem("starliar-cart", JSON.stringify(next));
+    window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(next));
     window.dispatchEvent(new Event("starliar-cart-updated"));
   }
 

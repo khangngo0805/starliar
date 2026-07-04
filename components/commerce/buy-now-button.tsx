@@ -1,38 +1,42 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { BUY_NOW_STORAGE_KEY } from "@/lib/commerce/cart";
 
-export function BuyNowButton({ variant }: { variant: { id: string; stock: number } }) {
+export function BuyNowButton({
+  product,
+  variant
+}: {
+  product: { id: string; name: string; slug: string; category?: string; media?: string[]; priceVnd: number };
+  variant: { id: string; size: string; stock: number };
+}) {
   const router = useRouter();
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState("");
 
-  async function buyNow() {
-    setBusy(true);
-    setError("");
-    const response = await fetch("/api/buy-now", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ variantId: variant.id, quantity: 1 })
-    });
-    const result = await response.json();
-    setBusy(false);
-
-    if (!response.ok) {
-      setError(result.error ?? "BUY_NOW_FAILED");
-      return;
-    }
-
-    router.push(result.checkoutUrl ?? result.orderUrl);
+  function buyNow() {
+    window.localStorage.setItem(
+      BUY_NOW_STORAGE_KEY,
+      JSON.stringify([
+        {
+          variantId: variant.id,
+          productId: product.id,
+          name: product.name,
+          slug: product.slug,
+          category: product.category,
+          media: product.media?.[0],
+          size: variant.size,
+          priceVnd: product.priceVnd,
+          quantity: 1
+        }
+      ])
+    );
+    router.push("/checkout?mode=buy-now");
   }
 
   return (
     <div className="buy-now-control">
-      <button className="buy-now-button" disabled={busy || variant.stock < 1} onClick={buyNow} type="button">
-        {busy ? "Creating order..." : "Buy now"}
+      <button className="buy-now-button" disabled={variant.stock < 1} onClick={buyNow} type="button">
+        Buy now
       </button>
-      {error ? <p className="form-error" role="alert">{error}</p> : null}
     </div>
   );
 }
