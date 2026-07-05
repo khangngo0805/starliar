@@ -8,23 +8,22 @@ import { CartLink } from "./cart-link";
 import { categoryToParam, shopCategories } from "@/lib/commerce/categories";
 
 export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
-  const [scrolled, setScrolled] = useState(!overlay);
+  const [heroScrolled, setHeroScrolled] = useState(false);
 
   useEffect(() => {
     if (!overlay) {
-      setScrolled(true);
       return;
     }
 
     const updateScrolled = () => {
       const lowerHeroThreshold = Math.max(320, window.innerHeight * 0.86);
-      setScrolled(window.scrollY >= lowerHeroThreshold);
+      setHeroScrolled(window.scrollY >= lowerHeroThreshold);
     };
-    updateScrolled();
     window.addEventListener("scroll", updateScrolled, { passive: true });
     return () => window.removeEventListener("scroll", updateScrolled);
   }, [overlay]);
 
+  const scrolled = overlay ? heroScrolled : true;
   const className = ["site-header", overlay ? "site-header-overlay" : "", scrolled ? "site-header-scrolled" : ""]
     .filter(Boolean)
     .join(" ");

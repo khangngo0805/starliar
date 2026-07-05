@@ -16,17 +16,13 @@ export function HeroVideo({ src }: { src: string }) {
       <div className="hero-video-scrim" />
       <SiteHeader overlay />
       <div className="hero-video-content">
-        <p className="hero-eyebrow">Starliar / 2026 Collection</p>
-        <h1 className="hero-kicker">First Signal</h1>
-        <p className="hero-summary">
-          Quiet luxury structure cut with dark streetwear attitude.
-        </p>
+        <h1 className="hero-kicker">FIRST SIGNAL</h1>
         <div className="hero-actions">
           <Link className="pill-button pill-button-filled" href="/shop">
-            Shop the drop
+            Shop Now
           </Link>
           <Link className="pill-button" href="#campaign">
-            View campaign
+            View Campaign
           </Link>
         </div>
       </div>

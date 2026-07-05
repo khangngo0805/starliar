@@ -4,7 +4,7 @@ test("hero keeps brand and primary CTA visible on mobile", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
   await expect(page.getByRole("link", { name: "STARLIAR" })).toBeVisible();
-  await expect(page.getByRole("link", { name: /shop the drop/i })).toBeVisible();
+  await expect(page.getByRole("link", { name: /shop now/i })).toBeVisible();
 });
 
 test("checkout page exposes QR payment action", async ({ page }) => {
@@ -25,7 +25,7 @@ test("homepage presents editorial storefront sections", async ({ page }) => {
 
   await expect(page.getByRole("link", { name: "STARLIAR" })).toBeVisible();
   await expect(page.getByRole("heading", { name: /First Signal/i })).toBeVisible();
-  await expect(page.getByText(/Quiet luxury structure cut with dark streetwear attitude/i)).toBeVisible();
+  await expect(page.getByText(/Quiet luxury structure\. Dark streetwear attitude/i)).toBeVisible();
   await expect(page.getByRole("heading", { name: /Latest silhouettes/i })).toBeVisible();
   await expect(page.getByRole("heading", { name: /After dark uniform/i })).toBeVisible();
 });
