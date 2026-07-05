@@ -16,7 +16,10 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
       return;
     }
 
-    const updateScrolled = () => setScrolled(window.scrollY > 24);
+    const updateScrolled = () => {
+      const lowerHeroThreshold = Math.max(320, window.innerHeight * 0.86);
+      setScrolled(window.scrollY >= lowerHeroThreshold);
+    };
     updateScrolled();
     window.addEventListener("scroll", updateScrolled, { passive: true });
     return () => window.removeEventListener("scroll", updateScrolled);

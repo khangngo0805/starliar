@@ -9,8 +9,16 @@ function setScrollY(value: number) {
   });
 }
 
+function setViewportHeight(value: number) {
+  Object.defineProperty(window, "innerHeight", {
+    configurable: true,
+    value
+  });
+}
+
 describe("SiteHeader", () => {
-  it("keeps hero overlay transparent until the visitor scrolls", () => {
+  it("keeps hero overlay transparent until the visitor reaches the lower hero", () => {
+    setViewportHeight(1000);
     setScrollY(0);
     render(<SiteHeader overlay />);
 
@@ -20,6 +28,13 @@ describe("SiteHeader", () => {
 
     act(() => {
       setScrollY(72);
+      window.dispatchEvent(new Event("scroll"));
+    });
+
+    expect(header).not.toHaveClass("site-header-scrolled");
+
+    act(() => {
+      setScrollY(880);
       window.dispatchEvent(new Event("scroll"));
     });
 
