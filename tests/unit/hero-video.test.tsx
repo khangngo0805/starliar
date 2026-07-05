@@ -1,13 +1,42 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { cleanup, render, screen } from "@testing-library/react";
+import { act } from "react";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { HeroVideo } from "@/components/storefront/hero-video";
 
+const heroSlides = [
+  "/media/starliar-hero-editorial.png",
+  "/media/starliar-hero-quiet-court.png",
+  "/media/starliar-hero-white-room.png"
+];
+
 describe("HeroVideo", () => {
+  afterEach(() => {
+    cleanup();
+    vi.useRealTimers();
+  });
+
   it("keeps Starliar branding and collection actions on the hero", () => {
-    render(<HeroVideo src="/media/starliar-hero.mp4" />);
+    render(<HeroVideo slides={heroSlides} />);
     expect(screen.getByText("STARLIAR")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "FIRST SIGNAL" })).toHaveClass("hero-kicker");
     expect(screen.getByRole("link", { name: /shop now/i })).toHaveAttribute("href", "/shop");
     expect(screen.getByRole("link", { name: /view campaign/i })).toHaveAttribute("href", "#campaign");
+  });
+
+  it("renders three hero images and advances slides automatically", () => {
+    vi.useFakeTimers();
+    render(<HeroVideo slides={heroSlides} intervalMs={5000} />);
+
+    const slides = screen.getAllByTestId("hero-slide");
+    expect(slides).toHaveLength(3);
+    expect(slides[0]).toHaveClass("hero-slide-active");
+    expect(slides[1]).not.toHaveClass("hero-slide-active");
+
+    act(() => {
+      vi.advanceTimersByTime(5000);
+    });
+
+    expect(slides[0]).not.toHaveClass("hero-slide-active");
+    expect(slides[1]).toHaveClass("hero-slide-active");
   });
 });

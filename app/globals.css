@@ -269,6 +269,7 @@ textarea {
 }
 
 .hero-video-media,
+.hero-slide,
 .hero-video-scrim {
   height: 100%;
   inset: 0;
@@ -278,6 +279,19 @@ textarea {
 
 .hero-video-media {
   object-fit: cover;
+}
+
+.hero-slide {
+  opacity: 0;
+  transform: scale(1.018);
+  transition:
+    opacity 950ms var(--starliar-ease),
+    transform 6500ms var(--starliar-ease);
+}
+
+.hero-slide-active {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .hero-video-scrim {
@@ -2193,6 +2207,15 @@ button.category-chip {
 
 .hero-progress span {
   border-top-color: rgba(244, 245, 247, 0.54);
+  opacity: 0.58;
+  transition:
+    border-color 450ms var(--starliar-ease),
+    opacity 450ms var(--starliar-ease);
+}
+
+.hero-progress span.hero-progress-active {
+  border-top-color: rgba(255, 255, 255, 0.96);
+  opacity: 1;
 }
 
 .editorial-intro {

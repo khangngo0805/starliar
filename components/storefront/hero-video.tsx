@@ -1,18 +1,52 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { SiteHeader } from "./site-header";
 
-export function HeroVideo({ src }: { src: string }) {
+type HeroVideoProps = {
+  src?: string;
+  slides?: string[];
+  intervalMs?: number;
+};
+
+export function HeroVideo({ src, slides, intervalMs = 5500 }: HeroVideoProps) {
+  const resolvedSlides = slides?.length ? slides : src ? [src] : [];
+  const [activeSlide, setActiveSlide] = useState(0);
+  const activeSlideIndex = resolvedSlides.length ? activeSlide % resolvedSlides.length : 0;
+
+  useEffect(() => {
+    if (resolvedSlides.length < 2) {
+      return;
+    }
+
+    const timer = window.setInterval(() => {
+      setActiveSlide((current) => (current + 1) % resolvedSlides.length);
+    }, intervalMs);
+
+    return () => window.clearInterval(timer);
+  }, [intervalMs, resolvedSlides.length]);
+
   return (
     <section className="hero-video">
-      <Image
-        className="hero-video-media"
-        alt=""
-        src={src}
-        fill
-        priority
-        sizes="100vw"
-      />
+      {resolvedSlides.map((slide, index) => (
+        <div
+          aria-hidden={index !== activeSlideIndex}
+          className={["hero-slide", index === activeSlideIndex ? "hero-slide-active" : ""].filter(Boolean).join(" ")}
+          data-testid="hero-slide"
+          key={slide}
+        >
+          <Image
+            className="hero-video-media"
+            alt=""
+            src={slide}
+            fill
+            priority={index === 0}
+            sizes="100vw"
+          />
+        </div>
+      ))}
       <div className="hero-video-scrim" />
       <SiteHeader overlay />
       <div className="hero-video-content">
@@ -27,10 +61,9 @@ export function HeroVideo({ src }: { src: string }) {
         </div>
       </div>
       <div className="hero-progress" aria-hidden="true">
-        <span />
-        <span />
-        <span />
-        <span />
+        {resolvedSlides.map((slide, index) => (
+          <span className={index === activeSlideIndex ? "hero-progress-active" : ""} key={slide} />
+        ))}
       </div>
     </section>
   );
