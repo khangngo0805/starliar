@@ -497,6 +497,7 @@ textarea {
   aspect-ratio: 4 / 5;
   background: #dde3e8;
   overflow: hidden;
+  position: relative;
 }
 
 .product-card-media {
@@ -1333,6 +1334,31 @@ textarea {
   min-height: 280px;
   overflow: hidden;
   width: 100%;
+}
+
+.location-map-placeholder {
+  align-items: center;
+  background: #dde3e8;
+  border: 1px dashed rgba(8, 8, 8, 0.18);
+  border-radius: var(--starliar-radius);
+  color: var(--starliar-ink);
+  display: grid;
+  gap: 8px;
+  min-height: 220px;
+  place-content: center;
+  text-align: center;
+  width: 100%;
+}
+
+.location-map-placeholder span {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.location-map-placeholder small {
+  color: var(--starliar-muted);
+  font-size: 13px;
+  text-transform: none;
 }
 
 .location-coordinates {
@@ -2427,6 +2453,7 @@ textarea {
   border: 1px solid rgba(8, 8, 8, 0.12);
   border-radius: var(--starliar-radius);
   overflow: hidden;
+  position: relative;
 }
 
 .product-gallery-thumb img {

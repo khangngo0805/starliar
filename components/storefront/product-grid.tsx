@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { FavoriteButton } from "@/components/commerce/favorite-button";
 import { formatVnd } from "@/lib/commerce/cart";
 
@@ -24,8 +25,12 @@ export function ProductGrid({ products }: { products: GridProduct[] }) {
           <Link className="product-card-link" href={`/shop/${product.slug}`}>
             <div className="product-card-media">
               {product.media[0] ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img alt={product.name} src={product.media[0]} />
+                <Image
+                  alt={product.name}
+                  src={product.media[0]}
+                  fill
+                  sizes="(max-width: 820px) 100vw, 25vw"
+                />
               ) : (
                 <div className="media-fallback">{product.name}</div>
               )}

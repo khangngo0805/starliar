@@ -14,7 +14,8 @@ describe("production database configuration", () => {
     };
 
     expect(schema).toContain('provider = "postgresql"');
-    expect(homePage).toContain('export const dynamic = "force-dynamic";');
+    expect(homePage).toContain("export const revalidate = 300;");
+    expect(homePage).not.toContain('export const dynamic = "force-dynamic";');
     expect(envExample).toContain("postgresql://");
     expect(envExample).not.toContain("file:../dev.db");
     expect(packageJson.scripts["db:setup"]).toBe("prisma migrate dev && prisma db seed");

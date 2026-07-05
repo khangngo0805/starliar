@@ -48,6 +48,7 @@ export function LocationPicker() {
   const googleMarkerRef = useRef<google.maps.Marker | null>(null);
   const provider = resolveMapProvider(googleMapsKey());
   const [position, setPosition] = useState(defaultPosition);
+  const [mapOpen, setMapOpen] = useState(false);
   const [message, setMessage] = useState(
     provider === "google"
       ? "Google Maps is active for delivery pins."
@@ -58,6 +59,7 @@ export function LocationPicker() {
     let active = true;
 
     async function mountMap() {
+      if (!mapOpen) return;
       if (!mapElement.current) return;
 
       if (provider === "google") {
@@ -136,7 +138,7 @@ export function LocationPicker() {
       googleMapRef.current = null;
       googleMarkerRef.current = null;
     };
-  }, [provider]);
+  }, [mapOpen, provider]);
 
   useEffect(() => {
     leafletMarkerRef.current?.setLatLng([position.latitude, position.longitude]);
@@ -176,7 +178,14 @@ export function LocationPicker() {
           Use my location
         </button>
       </div>
-      <div className="location-map" ref={mapElement} data-provider={provider} />
+      {mapOpen ? (
+        <div className="location-map" ref={mapElement} data-provider={provider} />
+      ) : (
+        <button className="location-map-placeholder" type="button" onClick={() => setMapOpen(true)}>
+          <span>Open map</span>
+          <small>{provider === "google" ? "Google Maps" : "OpenStreetMap"} will load after this click.</small>
+        </button>
+      )}
       <div className="location-coordinates">
         <label>
           Latitude

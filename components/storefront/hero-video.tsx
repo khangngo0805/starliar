@@ -1,11 +1,18 @@
 import Link from "next/link";
+import Image from "next/image";
 import { SiteHeader } from "./site-header";
 
 export function HeroVideo({ src }: { src: string }) {
   return (
     <section className="hero-video">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img className="hero-video-media" alt="" src={src} />
+      <Image
+        className="hero-video-media"
+        alt=""
+        src={src}
+        fill
+        priority
+        sizes="100vw"
+      />
       <div className="hero-video-scrim" />
       <SiteHeader overlay />
       <div className="hero-video-content">
