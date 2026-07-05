@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { checkoutInputSchema } from "./checkout-schema";
 import { normalizeOrderPhone } from "./order-history";
+import { getShippingFeeVnd, resolveOrderTotals } from "./store-settings";
 
 export async function createCheckoutOrder(input: unknown, userId?: string) {
   const data = checkoutInputSchema.parse(input);
@@ -22,8 +23,10 @@ export async function createCheckoutOrder(input: unknown, userId?: string) {
     (total, { item, variant }) => total + item.quantity * variant.product.priceVnd,
     0
   );
-  const shippingVnd = data.country.toUpperCase() === "VN" ? 40000 : 0;
-  const totalVnd = subtotalVnd + shippingVnd;
+  const { shippingVnd, totalVnd } = resolveOrderTotals({
+    subtotalVnd,
+    shippingFeeVnd: await getShippingFeeVnd()
+  });
 
   return prisma.order.create({
     data: {

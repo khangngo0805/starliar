@@ -7,6 +7,7 @@ export function AdminNav() {
       <Link href="/admin/orders">Orders</Link>
       <Link href="/admin/customers">Customers</Link>
       <Link href="/admin/campaign">Campaign</Link>
+      <Link href="/admin/settings">Settings</Link>
       <Link href="/">Storefront</Link>
     </nav>
   );

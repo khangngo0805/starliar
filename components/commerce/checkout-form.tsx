@@ -10,7 +10,13 @@ function readCheckoutItems(mode: "cart" | "buy-now"): CartItem[] {
   return JSON.parse(window.localStorage.getItem(key) ?? "[]") as CartItem[];
 }
 
-export function CheckoutForm({ mode = "cart" }: { mode?: "cart" | "buy-now" }) {
+export function CheckoutForm({
+  mode = "cart",
+  shippingFeeVnd
+}: {
+  mode?: "cart" | "buy-now";
+  shippingFeeVnd: number;
+}) {
   const router = useRouter();
   const [items, setItems] = useState<CartItem[]>([]);
   const [error, setError] = useState("");
@@ -111,7 +117,11 @@ export function CheckoutForm({ mode = "cart" }: { mode?: "cart" | "buy-now" }) {
         </div>
         <div className="cart-summary-row">
           <span>Estimated shipping</span>
-          <strong>40.000 VND</strong>
+          <strong>{formatVnd(shippingFeeVnd)}</strong>
+        </div>
+        <div className="cart-summary-row">
+          <span>Total</span>
+          <strong>{formatVnd(getCartSubtotal(items) + shippingFeeVnd)}</strong>
         </div>
       </section>
 

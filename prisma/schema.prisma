@@ -147,3 +147,9 @@ model AdminUser {
   role         String   @default("ADMIN")
   createdAt    DateTime @default(now())
 }
+
+model StoreSetting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}

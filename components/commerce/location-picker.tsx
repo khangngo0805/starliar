@@ -2,25 +2,106 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { Map as LeafletMap, Marker } from "leaflet";
+import { geolocationErrorMessage, resolveMapProvider } from "@/lib/commerce/store-settings";
+
+declare global {
+  interface Window {
+    google?: typeof google;
+    initStarliarGoogleMap?: () => void;
+  }
+}
 
 const defaultPosition = {
   latitude: 10.7769,
   longitude: 106.7009
 };
 
+function googleMapsKey() {
+  return process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+}
+
+function loadGoogleMaps(apiKey: string) {
+  if (window.google?.maps) return Promise.resolve(window.google);
+
+  return new Promise<typeof google>((resolve, reject) => {
+    const existing = document.querySelector<HTMLScriptElement>("script[data-starliar-google-map]");
+    window.initStarliarGoogleMap = () => {
+      if (window.google) resolve(window.google);
+    };
+
+    if (existing) return;
+
+    const script = document.createElement("script");
+    script.async = true;
+    script.dataset.starliarGoogleMap = "true";
+    script.onerror = () => reject(new Error("GOOGLE_MAPS_LOAD_FAILED"));
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(apiKey)}&callback=initStarliarGoogleMap`;
+    document.head.append(script);
+  });
+}
+
 export function LocationPicker() {
   const mapElement = useRef<HTMLDivElement | null>(null);
-  const mapRef = useRef<LeafletMap | null>(null);
-  const markerRef = useRef<Marker | null>(null);
+  const leafletMapRef = useRef<LeafletMap | null>(null);
+  const leafletMarkerRef = useRef<Marker | null>(null);
+  const googleMapRef = useRef<google.maps.Map | null>(null);
+  const googleMarkerRef = useRef<google.maps.Marker | null>(null);
+  const provider = resolveMapProvider(googleMapsKey());
   const [position, setPosition] = useState(defaultPosition);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState(
+    provider === "google"
+      ? "Google Maps is active for delivery pins."
+      : "Using OpenStreetMap. Add NEXT_PUBLIC_GOOGLE_MAPS_API_KEY to enable Google Maps."
+  );
 
   useEffect(() => {
     let active = true;
 
     async function mountMap() {
+      if (!mapElement.current) return;
+
+      if (provider === "google") {
+        const apiKey = googleMapsKey();
+        if (!apiKey) return;
+        try {
+          const googleApi = await loadGoogleMaps(apiKey);
+          if (!active || !mapElement.current || googleMapRef.current) return;
+
+          const map = new googleApi.maps.Map(mapElement.current, {
+            center: { lat: defaultPosition.latitude, lng: defaultPosition.longitude },
+            clickableIcons: false,
+            mapTypeControl: false,
+            streetViewControl: false,
+            zoom: 14
+          });
+          const marker = new googleApi.maps.Marker({
+            draggable: true,
+            map,
+            position: { lat: defaultPosition.latitude, lng: defaultPosition.longitude }
+          });
+          marker.addListener("dragend", () => {
+            const next = marker.getPosition();
+            if (!next) return;
+            setPosition({ latitude: Number(next.lat().toFixed(6)), longitude: Number(next.lng().toFixed(6)) });
+          });
+          map.addListener("click", (event: google.maps.MapMouseEvent) => {
+            if (!event.latLng) return;
+            marker.setPosition(event.latLng);
+            setPosition({
+              latitude: Number(event.latLng.lat().toFixed(6)),
+              longitude: Number(event.latLng.lng().toFixed(6))
+            });
+          });
+          googleMapRef.current = map;
+          googleMarkerRef.current = marker;
+        } catch {
+          setMessage("Google Maps could not load. Check NEXT_PUBLIC_GOOGLE_MAPS_API_KEY.");
+        }
+        return;
+      }
+
       const L = await import("leaflet");
-      if (!active || !mapElement.current || mapRef.current) return;
+      if (!active || !mapElement.current || leafletMapRef.current) return;
 
       const map = L.map(mapElement.current, { zoomControl: true }).setView(
         [defaultPosition.latitude, defaultPosition.longitude],
@@ -41,23 +122,27 @@ export function LocationPicker() {
         setPosition({ latitude: Number(next.lat.toFixed(6)), longitude: Number(next.lng.toFixed(6)) });
       });
 
-      mapRef.current = map;
-      markerRef.current = marker;
+      leafletMapRef.current = map;
+      leafletMarkerRef.current = marker;
     }
 
     void mountMap();
 
     return () => {
       active = false;
-      mapRef.current?.remove();
-      mapRef.current = null;
-      markerRef.current = null;
+      leafletMapRef.current?.remove();
+      leafletMapRef.current = null;
+      leafletMarkerRef.current = null;
+      googleMapRef.current = null;
+      googleMarkerRef.current = null;
     };
-  }, []);
+  }, [provider]);
 
   useEffect(() => {
-    markerRef.current?.setLatLng([position.latitude, position.longitude]);
-    mapRef.current?.panTo([position.latitude, position.longitude], { animate: true });
+    leafletMarkerRef.current?.setLatLng([position.latitude, position.longitude]);
+    leafletMapRef.current?.panTo([position.latitude, position.longitude], { animate: true });
+    googleMarkerRef.current?.setPosition({ lat: position.latitude, lng: position.longitude });
+    googleMapRef.current?.panTo({ lat: position.latitude, lng: position.longitude });
   }, [position]);
 
   function useCurrentLocation() {
@@ -75,7 +160,8 @@ export function LocationPicker() {
         });
         setMessage("Location added.");
       },
-      () => setMessage("Could not access your location.")
+      (error) => setMessage(`${geolocationErrorMessage(error.code)} You can still click the map to drop a pin.`),
+      { enableHighAccuracy: true, timeout: 10000 }
     );
   }
 
@@ -90,7 +176,7 @@ export function LocationPicker() {
           Use my location
         </button>
       </div>
-      <div className="location-map" ref={mapElement} />
+      <div className="location-map" ref={mapElement} data-provider={provider} />
       <div className="location-coordinates">
         <label>
           Latitude
