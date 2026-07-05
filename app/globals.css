@@ -78,11 +78,35 @@ textarea {
   position: fixed;
   right: 0;
   top: 0;
+  transition:
+    background 280ms var(--starliar-ease),
+    backdrop-filter 280ms var(--starliar-ease),
+    border-color 280ms var(--starliar-ease),
+    color 280ms var(--starliar-ease),
+    box-shadow 280ms var(--starliar-ease);
+  -webkit-backdrop-filter: blur(18px);
   z-index: 20;
 }
 
 .site-header-overlay {
+  background: transparent;
+  backdrop-filter: blur(0);
+  border-bottom-color: transparent;
+  color: white;
+  -webkit-backdrop-filter: blur(0);
+}
+
+.site-header-overlay:not(.site-header-scrolled) {
+  text-shadow: 0 1px 18px rgba(0, 0, 0, 0.36);
+}
+
+.site-header-overlay.site-header-scrolled {
+  background: rgba(243, 241, 236, 0.78);
+  backdrop-filter: blur(18px);
+  border-bottom-color: rgba(8, 8, 8, 0.08);
   color: var(--starliar-ink);
+  text-shadow: none;
+  -webkit-backdrop-filter: blur(18px);
 }
 
 .site-header-nav,

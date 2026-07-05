@@ -1,12 +1,33 @@
+"use client";
+
 import Link from "next/link";
 import { UserRound } from "lucide-react";
+import { useEffect, useState } from "react";
 import { SearchDialog } from "./search-dialog";
 import { CartLink } from "./cart-link";
 import { categoryToParam, shopCategories } from "@/lib/commerce/categories";
 
 export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
+  const [scrolled, setScrolled] = useState(!overlay);
+
+  useEffect(() => {
+    if (!overlay) {
+      setScrolled(true);
+      return;
+    }
+
+    const updateScrolled = () => setScrolled(window.scrollY > 24);
+    updateScrolled();
+    window.addEventListener("scroll", updateScrolled, { passive: true });
+    return () => window.removeEventListener("scroll", updateScrolled);
+  }, [overlay]);
+
+  const className = ["site-header", overlay ? "site-header-overlay" : "", scrolled ? "site-header-scrolled" : ""]
+    .filter(Boolean)
+    .join(" ");
+
   return (
-    <header className={`site-header ${overlay ? "site-header-overlay" : ""}`}>
+    <header className={className}>
       <nav className="site-header-nav" aria-label="Primary navigation">
         <div className="nav-dropdown">
           <Link href="/shop">Shop</Link>
