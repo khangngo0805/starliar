@@ -67,19 +67,22 @@ textarea {
 
 .site-header {
   align-items: center;
+  background: rgba(243, 241, 236, 0.78);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(8, 8, 8, 0.08);
   color: var(--starliar-ink);
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   left: 0;
   padding: 22px clamp(20px, 4vw, 48px);
-  position: absolute;
+  position: fixed;
   right: 0;
   top: 0;
   z-index: 20;
 }
 
 .site-header-overlay {
-  color: white;
+  color: var(--starliar-ink);
 }
 
 .site-header-nav,
@@ -154,10 +157,10 @@ textarea {
 }
 
 .site-header-overlay .nav-dropdown-panel {
-  background: rgba(9, 9, 9, 0.2);
-  border: 1px solid rgba(244, 245, 247, 0.16);
-  box-shadow: none;
-  color: white;
+  background: rgba(243, 241, 236, 0.86);
+  border: 1px solid var(--starliar-soft-line);
+  box-shadow: var(--starliar-shadow-soft);
+  color: var(--starliar-ink);
 }
 
 .nav-dropdown:hover .nav-dropdown-panel,
@@ -184,7 +187,7 @@ textarea {
 }
 
 .site-header-overlay .nav-dropdown-panel a:hover {
-  background: rgba(244, 245, 247, 0.18);
+  background: rgba(8, 8, 8, 0.07);
 }
 
 .site-header-actions {
@@ -452,6 +455,7 @@ textarea {
   border: 1px solid rgba(9, 9, 9, 0.18);
   border-radius: 999px;
   color: #49515a;
+  cursor: pointer;
   padding: 9px 15px;
   transition:
     background 220ms var(--starliar-ease),
@@ -459,6 +463,11 @@ textarea {
     color 220ms var(--starliar-ease),
     transform 220ms var(--starliar-ease),
     box-shadow 220ms var(--starliar-ease);
+}
+
+button.category-chip {
+  appearance: none;
+  font: inherit;
 }
 
 .category-chip:hover,

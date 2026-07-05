@@ -1,4 +1,10 @@
+import { unstable_cache } from "next/cache";
 import { prisma } from "@/lib/prisma";
+import { shopCategories, categoryToParam, paramToCategory } from "@/lib/commerce/categories";
+
+export { shopCategories, categoryToParam, paramToCategory };
+
+const PRODUCT_CACHE_SECONDS = 300;
 
 type SearchableProduct = {
   id: string;
@@ -11,26 +17,6 @@ type SearchableProduct = {
   images: { src: string }[];
 };
 
-export const shopCategories = [
-  "T-Shirt",
-  "Shirt",
-  "Long Sleeve",
-  "Hoodie",
-  "Jacket",
-  "Trousers",
-  "Shorts",
-  "Accessories"
-];
-
-export function categoryToParam(category: string) {
-  return category.toLowerCase().replaceAll(" ", "-");
-}
-
-export function paramToCategory(param?: string | null) {
-  if (!param) return null;
-  return shopCategories.find((category) => categoryToParam(category) === param) ?? null;
-}
-
 export async function getFeaturedProducts(category?: string | null) {
   const products = await prisma.product.findMany({
     where: { published: true, ...(category ? { category } : {}) },
@@ -39,23 +25,60 @@ export async function getFeaturedProducts(category?: string | null) {
     take: 8
   });
 
-  return products.map((product) => ({
+  return products.map(({ images, ...product }) => ({
     ...product,
-    media: product.images.map((image) => image.src)
+    media: images.map((image) => image.src)
   }));
 }
 
-export async function getPublishedProduct(slug: string) {
-  const product = await prisma.product.findFirst({
-    where: { slug, published: true },
-    include: { images: { orderBy: { position: "asc" } }, variants: true, collection: true }
-  });
+const getCachedShopProducts = unstable_cache(
+  async () => {
+    const products = await prisma.product.findMany({
+      where: { published: true },
+      select: {
+        id: true,
+        slug: true,
+        name: true,
+        category: true,
+        priceVnd: true,
+        images: { orderBy: { position: "asc" }, select: { src: true } }
+      },
+      orderBy: { createdAt: "desc" },
+      take: 80
+    });
 
-  if (!product) return null;
-  return {
-    ...product,
-    media: product.images.map((image) => image.src)
-  };
+    return products.map(({ images, ...product }) => ({
+      ...product,
+      media: images.map((image) => image.src)
+    }));
+  },
+  ["shop-products"],
+  { revalidate: PRODUCT_CACHE_SECONDS, tags: ["products"] }
+);
+
+export async function getShopProducts() {
+  return getCachedShopProducts();
+}
+
+const getCachedPublishedProduct = unstable_cache(
+  async (slug: string) => {
+    const product = await prisma.product.findFirst({
+      where: { slug, published: true },
+      include: { images: { orderBy: { position: "asc" } }, variants: true, collection: true }
+    });
+
+    if (!product) return null;
+    return {
+      ...product,
+      media: product.images.map((image) => image.src)
+    };
+  },
+  ["published-product"],
+  { revalidate: PRODUCT_CACHE_SECONDS, tags: ["products"] }
+);
+
+export async function getPublishedProduct(slug: string) {
+  return getCachedPublishedProduct(slug);
 }
 
 export async function searchProducts(query: string) {

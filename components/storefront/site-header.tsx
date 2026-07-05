@@ -2,7 +2,7 @@ import Link from "next/link";
 import { UserRound } from "lucide-react";
 import { SearchDialog } from "./search-dialog";
 import { CartLink } from "./cart-link";
-import { categoryToParam, shopCategories } from "@/lib/commerce/catalog";
+import { categoryToParam, shopCategories } from "@/lib/commerce/categories";
 
 export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
   return (
