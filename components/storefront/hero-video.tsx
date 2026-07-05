@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import type { CSSProperties } from "react";
 import { useEffect, useState } from "react";
 import { SiteHeader } from "./site-header";
 
@@ -15,6 +16,7 @@ export function HeroVideo({ src, slides, intervalMs = 5500 }: HeroVideoProps) {
   const resolvedSlides = slides?.length ? slides : src ? [src] : [];
   const [activeSlide, setActiveSlide] = useState(0);
   const activeSlideIndex = resolvedSlides.length ? activeSlide % resolvedSlides.length : 0;
+  const progressStyle = { "--hero-slide-count": resolvedSlides.length } as CSSProperties;
 
   useEffect(() => {
     if (resolvedSlides.length < 2) {
@@ -60,7 +62,7 @@ export function HeroVideo({ src, slides, intervalMs = 5500 }: HeroVideoProps) {
           </Link>
         </div>
       </div>
-      <div className="hero-progress" aria-hidden="true">
+      <div className="hero-progress" style={progressStyle} aria-hidden="true">
         {resolvedSlides.map((slide, index) => (
           <span className={index === activeSlideIndex ? "hero-progress-active" : ""} key={slide} />
         ))}

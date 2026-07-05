@@ -25,10 +25,11 @@ describe("HeroVideo", () => {
 
   it("renders three hero images and advances slides automatically", () => {
     vi.useFakeTimers();
-    render(<HeroVideo slides={heroSlides} intervalMs={5000} />);
+    const { container } = render(<HeroVideo slides={heroSlides} intervalMs={5000} />);
 
     const slides = screen.getAllByTestId("hero-slide");
     expect(slides).toHaveLength(3);
+    expect(container.querySelector(".hero-progress")).toHaveStyle("--hero-slide-count: 3");
     expect(slides[0]).toHaveClass("hero-slide-active");
     expect(slides[1]).not.toHaveClass("hero-slide-active");
 
