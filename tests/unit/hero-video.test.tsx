@@ -28,7 +28,9 @@ describe("HeroVideo", () => {
     const { container } = render(<HeroVideo slides={heroSlides} intervalMs={5000} />);
 
     const slides = screen.getAllByTestId("hero-slide");
+    const track = screen.getByTestId("hero-track");
     expect(slides).toHaveLength(3);
+    expect(track).toHaveStyle("--hero-slide-index: 0");
     expect(container.querySelector(".hero-progress")).toHaveStyle("--hero-slide-count: 3");
     expect(slides[0]).toHaveClass("hero-slide-active");
     expect(slides[1]).not.toHaveClass("hero-slide-active");
@@ -39,5 +41,6 @@ describe("HeroVideo", () => {
 
     expect(slides[0]).not.toHaveClass("hero-slide-active");
     expect(slides[1]).toHaveClass("hero-slide-active");
+    expect(track).toHaveStyle("--hero-slide-index: 1");
   });
 });

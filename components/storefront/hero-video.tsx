@@ -16,6 +16,7 @@ export function HeroVideo({ src, slides, intervalMs = 5500 }: HeroVideoProps) {
   const resolvedSlides = slides?.length ? slides : src ? [src] : [];
   const [activeSlide, setActiveSlide] = useState(0);
   const activeSlideIndex = resolvedSlides.length ? activeSlide % resolvedSlides.length : 0;
+  const trackStyle = { "--hero-slide-index": activeSlideIndex } as CSSProperties;
   const progressStyle = { "--hero-slide-count": resolvedSlides.length } as CSSProperties;
 
   useEffect(() => {
@@ -32,23 +33,25 @@ export function HeroVideo({ src, slides, intervalMs = 5500 }: HeroVideoProps) {
 
   return (
     <section className="hero-video">
-      {resolvedSlides.map((slide, index) => (
-        <div
-          aria-hidden={index !== activeSlideIndex}
-          className={["hero-slide", index === activeSlideIndex ? "hero-slide-active" : ""].filter(Boolean).join(" ")}
-          data-testid="hero-slide"
-          key={slide}
-        >
-          <Image
-            className="hero-video-media"
-            alt=""
-            src={slide}
-            fill
-            priority={index === 0}
-            sizes="100vw"
-          />
-        </div>
-      ))}
+      <div className="hero-track" style={trackStyle} data-testid="hero-track">
+        {resolvedSlides.map((slide, index) => (
+          <div
+            aria-hidden={index !== activeSlideIndex}
+            className={["hero-slide", index === activeSlideIndex ? "hero-slide-active" : ""].filter(Boolean).join(" ")}
+            data-testid="hero-slide"
+            key={slide}
+          >
+            <Image
+              className="hero-video-media"
+              alt=""
+              src={slide}
+              fill
+              priority={index === 0}
+              sizes="100vw"
+            />
+          </div>
+        ))}
+      </div>
       <div className="hero-video-scrim" />
       <SiteHeader overlay />
       <div className="hero-video-content">
