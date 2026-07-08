@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { act } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { HeroVideo } from "@/components/storefront/hero-video";
@@ -29,7 +29,7 @@ describe("HeroVideo", () => {
 
     const slides = screen.getAllByTestId("hero-slide");
     const track = screen.getByTestId("hero-track");
-    expect(slides).toHaveLength(3);
+    expect(slides).toHaveLength(4);
     expect(track).toHaveStyle("--hero-slide-index: 0");
     expect(container.querySelector(".hero-progress")).toHaveStyle("--hero-slide-count: 3");
     expect(slides[0]).toHaveClass("hero-slide-active");
@@ -42,5 +42,24 @@ describe("HeroVideo", () => {
     expect(slides[0]).not.toHaveClass("hero-slide-active");
     expect(slides[1]).toHaveClass("hero-slide-active");
     expect(track).toHaveStyle("--hero-slide-index: 1");
+  });
+
+  it("continues sliding forward through the cloned first slide before resetting invisibly", () => {
+    vi.useFakeTimers();
+    render(<HeroVideo slides={heroSlides} intervalMs={5000} />);
+
+    const track = screen.getByTestId("hero-track");
+    expect(screen.getAllByTestId("hero-slide")).toHaveLength(4);
+
+    act(() => {
+      vi.advanceTimersByTime(15000);
+    });
+
+    expect(track).toHaveStyle("--hero-slide-index: 3");
+
+    fireEvent.transitionEnd(track);
+
+    expect(track).toHaveStyle("--hero-slide-index: 0");
+    expect(track).toHaveClass("hero-track-resetting");
   });
 });

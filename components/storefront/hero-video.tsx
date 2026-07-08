@@ -15,8 +15,10 @@ type HeroVideoProps = {
 export function HeroVideo({ src, slides, intervalMs = 5500 }: HeroVideoProps) {
   const resolvedSlides = slides?.length ? slides : src ? [src] : [];
   const [activeSlide, setActiveSlide] = useState(0);
+  const [isResettingTrack, setIsResettingTrack] = useState(false);
   const activeSlideIndex = resolvedSlides.length ? activeSlide % resolvedSlides.length : 0;
-  const trackStyle = { "--hero-slide-index": activeSlideIndex } as CSSProperties;
+  const renderedSlides = resolvedSlides.length > 1 ? [...resolvedSlides, resolvedSlides[0]] : resolvedSlides;
+  const trackStyle = { "--hero-slide-index": activeSlide } as CSSProperties;
   const progressStyle = { "--hero-slide-count": resolvedSlides.length } as CSSProperties;
 
   useEffect(() => {
@@ -25,21 +27,44 @@ export function HeroVideo({ src, slides, intervalMs = 5500 }: HeroVideoProps) {
     }
 
     const timer = window.setInterval(() => {
-      setActiveSlide((current) => (current + 1) % resolvedSlides.length);
+      setActiveSlide((current) => current + 1);
     }, intervalMs);
 
     return () => window.clearInterval(timer);
   }, [intervalMs, resolvedSlides.length]);
 
+  const handleTrackTransitionEnd = () => {
+    if (activeSlide < resolvedSlides.length) {
+      return;
+    }
+
+    setIsResettingTrack(true);
+    setActiveSlide(0);
+  };
+
+  useEffect(() => {
+    if (!isResettingTrack) {
+      return;
+    }
+
+    const frame = window.requestAnimationFrame(() => setIsResettingTrack(false));
+    return () => window.cancelAnimationFrame(frame);
+  }, [isResettingTrack]);
+
   return (
     <section className="hero-video">
-      <div className="hero-track" style={trackStyle} data-testid="hero-track">
-        {resolvedSlides.map((slide, index) => (
+      <div
+        className={["hero-track", isResettingTrack ? "hero-track-resetting" : ""].filter(Boolean).join(" ")}
+        onTransitionEnd={handleTrackTransitionEnd}
+        style={trackStyle}
+        data-testid="hero-track"
+      >
+        {renderedSlides.map((slide, index) => (
           <div
-            aria-hidden={index !== activeSlideIndex}
-            className={["hero-slide", index === activeSlideIndex ? "hero-slide-active" : ""].filter(Boolean).join(" ")}
+            aria-hidden={index % resolvedSlides.length !== activeSlideIndex}
+            className={["hero-slide", index % resolvedSlides.length === activeSlideIndex ? "hero-slide-active" : ""].filter(Boolean).join(" ")}
             data-testid="hero-slide"
-            key={slide}
+            key={`${slide}-${index}`}
           >
             <Image
               className="hero-video-media"

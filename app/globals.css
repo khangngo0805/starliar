@@ -287,6 +287,10 @@ textarea {
   width: 100%;
 }
 
+.hero-track-resetting {
+  transition: none;
+}
+
 .hero-slide {
   flex: 0 0 100%;
   height: 100%;
