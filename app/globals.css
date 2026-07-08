@@ -148,37 +148,53 @@ textarea {
 .nav-dropdown {
   display: inline-flex;
   line-height: 1;
+  position: relative;
+}
+
+.nav-dropdown::after {
+  content: "";
+  height: 20px;
+  left: 0;
+  pointer-events: none;
+  position: fixed;
+  right: 0;
+  top: 62px;
 }
 
 .nav-dropdown-panel {
-  background: rgba(251, 250, 247, 0.58);
-  backdrop-filter: blur(20px);
+  align-content: start;
+  background: rgba(251, 250, 247, 0.9);
+  backdrop-filter: blur(28px);
   border: 0;
-  border-bottom: 1px solid rgba(8, 8, 8, 0.08);
-  box-shadow: 0 20px 54px rgba(8, 8, 8, 0.08);
+  box-shadow: none;
   color: var(--starliar-ink);
-  display: flex;
-  gap: 16px;
-  justify-content: center;
+  display: grid;
+  gap: 18px;
+  justify-content: start;
   left: 0;
   opacity: 0;
-  padding: 22px clamp(20px, 4vw, 48px);
+  padding: 32px clamp(20px, 4vw, 54px);
   pointer-events: none;
   position: fixed;
   right: 0;
   top: 78px;
-  transform: translateY(-10px);
+  transform: none;
   transition:
-    opacity 240ms var(--starliar-ease),
-    transform 240ms var(--starliar-ease);
+    opacity 220ms var(--starliar-ease);
   width: 100vw;
+  min-height: 310px;
   -webkit-backdrop-filter: blur(20px);
 }
 
-.site-header-overlay .nav-dropdown-panel {
-  background: rgba(251, 250, 247, 0.42);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
-  box-shadow: 0 20px 54px rgba(0, 0, 0, 0.14);
+.site-header-overlay:not(.site-header-scrolled) .nav-dropdown-panel {
+  background: rgba(8, 8, 8, 0.08);
+  color: white;
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+}
+
+.site-header-overlay.site-header-scrolled .nav-dropdown-panel {
+  background: rgba(251, 250, 247, 0.9);
   color: var(--starliar-ink);
 }
 
@@ -186,28 +202,35 @@ textarea {
 .nav-dropdown:focus-within .nav-dropdown-panel {
   opacity: 1;
   pointer-events: auto;
-  transform: translateY(0);
+}
+
+.nav-dropdown:hover::after,
+.nav-dropdown:focus-within::after {
+  pointer-events: auto;
 }
 
 .nav-dropdown-panel a {
-  border: 1px solid rgba(8, 8, 8, 0.12);
-  border-radius: 999px;
+  border: 0;
+  border-radius: 0;
   color: currentColor;
-  font-size: 13px;
-  line-height: 1;
-  padding: 11px 15px;
+  font-size: 15px;
+  line-height: 1.05;
+  padding: 0;
+  text-transform: none;
   white-space: nowrap;
+  width: max-content;
 }
 
 .nav-dropdown-panel a:hover {
-  background: rgba(255, 255, 255, 0.56);
-  border-color: rgba(8, 8, 8, 0.2);
+  background: transparent;
   opacity: 1;
-  transform: translateY(-1px);
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  transform: none;
 }
 
 .site-header-overlay .nav-dropdown-panel a:hover {
-  background: rgba(255, 255, 255, 0.62);
+  background: transparent;
 }
 
 .site-header-actions {
