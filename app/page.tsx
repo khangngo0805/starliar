@@ -7,15 +7,10 @@ export const revalidate = 300;
 
 export default async function HomePage() {
   const products = await getFeaturedProducts();
-  const heroSlides = [
-    "/media/starliar-hero-editorial.png",
-    "/media/starliar-hero-quiet-court.png",
-    "/media/starliar-hero-white-room.png"
-  ];
 
   return (
     <main>
-      <HeroVideo slides={heroSlides} />
+      <HeroVideo videoSrc="/media/starliar-visible-pixel-hero.mp4" />
       <section className="editorial-intro" aria-label="Starliar direction">
         <p>Quiet luxury structure. Dark streetwear attitude. Built for the first signal after midnight.</p>
         <div>

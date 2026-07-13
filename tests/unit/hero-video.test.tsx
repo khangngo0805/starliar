@@ -23,6 +23,19 @@ describe("HeroVideo", () => {
     expect(screen.getByRole("link", { name: /view campaign/i })).toHaveAttribute("href", "#campaign");
   });
 
+  it("uses a muted looping video as the hero media when provided", () => {
+    render(<HeroVideo videoSrc="/media/starliar-visible-pixel-hero.mp4" />);
+
+    const video = screen.getByTestId("hero-video-media");
+    expect(video.tagName).toBe("VIDEO");
+    expect(video).toHaveAttribute("src", "/media/starliar-visible-pixel-hero.mp4");
+    expect(video).toHaveAttribute("autoplay");
+    expect(video).toHaveAttribute("loop");
+    expect(video).toHaveAttribute("playsinline");
+    expect((video as HTMLVideoElement).muted).toBe(true);
+    expect(screen.queryByTestId("hero-track")).not.toBeInTheDocument();
+  });
+
   it("renders three hero images and advances slides automatically", () => {
     vi.useFakeTimers();
     const { container } = render(<HeroVideo slides={heroSlides} intervalMs={5000} />);

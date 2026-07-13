@@ -9,10 +9,11 @@ import { SiteHeader } from "./site-header";
 type HeroVideoProps = {
   src?: string;
   slides?: string[];
+  videoSrc?: string;
   intervalMs?: number;
 };
 
-export function HeroVideo({ src, slides, intervalMs = 5500 }: HeroVideoProps) {
+export function HeroVideo({ src, slides, videoSrc, intervalMs = 5500 }: HeroVideoProps) {
   const resolvedSlides = slides?.length ? slides : src ? [src] : [];
   const [activeSlide, setActiveSlide] = useState(0);
   const [isResettingTrack, setIsResettingTrack] = useState(false);
@@ -53,30 +54,44 @@ export function HeroVideo({ src, slides, intervalMs = 5500 }: HeroVideoProps) {
 
   return (
     <section className="hero-video">
-      <div
-        className={["hero-track", isResettingTrack ? "hero-track-resetting" : ""].filter(Boolean).join(" ")}
-        onTransitionEnd={handleTrackTransitionEnd}
-        style={trackStyle}
-        data-testid="hero-track"
-      >
-        {renderedSlides.map((slide, index) => (
-          <div
-            aria-hidden={index % resolvedSlides.length !== activeSlideIndex}
-            className={["hero-slide", index % resolvedSlides.length === activeSlideIndex ? "hero-slide-active" : ""].filter(Boolean).join(" ")}
-            data-testid="hero-slide"
-            key={`${slide}-${index}`}
-          >
-            <Image
-              className="hero-video-media"
-              alt=""
-              src={slide}
-              fill
-              priority={index === 0}
-              sizes="100vw"
-            />
-          </div>
-        ))}
-      </div>
+      {videoSrc ? (
+        <video
+          aria-hidden="true"
+          autoPlay
+          className="hero-video-media"
+          data-testid="hero-video-media"
+          loop
+          muted
+          playsInline
+          preload="auto"
+          src={videoSrc}
+        />
+      ) : (
+        <div
+          className={["hero-track", isResettingTrack ? "hero-track-resetting" : ""].filter(Boolean).join(" ")}
+          onTransitionEnd={handleTrackTransitionEnd}
+          style={trackStyle}
+          data-testid="hero-track"
+        >
+          {renderedSlides.map((slide, index) => (
+            <div
+              aria-hidden={index % resolvedSlides.length !== activeSlideIndex}
+              className={["hero-slide", index % resolvedSlides.length === activeSlideIndex ? "hero-slide-active" : ""].filter(Boolean).join(" ")}
+              data-testid="hero-slide"
+              key={`${slide}-${index}`}
+            >
+              <Image
+                className="hero-video-media"
+                alt=""
+                src={slide}
+                fill
+                priority={index === 0}
+                sizes="100vw"
+              />
+            </div>
+          ))}
+        </div>
+      )}
       <div className="hero-video-scrim" />
       <SiteHeader overlay />
       <div className="hero-video-content">
@@ -90,11 +105,13 @@ export function HeroVideo({ src, slides, intervalMs = 5500 }: HeroVideoProps) {
           </Link>
         </div>
       </div>
-      <div className="hero-progress" style={progressStyle} aria-hidden="true">
-        {resolvedSlides.map((slide, index) => (
-          <span className={index === activeSlideIndex ? "hero-progress-active" : ""} key={slide} />
-        ))}
-      </div>
+      {videoSrc ? null : (
+        <div className="hero-progress" style={progressStyle} aria-hidden="true">
+          {resolvedSlides.map((slide, index) => (
+            <span className={index === activeSlideIndex ? "hero-progress-active" : ""} key={slide} />
+          ))}
+        </div>
+      )}
     </section>
   );
 }
