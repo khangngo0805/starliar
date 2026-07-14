@@ -1965,6 +1965,43 @@ button.category-chip {
   justify-items: end;
 }
 
+.admin-bulk-toolbar {
+  align-items: center;
+  border: 1px solid var(--starliar-line);
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  margin-top: 28px;
+  padding: 14px 16px;
+}
+
+.admin-checkbox-label {
+  align-items: center;
+  color: var(--starliar-muted);
+  display: inline-flex;
+  gap: 10px;
+  text-transform: uppercase;
+}
+
+.admin-checkbox-label,
+.admin-row-selectable input {
+  font-size: 12px;
+}
+
+.admin-row-selectable {
+  grid-template-columns: 28px 1.25fr repeat(3, minmax(0, 1fr));
+}
+
+.admin-row-selectable > a {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.admin-success-message {
+  color: #1f7a4f;
+  margin: 12px 0 0;
+}
+
 .danger-button {
   background: #7a1c14;
   border: 1px solid #7a1c14;

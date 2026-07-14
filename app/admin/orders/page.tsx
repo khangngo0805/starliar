@@ -1,8 +1,7 @@
-import Link from "next/link";
 import { AdminNav } from "@/components/admin/admin-nav";
-import { OrderStatusBadge } from "@/components/admin/order-status-badge";
+import { AdminOrdersList } from "@/components/admin/admin-orders-list";
 import { requireAdmin } from "@/lib/auth/admin";
-import { formatOrderTotal, getAdminOrders } from "@/lib/commerce/admin-orders";
+import { getAdminOrders } from "@/lib/commerce/admin-orders";
 
 export default async function AdminOrdersPage() {
   await requireAdmin();
@@ -12,16 +11,7 @@ export default async function AdminOrdersPage() {
     <main className="admin-shell">
       <AdminNav />
       <h1>Orders</h1>
-      <div className="admin-list">
-        {orders.map((order) => (
-          <Link className="admin-row" href={`/admin/orders/${order.id}`} key={order.id}>
-            <span>{order.orderNumber}</span>
-            <span>{order.customerName}</span>
-            <span>{formatOrderTotal(order.totalVnd)}</span>
-            <OrderStatusBadge status={order.status} />
-          </Link>
-        ))}
-      </div>
+      <AdminOrdersList orders={orders} />
     </main>
   );
 }
