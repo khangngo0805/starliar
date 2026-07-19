@@ -11,13 +11,6 @@ export default async function HomePage() {
   return (
     <main>
       <HeroVideo videoSrc="/media/starliar-visible-pixel-hero.mp4" />
-      <section className="editorial-intro" aria-label="Starliar direction">
-        <p>Quiet luxury structure. Dark streetwear attitude. Built for the first signal after midnight.</p>
-        <div>
-          <span>01</span>
-          <span>Cold silhouettes</span>
-        </div>
-      </section>
       <section className="home-section featured-section">
         <div className="section-heading-row">
           <div>

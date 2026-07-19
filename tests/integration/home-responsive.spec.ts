@@ -25,7 +25,7 @@ test("homepage presents editorial storefront sections", async ({ page }) => {
 
   await expect(page.getByRole("link", { name: "STARLIAR" })).toBeVisible();
   await expect(page.getByRole("heading", { name: /First Signal/i })).toBeVisible();
-  await expect(page.getByText(/Quiet luxury structure\. Dark streetwear attitude/i)).toBeVisible();
+  await expect(page.getByText(/Quiet luxury structure\. Dark streetwear attitude/i)).toBeHidden();
   await expect(page.getByRole("heading", { name: /Latest silhouettes/i })).toBeVisible();
   await expect(page.getByRole("heading", { name: /After dark uniform/i })).toBeVisible();
 });
