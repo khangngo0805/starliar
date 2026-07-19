@@ -7,23 +7,36 @@ import { useEffect, useState } from "react";
 import { SiteHeader } from "./site-header";
 
 type HeroVideoProps = {
+  mediaSlides?: Array<{
+    src: string;
+    type: "image" | "video";
+  }>;
   src?: string;
   slides?: string[];
   videoSrc?: string;
   intervalMs?: number;
 };
 
-export function HeroVideo({ src, slides, videoSrc, intervalMs = 5500 }: HeroVideoProps) {
-  const resolvedSlides = slides?.length ? slides : src ? [src] : [];
+export function HeroVideo({ mediaSlides, src, slides, videoSrc, intervalMs = 5500 }: HeroVideoProps) {
+  const resolvedMediaSlides =
+    mediaSlides?.length
+      ? mediaSlides
+      : slides?.length
+        ? slides.map((slide) => ({ src: slide, type: "image" as const }))
+        : src
+          ? [{ src, type: "image" as const }]
+          : [];
+  const shouldRenderSingleVideo = Boolean(videoSrc && !mediaSlides?.length);
+  const resolvedSlides = resolvedMediaSlides.map((slide) => slide.src);
   const [activeSlide, setActiveSlide] = useState(0);
   const [isResettingTrack, setIsResettingTrack] = useState(false);
-  const activeSlideIndex = resolvedSlides.length ? activeSlide % resolvedSlides.length : 0;
-  const renderedSlides = resolvedSlides.length > 1 ? [...resolvedSlides, resolvedSlides[0]] : resolvedSlides;
+  const activeSlideIndex = resolvedMediaSlides.length ? activeSlide % resolvedMediaSlides.length : 0;
+  const renderedSlides = resolvedMediaSlides.length > 1 ? [...resolvedMediaSlides, resolvedMediaSlides[0]] : resolvedMediaSlides;
   const trackStyle = { "--hero-slide-index": activeSlide } as CSSProperties;
-  const progressStyle = { "--hero-slide-count": resolvedSlides.length } as CSSProperties;
+  const progressStyle = { "--hero-slide-count": resolvedMediaSlides.length } as CSSProperties;
 
   useEffect(() => {
-    if (resolvedSlides.length < 2) {
+    if (resolvedMediaSlides.length < 2) {
       return;
     }
 
@@ -32,10 +45,10 @@ export function HeroVideo({ src, slides, videoSrc, intervalMs = 5500 }: HeroVide
     }, intervalMs);
 
     return () => window.clearInterval(timer);
-  }, [intervalMs, resolvedSlides.length]);
+  }, [intervalMs, resolvedMediaSlides.length]);
 
   const handleTrackTransitionEnd = () => {
-    if (activeSlide < resolvedSlides.length) {
+    if (activeSlide < resolvedMediaSlides.length) {
       return;
     }
 
@@ -54,7 +67,7 @@ export function HeroVideo({ src, slides, videoSrc, intervalMs = 5500 }: HeroVide
 
   return (
     <section className="hero-video">
-      {videoSrc ? (
+      {shouldRenderSingleVideo ? (
         <video
           aria-hidden="true"
           autoPlay
@@ -75,19 +88,33 @@ export function HeroVideo({ src, slides, videoSrc, intervalMs = 5500 }: HeroVide
         >
           {renderedSlides.map((slide, index) => (
             <div
-              aria-hidden={index % resolvedSlides.length !== activeSlideIndex}
-              className={["hero-slide", index % resolvedSlides.length === activeSlideIndex ? "hero-slide-active" : ""].filter(Boolean).join(" ")}
+              aria-hidden={index % resolvedMediaSlides.length !== activeSlideIndex}
+              className={["hero-slide", index % resolvedMediaSlides.length === activeSlideIndex ? "hero-slide-active" : ""].filter(Boolean).join(" ")}
               data-testid="hero-slide"
-              key={`${slide}-${index}`}
+              key={`${slide.src}-${index}`}
             >
-              <Image
-                className="hero-video-media"
-                alt=""
-                src={slide}
-                fill
-                priority={index === 0}
-                sizes="100vw"
-              />
+              {slide.type === "video" ? (
+                <video
+                  aria-hidden="true"
+                  autoPlay
+                  className="hero-video-media"
+                  data-testid="hero-video-slide"
+                  loop
+                  muted
+                  playsInline
+                  preload="auto"
+                  src={slide.src}
+                />
+              ) : (
+                <Image
+                  className="hero-video-media"
+                  alt=""
+                  src={slide.src}
+                  fill
+                  priority={index === 0}
+                  sizes="100vw"
+                />
+              )}
             </div>
           ))}
         </div>
@@ -105,7 +132,7 @@ export function HeroVideo({ src, slides, videoSrc, intervalMs = 5500 }: HeroVide
           </Link>
         </div>
       </div>
-      {videoSrc ? null : (
+      {shouldRenderSingleVideo ? null : (
         <div className="hero-progress" style={progressStyle} aria-hidden="true">
           {resolvedSlides.map((slide, index) => (
             <span className={index === activeSlideIndex ? "hero-progress-active" : ""} key={slide} />

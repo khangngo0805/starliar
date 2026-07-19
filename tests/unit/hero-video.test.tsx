@@ -36,6 +36,21 @@ describe("HeroVideo", () => {
     expect(screen.queryByTestId("hero-track")).not.toBeInTheDocument();
   });
 
+  it("renders mixed video and image media as sliding hero pages", () => {
+    render(
+      <HeroVideo
+        mediaSlides={[
+          { src: "/media/starliar-visible-pixel-hero.mp4", type: "video" },
+          { src: "/media/horsonic-hero.webp", type: "image" }
+        ]}
+      />
+    );
+
+    expect(screen.getByTestId("hero-track")).toBeInTheDocument();
+    expect(screen.getAllByTestId("hero-video-slide")[0]).toHaveAttribute("src", "/media/starliar-visible-pixel-hero.mp4");
+    expect(screen.getAllByTestId("hero-slide")).toHaveLength(3);
+  });
+
   it("renders three hero images and advances slides automatically", () => {
     vi.useFakeTimers();
     const { container } = render(<HeroVideo slides={heroSlides} intervalMs={5000} />);

@@ -10,12 +10,17 @@ export default async function HomePage() {
 
   return (
     <main>
-      <HeroVideo videoSrc="/media/starliar-visible-pixel-hero.mp4" />
+      <HeroVideo
+        mediaSlides={[
+          { src: "/media/starliar-visible-pixel-hero.mp4", type: "video" },
+          { src: "/media/horsonic-hero.webp", type: "image" }
+        ]}
+      />
       <section className="home-section featured-section">
         <div className="section-heading-row">
           <div>
             <p className="section-kicker">New arrival</p>
-            <h2>Latest silhouettes</h2>
+            <h2 className="release-heading">Latest release</h2>
           </div>
           <Link className="text-link" href="/shop">
             View all
