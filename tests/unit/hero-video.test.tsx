@@ -1,13 +1,19 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { act } from "react";
+import type { ReactNode } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { HeroVideo } from "@/components/storefront/hero-video";
+import { LanguageProvider } from "@/components/storefront/language-provider";
 
 const heroSlides = [
   "/media/starliar-hero-editorial.png",
   "/media/starliar-hero-quiet-court.png",
   "/media/starliar-hero-white-room.png"
 ];
+
+function renderHero(ui: ReactNode) {
+  return render(<LanguageProvider>{ui}</LanguageProvider>);
+}
 
 describe("HeroVideo", () => {
   afterEach(() => {
@@ -16,7 +22,7 @@ describe("HeroVideo", () => {
   });
 
   it("keeps Starliar branding and collection actions on the hero", () => {
-    render(<HeroVideo slides={heroSlides} />);
+    renderHero(<HeroVideo slides={heroSlides} />);
     expect(screen.getByText("STARLIAR")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "FIRST SIGNAL" })).toHaveClass("hero-kicker");
     expect(screen.getByRole("link", { name: /shop now/i })).toHaveAttribute("href", "/shop");
@@ -24,7 +30,7 @@ describe("HeroVideo", () => {
   });
 
   it("uses a muted looping video as the hero media when provided", () => {
-    render(<HeroVideo videoSrc="/media/starliar-visible-pixel-hero.mp4" />);
+    renderHero(<HeroVideo videoSrc="/media/starliar-visible-pixel-hero.mp4" />);
 
     const video = screen.getByTestId("hero-video-media");
     expect(video.tagName).toBe("VIDEO");
@@ -37,7 +43,7 @@ describe("HeroVideo", () => {
   });
 
   it("renders mixed video and image media as sliding hero pages", () => {
-    render(
+    renderHero(
       <HeroVideo
         mediaSlides={[
           { src: "/media/starliar-visible-pixel-hero.mp4", type: "video" },
@@ -53,7 +59,7 @@ describe("HeroVideo", () => {
 
   it("renders three hero images and advances slides automatically", () => {
     vi.useFakeTimers();
-    const { container } = render(<HeroVideo slides={heroSlides} intervalMs={5000} />);
+    const { container } = renderHero(<HeroVideo slides={heroSlides} intervalMs={5000} />);
 
     const slides = screen.getAllByTestId("hero-slide");
     const track = screen.getByTestId("hero-track");
@@ -74,7 +80,7 @@ describe("HeroVideo", () => {
 
   it("continues sliding forward through the cloned first slide before resetting invisibly", () => {
     vi.useFakeTimers();
-    render(<HeroVideo slides={heroSlides} intervalMs={5000} />);
+    renderHero(<HeroVideo slides={heroSlides} intervalMs={5000} />);
 
     const track = screen.getByTestId("hero-track");
     expect(screen.getAllByTestId("hero-slide")).toHaveLength(4);

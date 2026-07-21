@@ -5,6 +5,7 @@ import Image from "next/image";
 import type { CSSProperties } from "react";
 import { useEffect, useState } from "react";
 import { SiteHeader } from "./site-header";
+import { useLanguage } from "./language-provider";
 
 type HeroVideoProps = {
   mediaSlides?: Array<{
@@ -18,6 +19,7 @@ type HeroVideoProps = {
 };
 
 export function HeroVideo({ mediaSlides, src, slides, videoSrc, intervalMs = 5500 }: HeroVideoProps) {
+  const { t } = useLanguage();
   const resolvedMediaSlides =
     mediaSlides?.length
       ? mediaSlides
@@ -122,13 +124,13 @@ export function HeroVideo({ mediaSlides, src, slides, videoSrc, intervalMs = 550
       <div className="hero-video-scrim" />
       <SiteHeader overlay />
       <div className="hero-video-content">
-        <h1 className="hero-kicker">FIRST SIGNAL</h1>
+        <h1 className="hero-kicker">{t("firstSignal").toUpperCase()}</h1>
         <div className="hero-actions">
           <Link className="pill-button pill-button-filled" href="/shop">
-            Shop Now
+            {t("shopNow")}
           </Link>
           <Link className="pill-button" href="#campaign">
-            View Campaign
+            {t("viewCampaign")}
           </Link>
         </div>
       </div>

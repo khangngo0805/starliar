@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { HeroVideo } from "@/components/storefront/hero-video";
+import { LocalizedText } from "@/components/storefront/localized-text";
 import { ProductGrid } from "@/components/storefront/product-grid";
 import { getFeaturedProducts } from "@/lib/commerce/catalog";
 
@@ -20,10 +21,12 @@ export default async function HomePage() {
         <div className="section-heading-row">
           <div>
             <p className="section-kicker">New arrival</p>
-            <h2 className="release-heading">Latest release</h2>
+            <h2 className="release-heading">
+              <LocalizedText textKey="latestRelease" />
+            </h2>
           </div>
           <Link className="text-link" href="/shop">
-            View all
+            <LocalizedText textKey="shopAll" />
           </Link>
         </div>
         <ProductGrid products={products} />
@@ -31,7 +34,9 @@ export default async function HomePage() {
       <section className="campaign-section" id="campaign">
         <div className="campaign-copy">
           <p className="section-kicker">Campaign 2026</p>
-          <h2>After dark uniform</h2>
+          <h2>
+            <LocalizedText textKey="campaignTitle" />
+          </h2>
           <p>Monochrome layers, quiet hardware, and silhouettes made for low light.</p>
         </div>
         <div className="campaign-details" aria-label="Campaign details">

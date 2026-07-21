@@ -1,5 +1,6 @@
 import { act, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+import { LanguageProvider } from "@/components/storefront/language-provider";
 import { SiteHeader } from "@/components/storefront/site-header";
 
 function setScrollY(value: number) {
@@ -20,7 +21,11 @@ describe("SiteHeader", () => {
   it("keeps hero overlay transparent until the visitor reaches the lower hero", () => {
     setViewportHeight(1000);
     setScrollY(0);
-    render(<SiteHeader overlay />);
+    render(
+      <LanguageProvider>
+        <SiteHeader overlay />
+      </LanguageProvider>
+    );
 
     const header = screen.getByRole("banner");
     expect(header).toHaveClass("site-header-overlay");

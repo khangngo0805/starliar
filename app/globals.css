@@ -262,6 +262,54 @@ textarea {
   justify-content: flex-end;
 }
 
+.language-switcher {
+  align-items: center;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  display: inline-flex;
+  gap: 0;
+  min-height: 28px;
+  overflow: hidden;
+}
+
+.language-option {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: currentColor;
+  cursor: pointer;
+  font-size: 11px;
+  line-height: 1;
+  min-height: 28px;
+  min-width: 36px;
+  padding: 0 9px;
+  transition:
+    background 220ms var(--starliar-ease),
+    color 220ms var(--starliar-ease),
+    opacity 220ms var(--starliar-ease);
+}
+
+.language-option + .language-option {
+  border-left: 1px solid currentColor;
+}
+
+.language-option.active {
+  background: currentColor;
+}
+
+.site-header-overlay:not(.site-header-scrolled) .language-option.active {
+  color: var(--starliar-ink);
+}
+
+.site-header-scrolled .language-option.active,
+.site-header:not(.site-header-overlay) .language-option.active {
+  color: var(--starliar-paper);
+}
+
+.language-option:hover {
+  opacity: 0.76;
+}
+
 .cart-icon-link {
   align-items: center;
   border-radius: 999px;
@@ -2773,6 +2821,111 @@ button.category-chip {
   min-width: 150px;
 }
 
+.storefront-footer {
+  background: #fbfbfa;
+  border-top: 1px solid rgba(8, 8, 8, 0.08);
+  color: var(--starliar-ink);
+  display: grid;
+  gap: 38px 32px;
+  grid-template-columns: minmax(220px, 1.4fr) repeat(4, minmax(130px, 0.72fr));
+  padding: 70px clamp(20px, 5vw, 64px) 34px;
+}
+
+.storefront-footer-brand {
+  max-width: 360px;
+}
+
+.footer-logo {
+  display: inline-block;
+  font-size: clamp(42px, 5vw, 72px);
+  margin-bottom: 22px;
+}
+
+.storefront-footer p,
+.storefront-footer span,
+.storefront-footer a {
+  color: #5d6570;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.footer-column {
+  align-content: start;
+  display: grid;
+  gap: 11px;
+}
+
+.footer-column h2 {
+  color: var(--starliar-ink);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  margin: 0 0 6px;
+  text-transform: uppercase;
+}
+
+.footer-column a {
+  width: max-content;
+}
+
+.footer-column a:hover {
+  color: var(--starliar-ink);
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+
+.footer-newsletter p {
+  margin: 0;
+}
+
+.footer-newsletter-form {
+  align-items: center;
+  border-bottom: 1px solid rgba(8, 8, 8, 0.28);
+  display: grid;
+  gap: 10px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  margin-top: 10px;
+}
+
+.footer-newsletter-form input {
+  background: transparent;
+  border: 0;
+  min-height: 38px;
+  min-width: 0;
+  outline: 0;
+  padding: 0;
+}
+
+.footer-newsletter-form button {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 0;
+}
+
+.storefront-footer-bottom {
+  align-items: center;
+  border-top: 1px solid rgba(8, 8, 8, 0.08);
+  display: grid;
+  gap: 18px;
+  grid-column: 1 / -1;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  padding-top: 26px;
+}
+
+.storefront-footer-bottom p {
+  margin: 0;
+  max-width: 560px;
+}
+
+.storefront-footer-bottom div {
+  display: flex;
+  gap: 18px;
+}
+
 @media (max-width: 820px) {
   .site-header {
     grid-template-columns: 1fr auto;
@@ -2789,6 +2942,7 @@ button.category-chip {
   .product-grid,
   .product-detail,
   .product-service-notes,
+  .storefront-footer,
   .checkout-shell,
   .shop-hero,
   .cart-shell,
@@ -2877,6 +3031,21 @@ button.category-chip {
 
   .site-logo {
     font-size: 2.25rem;
+  }
+
+  .site-header-actions {
+    gap: 10px;
+  }
+
+  .language-switcher {
+    min-height: 26px;
+  }
+
+  .language-option {
+    font-size: 10px;
+    min-height: 26px;
+    min-width: 31px;
+    padding: 0 7px;
   }
 
   .search-overlay {
@@ -2981,6 +3150,16 @@ button.category-chip {
   .campaign-section {
     min-height: 58svh;
     padding: 64px 20px;
+  }
+
+  .storefront-footer {
+    gap: 28px;
+    padding: 54px 20px 28px;
+  }
+
+  .storefront-footer-bottom {
+    align-items: start;
+    grid-template-columns: 1fr;
   }
 
   .campaign-details {

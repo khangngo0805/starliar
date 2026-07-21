@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ProductGrid } from "@/components/storefront/product-grid";
 import { categoryToParam, paramToCategory, shopCategories } from "@/lib/commerce/categories";
+import { useLanguage } from "./language-provider";
 
 type ShopProduct = {
   id: string;
@@ -22,6 +23,7 @@ export function ShopCatalog({
   initialCategory: string | null;
 }) {
   const router = useRouter();
+  const { t } = useLanguage();
   const [activeCategory, setActiveCategory] = useState(initialCategory);
 
   useEffect(() => {
@@ -61,9 +63,9 @@ export function ShopCatalog({
   return (
     <>
       <div className="shop-hero">
-        <p className="eyebrow">First Signal</p>
-        <h1>{activeCategory ?? "Shop"}</h1>
-        <p>Unisex clothing and accessories for testing the full Starliar buying flow.</p>
+        <p className="eyebrow">{t("firstSignal")}</p>
+        <h1>{activeCategory ?? t("shop")}</h1>
+        <p>{t("shopDescription")}</p>
       </div>
       <div className="shop-toolbar" aria-label="Product categories">
         <button
@@ -71,7 +73,7 @@ export function ShopCatalog({
           onClick={() => selectCategory(null)}
           type="button"
         >
-          All
+          {t("all")}
         </button>
         {shopCategories.map((category) => (
           <button

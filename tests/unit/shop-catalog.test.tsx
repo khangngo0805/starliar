@@ -1,5 +1,7 @@
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
+import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { LanguageProvider } from "@/components/storefront/language-provider";
 import { ShopCatalog } from "@/components/storefront/shop-catalog";
 
 vi.mock("@/components/commerce/favorite-button", () => ({
@@ -39,6 +41,10 @@ const products = [
   }
 ];
 
+function renderCatalog(ui: ReactNode) {
+  return render(<LanguageProvider>{ui}</LanguageProvider>);
+}
+
 describe("ShopCatalog", () => {
   beforeEach(() => {
     window.history.replaceState({}, "", "/shop");
@@ -49,7 +55,7 @@ describe("ShopCatalog", () => {
   });
 
   it("filters categories instantly without leaving the shop page", () => {
-    render(<ShopCatalog initialCategory={null} products={products} />);
+    renderCatalog(<ShopCatalog initialCategory={null} products={products} />);
 
     expect(screen.getByRole("heading", { name: "Shop" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /Axis Cropped Shirt/i })).toHaveAttribute(
@@ -69,7 +75,7 @@ describe("ShopCatalog", () => {
 
   it("marks the active category and can return to all products", () => {
     window.history.replaceState({}, "", "/shop?category=jacket");
-    render(<ShopCatalog initialCategory="Jacket" products={products} />);
+    renderCatalog(<ShopCatalog initialCategory="Jacket" products={products} />);
 
     expect(screen.getByRole("heading", { name: "Jacket" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /Mirror Bomber Jacket/i })).toBeInTheDocument();

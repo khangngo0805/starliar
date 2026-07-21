@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 test("hero keeps brand and primary CTA visible on mobile", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
-  await expect(page.getByRole("link", { name: "STARLIAR" })).toBeVisible();
+  await expect(page.locator(".site-header .site-logo")).toBeVisible();
   await expect(page.getByRole("link", { name: /shop now/i })).toBeVisible();
 });
 
@@ -23,7 +23,7 @@ test("search overlay finds seeded products", async ({ page }) => {
 test("homepage presents editorial storefront sections", async ({ page }) => {
   await page.goto("/");
 
-  await expect(page.getByRole("link", { name: "STARLIAR" })).toBeVisible();
+  await expect(page.locator(".site-header .site-logo")).toBeVisible();
   await expect(page.getByRole("heading", { name: /First Signal/i })).toBeVisible();
   await expect(page.getByText(/Quiet luxury structure\. Dark streetwear attitude/i)).toBeHidden();
   await expect(page.getByRole("heading", { name: /Latest release/i })).toBeVisible();
