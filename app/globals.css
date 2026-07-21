@@ -206,14 +206,11 @@ textarea {
 }
 
 .site-header-overlay:not(.site-header-scrolled) .nav-dropdown-panel {
-  background: linear-gradient(
-    to bottom,
-    rgba(248, 249, 250, 0.9) 0%,
-    rgba(248, 249, 250, 0.82) 58%,
-    rgba(248, 249, 250, 0.64) 100%
-  );
-  color: var(--starliar-ink);
-  text-shadow: none;
+  background: transparent;
+  backdrop-filter: none;
+  color: white;
+  text-shadow: 0 1px 18px rgba(0, 0, 0, 0.36);
+  -webkit-backdrop-filter: none;
 }
 
 .site-header-overlay.site-header-scrolled .nav-dropdown-panel {
