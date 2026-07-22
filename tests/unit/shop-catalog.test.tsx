@@ -57,6 +57,10 @@ describe("ShopCatalog", () => {
   it("filters categories instantly without leaving the shop page", () => {
     renderCatalog(<ShopCatalog initialCategory={null} products={products} />);
 
+    const breadcrumb = screen.getByLabelText("Shop breadcrumb");
+    expect(breadcrumb).toHaveTextContent("First Signal");
+    expect(breadcrumb).toHaveTextContent("Shop");
+    expect(screen.getByText(/In stock · 3 styles/i)).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Shop" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /Axis Cropped Shirt/i })).toHaveAttribute(
       "href",
@@ -88,5 +92,12 @@ describe("ShopCatalog", () => {
     expect(within(grid).getByRole("link", { name: /Mirror Bomber Jacket/i })).toBeInTheDocument();
     expect(within(grid).getByRole("link", { name: /Axis Cropped Shirt/i })).toBeInTheDocument();
     expect(window.location.search).toBe("");
+  });
+
+  it("shows in-stock status on product cards", () => {
+    renderCatalog(<ShopCatalog initialCategory={null} products={products} />);
+
+    const grid = screen.getByTestId("shop-product-grid");
+    expect(within(grid).getAllByText("In stock")).toHaveLength(products.length);
   });
 });

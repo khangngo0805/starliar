@@ -63,9 +63,14 @@ export function ShopCatalog({
   return (
     <>
       <div className="shop-hero">
-        <p className="eyebrow">{t("firstSignal")}</p>
+        <nav aria-label="Shop breadcrumb" className="shop-breadcrumb">
+          <span>{t("firstSignal")}</span>
+          <span aria-hidden="true">/</span>
+          <span>{activeCategory ?? t("shop")}</span>
+        </nav>
         <h1>{activeCategory ?? t("shop")}</h1>
-        <p>{t("shopDescription")}</p>
+        <p className="shop-description">{t("shopDescription")}</p>
+        <p className="shop-stock-summary">In stock · {visibleProducts.length} styles</p>
       </div>
       <div className="shop-toolbar" aria-label="Product categories">
         <button

@@ -39,6 +39,7 @@ export function ProductGrid({ products }: { products: GridProduct[] }) {
               <div>
                 <small>{product.category}</small>
                 <span className="product-card-name">{product.name}</span>
+                <span className="product-card-stock">In stock</span>
               </div>
               <span className="product-card-price">{formatVnd(product.priceVnd)}</span>
             </div>

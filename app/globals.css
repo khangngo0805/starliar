@@ -560,37 +560,57 @@ textarea {
 }
 
 .shop-shell {
-  padding: 104px clamp(20px, 5vw, 64px) 110px;
+  padding: 130px clamp(20px, 5vw, 64px) 110px;
 }
 
 .shop-hero {
-  align-items: end;
   border-bottom: 1px solid var(--starliar-line);
-  display: grid;
-  gap: 28px;
-  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.42fr);
-  padding: 34px 0 44px;
+  display: block;
+  max-width: 760px;
+  padding: 52px 0 38px;
 }
 
 .shop-hero h1 {
-  font-size: clamp(44px, 8vw, 112px);
+  color: var(--starliar-ink);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(42px, 5vw, 72px);
   font-weight: 500;
-  line-height: 0.9;
-  margin: 0;
-  text-transform: uppercase;
+  line-height: 0.96;
+  margin: 16px 0 24px;
+  text-transform: none;
 }
 
-.shop-hero p:last-child {
+.shop-description {
   color: #65707a;
+  font-size: 16px;
   line-height: 1.55;
   margin: 0;
+  max-width: 680px;
 }
 
 .shop-toolbar {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  padding-top: 26px;
+  padding-top: 30px;
+}
+
+.shop-breadcrumb,
+.shop-stock-summary {
+  color: #3f4c5a;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 12px;
+  font-weight: 700;
+  gap: 10px;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.shop-hero .shop-stock-summary {
+  color: #5d6570;
+  margin-top: 18px;
 }
 
 .category-chip {
@@ -750,6 +770,12 @@ button.category-chip {
   color: #65707a;
   font-size: 11px;
   text-transform: uppercase;
+}
+
+.product-card-stock {
+  color: #4d5965;
+  font-size: 12px;
+  line-height: 1.2;
 }
 
 .campaign-section {
