@@ -24,11 +24,11 @@ describe("storefront language controls", () => {
   it("switches the navbar copy between English and Vietnamese and remembers the choice", () => {
     renderWithLanguage(<SiteHeader />);
 
-    expect(screen.getByRole("link", { name: "Shop" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "All products" })).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "Tiếng Việt" }));
 
-    expect(screen.getByRole("link", { name: "Cửa hàng" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "All products" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Chiến dịch" })).toBeInTheDocument();
     expect(window.localStorage.getItem("starliar-language")).toBe("vi");
   });

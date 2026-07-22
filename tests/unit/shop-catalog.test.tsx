@@ -59,9 +59,9 @@ describe("ShopCatalog", () => {
 
     const breadcrumb = screen.getByLabelText("Shop breadcrumb");
     expect(breadcrumb).toHaveTextContent("First Signal");
-    expect(breadcrumb).toHaveTextContent("Shop");
+    expect(breadcrumb).toHaveTextContent("All products");
     expect(screen.getByText(/In stock · 3 styles/i)).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Shop" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "All products" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /Axis Cropped Shirt/i })).toHaveAttribute(
       "href",
       "/shop/axis-cropped-shirt"
