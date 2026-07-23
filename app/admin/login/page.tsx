@@ -28,7 +28,7 @@ export default function AdminLoginPage() {
   return (
     <main className="admin-login">
       <form action={login} className="admin-card">
-        <h1>Starliar Admin</h1>
+        <h1>Starlier Admin</h1>
         <input name="email" placeholder="Email" required type="email" />
         <input name="password" placeholder="Password" required type="password" />
         <button className="primary-button" type="submit">

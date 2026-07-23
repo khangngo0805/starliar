@@ -187,7 +187,7 @@ export function SearchDialog() {
               <Link href="/shop?category=jacket" onClick={closeSearch}>Jackets</Link>
               <Link href="/shop?category=accessories" onClick={closeSearch}>Accessories</Link>
             </nav>
-            <Link className="search-overlay-logo" href="/" onClick={closeSearch}>STARLIAR</Link>
+            <Link className="search-overlay-logo" href="/" onClick={closeSearch}>STARLIER</Link>
             <div>
               <Link href="/shop/cold-cut-short" onClick={closeSearch}>Cold Cut Short</Link>
               <Search size={21} />

@@ -47,7 +47,7 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
         <Link href="/#campaign">{t("campaign")}</Link>
       </nav>
       <Link className="site-logo" href="/">
-        STARLIAR
+        STARLIER
       </Link>
       <div className="site-header-actions">
         <div className="language-switcher" aria-label="Language">

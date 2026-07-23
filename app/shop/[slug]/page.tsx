@@ -61,7 +61,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           <div className="product-info-panels">
             <details open>
               <summary>Details</summary>
-              <p>{product.category} from {product.collection?.name ?? "Starliar"} with a clean everyday finish.</p>
+              <p>{product.category} from {product.collection?.name ?? "Starlier"} with a clean everyday finish.</p>
             </details>
             <details>
               <summary>Size & fit</summary>

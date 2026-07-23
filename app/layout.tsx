@@ -5,8 +5,8 @@ import "leaflet/dist/leaflet.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Starliar",
-  description: "Cinematic unisex fashion commerce for Starliar."
+  title: "Starlier",
+  description: "Cinematic unisex fashion commerce for Starlier."
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

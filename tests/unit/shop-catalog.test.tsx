@@ -34,7 +34,7 @@ const products = [
   {
     id: "tee-1",
     slug: "starliar-test-tee",
-    name: "Starliar Test Tee",
+    name: "Starlier Test Tee",
     category: "T-Shirt",
     priceVnd: 10000,
     media: ["/media/placeholders/nocturne-shirt.svg"]

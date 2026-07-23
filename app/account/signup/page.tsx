@@ -46,7 +46,7 @@ export default async function SignupPage({
       <SiteHeader />
       <main className="account-auth-shell">
         <form action={signup} className="account-card">
-          <p className="eyebrow">Starliar account</p>
+          <p className="eyebrow">Starlier account</p>
           <h1>Create account</h1>
           {params.error ? <p className="form-error">Use a valid email and a password of at least 6 characters.</p> : null}
           <input name="name" placeholder="Name" />

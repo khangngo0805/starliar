@@ -3,8 +3,8 @@ import { normalizeGuestOrderLookup } from "@/lib/commerce/order-history";
 
 describe("guest order history lookup", () => {
   it("normalizes email and phone before searching guest orders", () => {
-    expect(normalizeGuestOrderLookup({ email: " Guest@Starliar.Test ", phone: " 090 123-4567 " })).toEqual({
-      email: "guest@starliar.test",
+    expect(normalizeGuestOrderLookup({ email: " Guest@Starlier.Test ", phone: " 090 123-4567 " })).toEqual({
+      email: "guest@starlier.test",
       phone: "0901234567"
     });
   });

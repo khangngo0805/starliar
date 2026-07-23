@@ -114,7 +114,7 @@ export function OrderStatusPanel({
               </svg>
             </span>
             <h2>Thanh toán thành công</h2>
-            <p>Đơn hàng của bạn đã được xác nhận. Starliar sẽ chuẩn bị đơn và liên hệ khi cần.</p>
+            <p>Đơn hàng của bạn đã được xác nhận. Starlier sẽ chuẩn bị đơn và liên hệ khi cần.</p>
             <div className="payment-success-actions">
               <Link className="primary-link" href="/shop">
                 Tiếp tục mua sắm

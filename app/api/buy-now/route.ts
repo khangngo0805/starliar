@@ -16,7 +16,7 @@ export async function POST(request: Request) {
     const user = await getCurrentUser();
     const order = await createCheckoutOrder({
       email: user?.email ?? "guest@starliar.local",
-      customerName: user?.name ?? "Starliar Guest",
+      customerName: user?.name ?? "Starlier Guest",
       phone: "0900000000",
       country: "VN",
       addressLine1: "Quick buy order",

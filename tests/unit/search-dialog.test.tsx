@@ -21,7 +21,7 @@ describe("SearchDialog", () => {
     expect(screen.getByRole("link", { name: /Trace Cap/i })).toHaveAttribute("href", "/shop/trace-cap");
     expect(screen.getByRole("link", { name: "Shop" })).toHaveAttribute("href", "/shop");
     expect(screen.getByRole("link", { name: "Campaign" })).toHaveAttribute("href", "/#campaign");
-    expect(screen.getByRole("link", { name: "STARLIAR" })).toHaveAttribute("href", "/");
+    expect(screen.getByRole("link", { name: "STARLIER" })).toHaveAttribute("href", "/");
     expect(screen.getByText("RECENTLY VIEWED")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Remove recently viewed products" })).toBeInTheDocument();
   });

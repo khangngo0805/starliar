@@ -98,7 +98,7 @@ export async function searchProducts(query: string) {
     name: product.name,
     category: product.category,
     priceVnd: product.priceVnd,
-    collection: product.collection?.name ?? "Starliar",
+    collection: product.collection?.name ?? "Starlier",
     media: product.images.map((image) => image.src)
   }));
 }

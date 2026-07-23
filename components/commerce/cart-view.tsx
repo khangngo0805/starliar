@@ -65,7 +65,7 @@ export function CartView() {
               <div className="cart-line-copy">
                 <Link href={`/shop/${item.slug}`}>{item.name}</Link>
                 <p>
-                  {item.category ?? "Starliar"} / Size {item.size}
+                  {item.category ?? "Starlier"} / Size {item.size}
                 </p>
                 <button type="button" onClick={() => setQuantity(item.variantId, 0)}>
                   Remove

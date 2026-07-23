@@ -33,7 +33,7 @@ export default async function LoginPage({
       <SiteHeader />
       <main className="account-auth-shell">
         <form action={login} className="account-card">
-          <p className="eyebrow">Starliar account</p>
+          <p className="eyebrow">Starlier account</p>
           <h1>Sign in</h1>
           {params.error ? <p className="form-error">Email or password is incorrect.</p> : null}
           {params.exists ? <p className="muted">This email already has an account. Sign in instead.</p> : null}

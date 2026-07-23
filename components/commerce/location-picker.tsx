@@ -7,7 +7,7 @@ import { geolocationErrorMessage, resolveMapProvider } from "@/lib/commerce/stor
 declare global {
   interface Window {
     google?: typeof google;
-    initStarliarGoogleMap?: () => void;
+    initStarlierGoogleMap?: () => void;
   }
 }
 
@@ -24,8 +24,8 @@ function loadGoogleMaps(apiKey: string) {
   if (window.google?.maps) return Promise.resolve(window.google);
 
   return new Promise<typeof google>((resolve, reject) => {
-    const existing = document.querySelector<HTMLScriptElement>("script[data-starliar-google-map]");
-    window.initStarliarGoogleMap = () => {
+    const existing = document.querySelector<HTMLScriptElement>("script[data-starlier-google-map]");
+    window.initStarlierGoogleMap = () => {
       if (window.google) resolve(window.google);
     };
 
@@ -33,9 +33,9 @@ function loadGoogleMaps(apiKey: string) {
 
     const script = document.createElement("script");
     script.async = true;
-    script.dataset.starliarGoogleMap = "true";
+    script.dataset.starlierGoogleMap = "true";
     script.onerror = () => reject(new Error("GOOGLE_MAPS_LOAD_FAILED"));
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(apiKey)}&callback=initStarliarGoogleMap`;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(apiKey)}&callback=initStarlierGoogleMap`;
     document.head.append(script);
   });
 }

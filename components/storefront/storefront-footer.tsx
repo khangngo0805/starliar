@@ -21,7 +21,7 @@ export function StorefrontFooter() {
     <footer className="storefront-footer">
       <div className="storefront-footer-brand">
         <Link className="site-logo footer-logo" href="/">
-          STARLIAR
+          STARLIER
         </Link>
         <p>{t("footerTagline")}</p>
       </div>
@@ -66,7 +66,7 @@ export function StorefrontFooter() {
             TikTok
           </a>
         </div>
-        <span>© 2026 STARLIAR</span>
+        <span>© 2026 STARLIER</span>
       </div>
     </footer>
   );

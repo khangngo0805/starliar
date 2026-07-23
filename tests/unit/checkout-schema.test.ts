@@ -11,7 +11,7 @@ describe("checkoutInputSchema", () => {
     expect(
       checkoutInputSchema.parse({
         email: "guest@starliar.test",
-        customerName: "Starliar Guest",
+        customerName: "Starlier Guest",
         phone: "090 123 4567",
         country: "VN",
         addressLine1: "123 Nguyen Hue",

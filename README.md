@@ -1,6 +1,6 @@
-# Starliar
+# Starlier
 
-Cinematic unisex fashion commerce for Starliar, built around a full-bleed brand
+Cinematic unisex fashion commerce for Starlier, built around a full-bleed brand
 video, product storefront, cart, QR-first checkout boundary, and basic admin
 operations.
 
@@ -20,7 +20,7 @@ npm run dev
 
 The app runs at `http://localhost:3000`.
 
-Starliar now expects PostgreSQL for local and production data. Before running
+Starlier now expects PostgreSQL for local and production data. Before running
 `npm run db:setup`, set `DATABASE_URL` in `.env` to a reachable database, for
 example:
 

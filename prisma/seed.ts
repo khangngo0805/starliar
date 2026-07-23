@@ -19,16 +19,16 @@ async function main() {
     data: {
       slug: "first-signal",
       name: "First Signal",
-      description: "A cold opening drop for Starliar."
+      description: "A cold opening drop for Starlier."
     }
   });
 
   await prisma.campaignMedia.create({
     data: {
-      title: "Starliar Hero",
+      title: "Starlier Hero",
       kind: "video",
       src: "/media/starliar-hero.mp4",
-      alt: "Starliar opening campaign video",
+      alt: "Starlier opening campaign video",
       hero: true,
       position: 0
     }
@@ -221,7 +221,7 @@ async function main() {
     update: {},
     create: {
       email: "user@starliar.local",
-      name: "Starliar User",
+      name: "Starlier User",
       passwordHash: await bcrypt.hash("change-this-password", 12)
     }
   });

@@ -20,7 +20,7 @@ export default async function AccountPage() {
       <>
         <SiteHeader />
         <main className="account-shell account-guest">
-          <p className="eyebrow">Starliar account</p>
+          <p className="eyebrow">Starlier account</p>
           <h1>Sign in to save favorites and see your orders.</h1>
           <div className="account-actions">
             <Link className="primary-link" href="/account/login">

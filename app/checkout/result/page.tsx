@@ -7,7 +7,7 @@ export default function CheckoutResultPage() {
       <SiteHeader />
       <main className="page-shell">
         <h1>Payment status</h1>
-        <p>Your payment is being confirmed. Starliar updates the order from the payment provider callback.</p>
+        <p>Your payment is being confirmed. Starlier updates the order from the payment provider callback.</p>
         <Link className="text-link" href="/shop">
           Return to shop
         </Link>
