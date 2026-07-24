@@ -5,6 +5,7 @@ import "leaflet/dist/leaflet.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://wwwstarlier.com"),
   title: "Starlier",
   description: "Cinematic unisex fashion commerce for Starlier."
 };
