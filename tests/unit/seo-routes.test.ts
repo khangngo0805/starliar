@@ -53,4 +53,16 @@ describe("SEO metadata routes", () => {
       ])
     );
   });
+
+  it("keeps the canonical sitemap on wwwstarlier.com even when Vercel exposes a preview URL", async () => {
+    process.env.NEXT_PUBLIC_SITE_URL = "https://starlier.vercel.app";
+    findMany.mockResolvedValue([{ slug: "trace-cap", updatedAt: new Date("2026-07-02T00:00:00.000Z") }]);
+
+    const { default: sitemap } = await import("@/app/sitemap");
+    const entries = await sitemap();
+
+    expect(entries.map((entry) => entry.url)).toContain("https://wwwstarlier.com/");
+    expect(entries.map((entry) => entry.url)).toContain("https://wwwstarlier.com/shop/trace-cap");
+    expect(entries.map((entry) => entry.url)).not.toContain("https://starlier.vercel.app/");
+  });
 });
