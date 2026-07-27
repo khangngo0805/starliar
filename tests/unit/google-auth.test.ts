@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildGoogleAuthUrl, normalizeGoogleProfile, normalizeGoogleRedirect } from "@/lib/auth/google";
+import { buildGoogleAuthUrl, googleAuthErrorCode, normalizeGoogleProfile, normalizeGoogleRedirect } from "@/lib/auth/google";
 
 describe("google auth helpers", () => {
   it("builds the Google OAuth URL with safe scopes and state", () => {
@@ -44,5 +44,12 @@ describe("google auth helpers", () => {
     expect(normalizeGoogleRedirect("/orders")).toBe("/orders");
     expect(normalizeGoogleRedirect("https://evil.test")).toBe("/account");
     expect(normalizeGoogleRedirect("//evil.test/path")).toBe("/account");
+  });
+
+  it("maps known Google auth failures to safe URL codes", () => {
+    expect(googleAuthErrorCode(new Error("GOOGLE_AUTH_NOT_CONFIGURED"))).toBe("not_configured");
+    expect(googleAuthErrorCode(new Error("GOOGLE_TOKEN_EXCHANGE_FAILED"))).toBe("token_exchange");
+    expect(googleAuthErrorCode(new Error("GOOGLE_STATE_MISMATCH"))).toBe("state");
+    expect(googleAuthErrorCode(new Error("SOMETHING_ELSE"))).toBe("unknown");
   });
 });

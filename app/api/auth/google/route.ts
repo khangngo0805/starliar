@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import {
   buildGoogleAuthUrl,
+  googleAuthErrorCode,
   googleAuthNextCookieName,
   googleAuthStateCookieName,
   googleRedirectUri,
@@ -34,7 +35,9 @@ export async function GET(request: Request) {
         state
       })
     );
-  } catch {
-    return NextResponse.redirect(new URL("/account/login?googleError=1", request.url));
+  } catch (error) {
+    const errorCode = googleAuthErrorCode(error);
+    console.error("Google auth start failed", { errorCode });
+    return NextResponse.redirect(new URL(`/account/login?googleError=${errorCode}`, request.url));
   }
 }

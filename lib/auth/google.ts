@@ -52,6 +52,24 @@ export function normalizeGoogleProfile(profile: GoogleProfile) {
   };
 }
 
+export function googleAuthErrorCode(error: unknown) {
+  const message = error instanceof Error ? error.message : "";
+  switch (message) {
+    case "GOOGLE_AUTH_NOT_CONFIGURED":
+      return "not_configured";
+    case "GOOGLE_TOKEN_EXCHANGE_FAILED":
+      return "token_exchange";
+    case "GOOGLE_PROFILE_FAILED":
+      return "profile";
+    case "GOOGLE_EMAIL_NOT_VERIFIED":
+      return "email_not_verified";
+    case "GOOGLE_STATE_MISMATCH":
+      return "state";
+    default:
+      return "unknown";
+  }
+}
+
 export function requireGoogleClientConfig() {
   const clientId = process.env.GOOGLE_CLIENT_ID?.trim();
   const clientSecret = process.env.GOOGLE_CLIENT_SECRET?.trim();

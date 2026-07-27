@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import {
+  googleAuthErrorCode,
   googleAuthNextCookieName,
   googleAuthStateCookieName,
   googleRedirectUri,
@@ -62,7 +63,6 @@ async function fetchGoogleProfile(accessToken: string) {
 
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
-  const errorUrl = new URL("/account/login?googleError=1", request.url);
 
   try {
     const code = requestUrl.searchParams.get("code");
@@ -98,7 +98,9 @@ export async function GET(request: Request) {
 
     await setUserSession(user.email);
     return NextResponse.redirect(new URL(next, request.url));
-  } catch {
-    return NextResponse.redirect(errorUrl);
+  } catch (error) {
+    const errorCode = googleAuthErrorCode(error);
+    console.error("Google auth callback failed", { errorCode });
+    return NextResponse.redirect(new URL(`/account/login?googleError=${errorCode}`, request.url));
   }
 }
