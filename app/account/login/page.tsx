@@ -23,7 +23,7 @@ async function login(formData: FormData) {
 export default async function LoginPage({
   searchParams
 }: {
-  searchParams: Promise<{ error?: string; next?: string; exists?: string }>;
+  searchParams: Promise<{ error?: string; next?: string; exists?: string; googleError?: string }>;
 }) {
   const params = await searchParams;
   const next = normalizeCustomerRedirect(params.next);
@@ -36,7 +36,11 @@ export default async function LoginPage({
           <p className="eyebrow">Starlier account</p>
           <h1>Sign in</h1>
           {params.error ? <p className="form-error">Email or password is incorrect.</p> : null}
+          {params.googleError ? <p className="form-error">Google sign-in could not be completed.</p> : null}
           {params.exists ? <p className="muted">This email already has an account. Sign in instead.</p> : null}
+          <Link className="google-auth-button" href={`/api/auth/google?next=${encodeURIComponent(next)}`}>
+            Continue with Google
+          </Link>
           <input name="email" placeholder="Email" required type="email" />
           <input name="password" placeholder="Password" required type="password" />
           <input name="next" type="hidden" value={next} />

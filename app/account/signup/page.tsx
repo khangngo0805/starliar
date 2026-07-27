@@ -36,7 +36,7 @@ async function signup(formData: FormData) {
 export default async function SignupPage({
   searchParams
 }: {
-  searchParams: Promise<{ error?: string; next?: string }>;
+  searchParams: Promise<{ error?: string; next?: string; googleError?: string }>;
 }) {
   const params = await searchParams;
   const next = normalizeCustomerRedirect(params.next);
@@ -49,6 +49,10 @@ export default async function SignupPage({
           <p className="eyebrow">Starlier account</p>
           <h1>Create account</h1>
           {params.error ? <p className="form-error">Use a valid email and a password of at least 6 characters.</p> : null}
+          {params.googleError ? <p className="form-error">Google sign-in could not be completed.</p> : null}
+          <Link className="google-auth-button" href={`/api/auth/google?next=${encodeURIComponent(next)}`}>
+            Continue with Google
+          </Link>
           <input name="name" placeholder="Name" />
           <input name="email" placeholder="Email" required type="email" />
           <input name="password" placeholder="Password" required type="password" />

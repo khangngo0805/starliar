@@ -1463,6 +1463,32 @@ button.category-chip {
   resize: vertical;
 }
 
+.google-auth-button {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(8, 8, 8, 0.16);
+  border-radius: var(--starliar-radius);
+  color: var(--starliar-ink);
+  display: inline-flex;
+  font-size: 0.82rem;
+  font-weight: 700;
+  justify-content: center;
+  letter-spacing: 0;
+  min-height: 46px;
+  text-decoration: none;
+  transition:
+    background 220ms var(--starliar-ease),
+    border-color 220ms var(--starliar-ease),
+    transform 220ms var(--starliar-ease);
+  width: 100%;
+}
+
+.google-auth-button:hover {
+  background: #fff;
+  border-color: var(--starliar-ink);
+  transform: translateY(-1px);
+}
+
 .checkout-summary-panel {
   align-self: start;
   grid-row: span 2;
