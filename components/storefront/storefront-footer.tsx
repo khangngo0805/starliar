@@ -43,7 +43,7 @@ export function StorefrontFooter() {
         <h2>{t("footerContact")}</h2>
         <a href={`mailto:${t("footerEmail")}`}>{t("footerEmail")}</a>
         <span>{t("footerHours")}</span>
-        <span>Ho Chi Minh City, VN</span>
+        <span>Hanoi, VN</span>
       </div>
       <div className="footer-column footer-newsletter">
         <h2>{t("newsletter")}</h2>

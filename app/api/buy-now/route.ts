@@ -20,7 +20,7 @@ export async function POST(request: Request) {
       phone: "0900000000",
       country: "VN",
       addressLine1: "Quick buy order",
-      city: "Ho Chi Minh",
+      city: "Hanoi",
       items: [{ variantId: data.variantId, quantity: data.quantity }]
     }, user?.id);
 

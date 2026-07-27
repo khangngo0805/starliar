@@ -15,7 +15,7 @@ describe("checkoutInputSchema", () => {
         phone: "090 123 4567",
         country: "VN",
         addressLine1: "123 Nguyen Hue",
-        city: "Ho Chi Minh",
+        city: "Hanoi",
         deliveryLatitude: 10.7769,
         deliveryLongitude: 106.7009,
         deliveryNote: "Call before delivery",
