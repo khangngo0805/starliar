@@ -1,7 +1,9 @@
 import bcrypt from "bcryptjs";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { GoogleAuthButton } from "@/components/storefront/google-auth-button";
 import { SiteHeader } from "@/components/storefront/site-header";
+import { googleErrorMessage } from "@/lib/auth/google-errors";
 import { isUserEmail, normalizeCustomerRedirect, setUserSession } from "@/lib/auth/user";
 import { prisma } from "@/lib/prisma";
 
@@ -40,6 +42,7 @@ export default async function SignupPage({
 }) {
   const params = await searchParams;
   const next = normalizeCustomerRedirect(params.next);
+  const googleMessage = googleErrorMessage(params.googleError);
 
   return (
     <>
@@ -49,10 +52,8 @@ export default async function SignupPage({
           <p className="eyebrow">Starlier account</p>
           <h1>Create account</h1>
           {params.error ? <p className="form-error">Use a valid email and a password of at least 6 characters.</p> : null}
-          {params.googleError ? <p className="form-error">Google sign-in could not be completed.</p> : null}
-          <Link className="google-auth-button" href={`/api/auth/google?next=${encodeURIComponent(next)}`}>
-            Continue with Google
-          </Link>
+          {googleMessage ? <p className="form-error">{googleMessage}</p> : null}
+          <GoogleAuthButton href={`/api/auth/google?next=${encodeURIComponent(next)}`} />
           <input name="name" placeholder="Name" />
           <input name="email" placeholder="Email" required type="email" />
           <input name="password" placeholder="Password" required type="password" />

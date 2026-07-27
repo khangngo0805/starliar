@@ -1,7 +1,9 @@
 import bcrypt from "bcryptjs";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { GoogleAuthButton } from "@/components/storefront/google-auth-button";
 import { SiteHeader } from "@/components/storefront/site-header";
+import { googleErrorMessage } from "@/lib/auth/google-errors";
 import { isUserEmail, normalizeCustomerRedirect, setUserSession } from "@/lib/auth/user";
 import { prisma } from "@/lib/prisma";
 
@@ -18,26 +20,6 @@ async function login(formData: FormData) {
 
   await setUserSession(user.email);
   redirect(next);
-}
-
-function googleErrorMessage(error?: string) {
-  switch (error) {
-    case "not_configured":
-      return "Google sign-in is not configured for this deployment yet.";
-    case "token_exchange":
-      return "Google rejected this sign-in request. Check the OAuth redirect URI.";
-    case "state":
-      return "Google sign-in expired. Please try again.";
-    case "email_not_verified":
-      return "Your Google email must be verified before signing in.";
-    case "profile":
-      return "Google profile could not be loaded. Please try again.";
-    case "unknown":
-    case "1":
-      return "Google sign-in could not be completed.";
-    default:
-      return null;
-  }
 }
 
 export default async function LoginPage({
@@ -59,9 +41,7 @@ export default async function LoginPage({
           {params.error ? <p className="form-error">Email or password is incorrect.</p> : null}
           {googleMessage ? <p className="form-error">{googleMessage}</p> : null}
           {params.exists ? <p className="muted">This email already has an account. Sign in instead.</p> : null}
-          <Link className="google-auth-button" href={`/api/auth/google?next=${encodeURIComponent(next)}`}>
-            Continue with Google
-          </Link>
+          <GoogleAuthButton href={`/api/auth/google?next=${encodeURIComponent(next)}`} />
           <input name="email" placeholder="Email" required type="email" />
           <input name="password" placeholder="Password" required type="password" />
           <input name="next" type="hidden" value={next} />
