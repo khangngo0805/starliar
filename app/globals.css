@@ -2357,7 +2357,7 @@ button.category-chip {
   line-height: 1;
   margin: 0;
   max-width: none;
-  text-transform: uppercase;
+  text-transform: none;
 }
 
 .hero-summary {
