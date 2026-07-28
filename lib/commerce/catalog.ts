@@ -19,7 +19,10 @@ type SearchableProduct = {
 
 export async function getFeaturedProducts(category?: string | null) {
   const products = await prisma.product.findMany({
-    where: { published: true, ...(category ? { category } : {}) },
+    where: {
+      published: true,
+      ...(category ? { category } : { category: { in: shopCategories } })
+    },
     include: { images: { orderBy: { position: "asc" } }, variants: true, collection: true },
     orderBy: { createdAt: "desc" },
     take: 8

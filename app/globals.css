@@ -2446,7 +2446,7 @@ button.category-chip {
 }
 
 .featured-section {
-  background: linear-gradient(to bottom, var(--starliar-paper), #f3f5f7);
+  background: #fff;
 }
 
 .section-heading-row {
