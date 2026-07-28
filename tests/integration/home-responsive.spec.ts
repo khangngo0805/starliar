@@ -27,7 +27,9 @@ test("homepage presents editorial storefront sections", async ({ page }) => {
   await expect(page.getByRole("heading", { name: /First Signal/i })).toBeVisible();
   await expect(page.getByText(/Quiet luxury structure\. Dark streetwear attitude/i)).toBeHidden();
   await expect(page.getByRole("heading", { name: /Latest release/i })).toBeVisible();
-  await expect(page.getByRole("heading", { name: /After dark uniform/i })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Discover" })).toBeVisible();
+  await expect(page.getByRole("link", { name: /Explore Bags/i })).toHaveAttribute("href", "/shop?category=Accessories");
+  await expect(page.getByRole("link", { name: /Explore Shirts/i })).toHaveAttribute("href", "/shop?category=Shirt");
 });
 
 test("featured product cards remain navigable", async ({ page }) => {

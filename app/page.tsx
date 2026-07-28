@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { DiscoverSection } from "@/components/storefront/discover-section";
 import { HeroVideo } from "@/components/storefront/hero-video";
 import { LocalizedText } from "@/components/storefront/localized-text";
 import { ProductGrid } from "@/components/storefront/product-grid";
@@ -31,23 +32,7 @@ export default async function HomePage() {
         </div>
         <ProductGrid products={products} />
       </section>
-      <section className="campaign-section" id="campaign">
-        <div className="campaign-copy">
-          <p className="section-kicker">Campaign 2026</p>
-          <h2>
-            <LocalizedText textKey="campaignTitle" />
-          </h2>
-          <p>Monochrome layers, quiet hardware, and silhouettes made for low light.</p>
-        </div>
-        <div className="campaign-details" aria-label="Campaign details">
-          <span>Night release</span>
-          <span>Structured cotton</span>
-          <span>Limited run</span>
-        </div>
-        <Link className="campaign-link" href="/shop">
-          Enter the drop
-        </Link>
-      </section>
+      <DiscoverSection />
       <section className="material-notes" aria-label="Collection notes">
         <article>
           <span>Material</span>
