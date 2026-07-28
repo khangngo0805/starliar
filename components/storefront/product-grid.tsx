@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { FavoriteButton } from "@/components/commerce/favorite-button";
 import { formatVnd } from "@/lib/commerce/cart";
+import { categoryLabel } from "@/lib/commerce/categories";
 
 type GridProduct = {
   id: string;
@@ -37,7 +38,7 @@ export function ProductGrid({ products }: { products: GridProduct[] }) {
             </div>
             <div className="product-card-meta">
               <div>
-                <small>{product.category}</small>
+                <small>{categoryLabel(product.category)}</small>
                 <span className="product-card-name">{product.name}</span>
                 <span className="product-card-stock">In stock</span>
               </div>

@@ -3,7 +3,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ProductGrid } from "@/components/storefront/product-grid";
-import { categoryToParam, paramToCategory, shopCategories } from "@/lib/commerce/categories";
+import {
+  categoryLabel,
+  categoryToParam,
+  isStorefrontCategory,
+  paramToCategory,
+  shopCategories
+} from "@/lib/commerce/categories";
 import { useLanguage } from "./language-provider";
 
 type ShopProduct = {
@@ -37,8 +43,9 @@ export function ShopCatalog({
   }, []);
 
   const visibleProducts = useMemo(() => {
-    if (!activeCategory) return products;
-    return products.filter((product) => product.category === activeCategory);
+    const storefrontProducts = products.filter((product) => isStorefrontCategory(product.category));
+    if (!activeCategory) return storefrontProducts;
+    return storefrontProducts.filter((product) => product.category === activeCategory);
   }, [activeCategory, products]);
 
   useEffect(() => {
@@ -66,9 +73,9 @@ export function ShopCatalog({
         <nav aria-label="Shop breadcrumb" className="shop-breadcrumb">
           <span>{t("firstSignal")}</span>
           <span aria-hidden="true">/</span>
-          <span>{activeCategory ?? t("shop")}</span>
+          <span>{activeCategory ? categoryLabel(activeCategory) : t("shop")}</span>
         </nav>
-        <h1>{activeCategory ?? t("shop")}</h1>
+        <h1>{activeCategory ? categoryLabel(activeCategory) : t("shop")}</h1>
         <p className="shop-description">{t("shopDescription")}</p>
         <p className="shop-stock-summary">In stock · {visibleProducts.length} styles</p>
       </div>
@@ -87,7 +94,7 @@ export function ShopCatalog({
             onClick={() => selectCategory(category)}
             type="button"
           >
-            {category}
+            {categoryLabel(category)}
           </button>
         ))}
       </div>

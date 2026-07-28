@@ -4,7 +4,7 @@ import Link from "next/link";
 const discoveries = [
   {
     alt: "Starlier tote bag carried at night",
-    href: "/shop?category=Accessories",
+    href: "/shop?category=bags",
     image: "/media/discover-bags.png",
     title: "Bags"
   },

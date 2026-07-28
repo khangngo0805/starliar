@@ -5,7 +5,7 @@ import { UserRound } from "lucide-react";
 import { useEffect, useState } from "react";
 import { SearchDialog } from "./search-dialog";
 import { CartLink } from "./cart-link";
-import { categoryToParam, shopCategories } from "@/lib/commerce/categories";
+import { categoryLabel, categoryToParam, shopCategories } from "@/lib/commerce/categories";
 import { useLanguage, type StorefrontLanguage } from "./language-provider";
 
 export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
@@ -39,7 +39,7 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
             <Link href="/shop">{t("shopAll")}</Link>
             {shopCategories.map((category) => (
               <Link href={`/shop?category=${categoryToParam(category)}`} key={category}>
-                {category}
+                {categoryLabel(category)}
               </Link>
             ))}
           </div>

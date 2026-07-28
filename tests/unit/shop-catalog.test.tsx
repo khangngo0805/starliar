@@ -24,11 +24,11 @@ const products = [
     media: ["/media/placeholders/nocturne-shirt.svg"]
   },
   {
-    id: "jacket-1",
-    slug: "mirror-bomber",
-    name: "Mirror Bomber Jacket",
-    category: "Jacket",
-    priceVnd: 3290000,
+    id: "bag-1",
+    slug: "starliar-canvas-bag",
+    name: "Starlier Canvas Bag",
+    category: "Accessories",
+    priceVnd: 1290000,
     media: ["/media/placeholders/orbital-shell.svg"]
   },
   {
@@ -66,7 +66,7 @@ describe("ShopCatalog", () => {
       "href",
       "/shop/axis-cropped-shirt"
     );
-    expect(screen.getByRole("link", { name: /Mirror Bomber Jacket/i })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Starlier Canvas Bag/i })).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "Shirt" }));
 
@@ -74,22 +74,22 @@ describe("ShopCatalog", () => {
     expect(window.location.pathname).toBe("/shop");
     expect(window.location.search).toBe("?category=shirt");
     expect(screen.getByRole("link", { name: /Axis Cropped Shirt/i })).toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: /Mirror Bomber Jacket/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: /Starlier Canvas Bag/i })).not.toBeInTheDocument();
   });
 
   it("marks the active category and can return to all products", () => {
-    window.history.replaceState({}, "", "/shop?category=jacket");
-    renderCatalog(<ShopCatalog initialCategory="Jacket" products={products} />);
+    window.history.replaceState({}, "", "/shop?category=bags");
+    renderCatalog(<ShopCatalog initialCategory="Accessories" products={products} />);
 
-    expect(screen.getByRole("heading", { name: "Jacket" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /Mirror Bomber Jacket/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Bags" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Starlier Canvas Bag/i })).toBeInTheDocument();
     expect(screen.queryByRole("link", { name: /Axis Cropped Shirt/i })).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Jacket" })).toHaveClass("active");
+    expect(screen.getByRole("button", { name: "Bags" })).toHaveClass("active");
 
     fireEvent.click(screen.getByRole("button", { name: "All" }));
 
     const grid = screen.getByTestId("shop-product-grid");
-    expect(within(grid).getByRole("link", { name: /Mirror Bomber Jacket/i })).toBeInTheDocument();
+    expect(within(grid).getByRole("link", { name: /Starlier Canvas Bag/i })).toBeInTheDocument();
     expect(within(grid).getByRole("link", { name: /Axis Cropped Shirt/i })).toBeInTheDocument();
     expect(window.location.search).toBe("");
   });

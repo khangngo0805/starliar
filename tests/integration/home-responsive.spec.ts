@@ -28,7 +28,7 @@ test("homepage presents editorial storefront sections", async ({ page }) => {
   await expect(page.getByText(/Quiet luxury structure\. Dark streetwear attitude/i)).toBeHidden();
   await expect(page.getByRole("heading", { name: /Latest release/i })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Discover" })).toBeVisible();
-  await expect(page.getByRole("link", { name: /Explore Bags/i })).toHaveAttribute("href", "/shop?category=Accessories");
+  await expect(page.getByRole("link", { name: /Explore Bags/i })).toHaveAttribute("href", "/shop?category=bags");
   await expect(page.getByRole("link", { name: /Explore Shirts/i })).toHaveAttribute("href", "/shop?category=Shirt");
 });
 
