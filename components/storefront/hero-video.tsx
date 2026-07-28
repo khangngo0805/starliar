@@ -124,7 +124,7 @@ export function HeroVideo({ mediaSlides, src, slides, videoSrc, intervalMs = 550
       <div className="hero-video-scrim" />
       <SiteHeader overlay />
       <div className="hero-video-content">
-        <h1 className="hero-kicker">{t("firstSignal").toUpperCase()}</h1>
+        <h1 className="hero-kicker">{t("firstSignal")}</h1>
         <div className="hero-actions">
           <Link className="pill-button pill-button-filled" href="/shop">
             {t("shopNow")}

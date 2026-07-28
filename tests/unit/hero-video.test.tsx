@@ -24,7 +24,7 @@ describe("HeroVideo", () => {
   it("keeps Starlier branding and collection actions on the hero", () => {
     renderHero(<HeroVideo slides={heroSlides} />);
     expect(screen.getByText("STARLIER")).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "FIRST SIGNAL" })).toHaveClass("hero-kicker");
+    expect(screen.getByRole("heading", { name: "First Signal" })).toHaveClass("hero-kicker");
     expect(screen.getByRole("link", { name: /shop now/i })).toHaveAttribute("href", "/shop");
     expect(screen.getByRole("link", { name: /view campaign/i })).toHaveAttribute("href", "#campaign");
   });
