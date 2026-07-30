@@ -1,6 +1,11 @@
+"use client";
+
 import Link from "next/link";
+import { useLanguage } from "./language-provider";
 
 export function GoogleAuthButton({ href }: { href: string }) {
+  const { t } = useLanguage();
+
   return (
     <Link className="google-auth-button" href={href}>
       <svg aria-hidden="true" className="google-auth-mark" viewBox="0 0 24 24">
@@ -21,7 +26,7 @@ export function GoogleAuthButton({ href }: { href: string }) {
           fill="#EA4335"
         />
       </svg>
-      <span>Continue with Google</span>
+      <span>{t("continueWithGoogle")}</span>
     </Link>
   );
 }

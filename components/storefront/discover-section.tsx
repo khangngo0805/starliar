@@ -1,33 +1,40 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useLanguage, type TranslationKey } from "./language-provider";
 
 const discoveries = [
   {
-    alt: "Starlier tote bag carried at night",
+    altKey: "discoverBagsAlt" as TranslationKey,
+    categoryKey: "categoryBags" as TranslationKey,
     href: "/shop?category=bags",
-    image: "/media/discover-bags.png",
-    title: "Bags"
+    image: "/media/discover-bags.png"
   },
   {
-    alt: "Starlier shirt in an interior setting",
-    href: "/shop?category=Shirt",
-    image: "/media/discover-shirts.png",
-    title: "Shirts"
+    altKey: "discoverShirtsAlt" as TranslationKey,
+    categoryKey: "shirts" as TranslationKey,
+    href: "/shop?category=shirt",
+    image: "/media/discover-shirts.png"
   }
 ];
 
 export function DiscoverSection() {
+  const { t } = useLanguage();
+
   return (
     <section aria-labelledby="discover-heading" className="discover-section" id="campaign">
-      <h2 id="discover-heading">Discover</h2>
+      <h2 id="discover-heading">{t("discover")}</h2>
       <div className="discover-grid">
         {discoveries.map((discovery) => (
-          <Link className="discover-card" href={discovery.href} key={discovery.title}>
-            <Image alt={discovery.alt} fill sizes="(max-width: 820px) 100vw, 50vw" src={discovery.image} />
+          <Link className="discover-card" href={discovery.href} key={discovery.href}>
+            <Image alt={t(discovery.altKey)} fill sizes="(max-width: 820px) 100vw, 50vw" src={discovery.image} />
             <span className="discover-card-scrim" />
             <span className="discover-card-content">
-              <span className="discover-card-title">{discovery.title}</span>
-              <span className="discover-card-link">Explore {discovery.title}</span>
+              <span className="discover-card-title">{t(discovery.categoryKey)}</span>
+              <span className="discover-card-link">
+                {t("exploreCategory", { category: t(discovery.categoryKey) })}
+              </span>
             </span>
           </Link>
         ))}

@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { LocationPicker } from "@/components/commerce/location-picker";
 import { BUY_NOW_STORAGE_KEY, CART_STORAGE_KEY, formatVnd, getCartSubtotal, type CartItem } from "@/lib/commerce/cart";
+import { useLanguage } from "@/components/storefront/language-provider";
 
 function readCheckoutItems(mode: "cart" | "buy-now"): CartItem[] {
   const key = mode === "buy-now" ? BUY_NOW_STORAGE_KEY : CART_STORAGE_KEY;
@@ -18,6 +19,7 @@ export function CheckoutForm({
   shippingFeeVnd: number;
 }) {
   const router = useRouter();
+  const { t } = useLanguage();
   const [items, setItems] = useState<CartItem[]>([]);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
@@ -32,7 +34,7 @@ export function CheckoutForm({
     setError("");
     if (!items.length) {
       setBusy(false);
-      setError("Your checkout is empty.");
+      setError(t("checkoutEmpty"));
       return;
     }
 
@@ -58,7 +60,7 @@ export function CheckoutForm({
     const result = await response.json();
     setBusy(false);
     if (!response.ok) {
-      setError(result.error ?? "CHECKOUT_FAILED");
+      setError(t(result.error === "UNAVAILABLE_VARIANT" ? "unavailableVariant" : "checkoutFailed"));
       return;
     }
     window.localStorage.removeItem(mode === "buy-now" ? BUY_NOW_STORAGE_KEY : CART_STORAGE_KEY);
@@ -69,65 +71,65 @@ export function CheckoutForm({
   return (
     <form action={submit} className="checkout-form checkout-form-expanded">
       <section className="checkout-card">
-        <p className="eyebrow">{mode === "buy-now" ? "Buy now checkout" : "Checkout"}</p>
-        <h2>Contact</h2>
+        <p className="eyebrow">{t(mode === "buy-now" ? "buyNowCheckout" : "checkout")}</p>
+        <h2>{t("contact")}</h2>
         <div className="checkout-field-grid">
-          <input name="email" placeholder="Email" required type="email" />
-          <input name="customerName" placeholder="Full name" required />
-          <input name="phone" placeholder="Phone" required />
-          <input defaultValue="VN" name="country" placeholder="Country" required />
+          <input aria-label={t("email")} name="email" placeholder={t("email")} required type="email" />
+          <input aria-label={t("fullName")} name="customerName" placeholder={t("fullName")} required />
+          <input aria-label={t("phone")} name="phone" placeholder={t("phone")} required />
+          <input aria-label={t("country")} defaultValue="VN" name="country" placeholder={t("country")} required />
         </div>
       </section>
 
       <section className="checkout-card">
-        <h2>Delivery address</h2>
-        <input name="addressLine1" placeholder="Street address" required />
-        <input name="addressLine2" placeholder="Apartment, suite, landmark" />
+        <h2>{t("deliveryAddress")}</h2>
+        <input aria-label={t("streetAddress")} name="addressLine1" placeholder={t("streetAddress")} required />
+        <input aria-label={t("apartmentLandmark")} name="addressLine2" placeholder={t("apartmentLandmark")} />
         <div className="checkout-field-grid">
-          <input name="city" placeholder="City" required />
-          <input name="province" placeholder="Province / state" />
-          <input name="postalCode" placeholder="Postal code" />
+          <input aria-label={t("city")} name="city" placeholder={t("city")} required />
+          <input aria-label={t("province")} name="province" placeholder={t("province")} />
+          <input aria-label={t("postalCode")} name="postalCode" placeholder={t("postalCode")} />
         </div>
-        <textarea name="deliveryNote" placeholder="Delivery note" />
+        <textarea aria-label={t("deliveryNote")} name="deliveryNote" placeholder={t("deliveryNote")} />
       </section>
 
       <LocationPicker />
 
       <section className="checkout-card checkout-summary-panel">
         <div className="account-panel-heading">
-          <h2>Order summary</h2>
-          <span>{items.length} item{items.length === 1 ? "" : "s"}</span>
+          <h2>{t("orderSummary")}</h2>
+          <span>{t(items.length === 1 ? "cartItemCount" : "cartItemCountPlural", { count: items.length })}</span>
         </div>
         {items.length ? (
           <div className="checkout-summary-lines">
             {items.map((item) => (
               <article className="checkout-summary-line" key={item.variantId}>
                 <span>{item.name}</span>
-                <small>Size {item.size} / Qty {item.quantity}</small>
+                <small>{t("sizeQuantity", { size: item.size, quantity: item.quantity })}</small>
                 <strong>{formatVnd(item.priceVnd * item.quantity)}</strong>
               </article>
             ))}
           </div>
         ) : (
-          <p className="muted">No checkout item found. Add a product again before payment.</p>
+          <p className="muted">{t("noCheckoutItems")}</p>
         )}
         <div className="cart-summary-row">
-          <span>Subtotal</span>
+          <span>{t("subtotal")}</span>
           <strong>{formatVnd(getCartSubtotal(items))}</strong>
         </div>
         <div className="cart-summary-row">
-          <span>Estimated shipping</span>
+          <span>{t("estimatedShipping")}</span>
           <strong>{formatVnd(shippingFeeVnd)}</strong>
         </div>
         <div className="cart-summary-row">
-          <span>Total</span>
+          <span>{t("total")}</span>
           <strong>{formatVnd(getCartSubtotal(items) + shippingFeeVnd)}</strong>
         </div>
       </section>
 
       {error ? <p className="form-error" role="alert">{error}</p> : null}
       <button className="primary-button" disabled={busy || !items.length} type="submit">
-        {busy ? "Creating payment..." : "Pay by QR"}
+        {busy ? t("creatingPayment") : t("payByQr")}
       </button>
     </form>
   );

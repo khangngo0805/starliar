@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { OrderStatusPanel } from "@/components/commerce/order-status-panel";
 import { SePayQrPanel } from "@/components/commerce/sepay-qr-panel";
+import { LocalizedText } from "@/components/storefront/localized-text";
 import { SiteHeader } from "@/components/storefront/site-header";
 import { prisma } from "@/lib/prisma";
 import { formatVnd } from "@/lib/commerce/cart";
@@ -31,26 +32,26 @@ export default async function OrderPage({ params }: { params: Promise<{ orderNum
       <SiteHeader />
       <main className="order-shell">
         <section className="order-hero">
-          <p className="eyebrow">Order confirmation</p>
+          <p className="eyebrow"><LocalizedText textKey="orderConfirmation" /></p>
           <h1>{order.orderNumber}</h1>
-          <p>
-            We created the order and are tracking payment status through the provider callback.
-          </p>
+          <p><LocalizedText textKey="orderTrackingDescription" /></p>
           <div className="order-hero-actions">
             <Link className="primary-link" href="/shop">
-              Continue shopping
+              <LocalizedText textKey="continueShopping" />
             </Link>
           </div>
         </section>
         <section className="order-grid">
           <div className="order-panel">
-            <h2>Items</h2>
+            <h2><LocalizedText textKey="items" /></h2>
             <div className="order-lines">
               {order.items.map((item) => (
                 <article className="order-line" key={item.id}>
                   <div>
                     <strong>{item.productName}</strong>
-                    <p>Size {item.size} / Qty {item.quantity}</p>
+                    <p>
+                      <LocalizedText textKey="sizeQuantity" values={{ size: item.size, quantity: item.quantity }} />
+                    </p>
                   </div>
                   <span>{formatVnd(item.unitPriceVnd * item.quantity)}</span>
                 </article>
@@ -77,7 +78,7 @@ export default async function OrderPage({ params }: { params: Promise<{ orderNum
             />
           ) : null}
           <aside className="order-panel">
-            <h2>Shipping</h2>
+            <h2><LocalizedText textKey="shippingAddress" /></h2>
             <p>{order.customerName}</p>
             <p>{order.addressLine1}</p>
             {order.addressLine2 ? <p>{order.addressLine2}</p> : null}
@@ -92,7 +93,7 @@ export default async function OrderPage({ params }: { params: Promise<{ orderNum
                 rel="noreferrer"
                 target="_blank"
               >
-                Open delivery pin
+                <LocalizedText textKey="openDeliveryPin" />
               </Link>
             ) : null}
           </aside>

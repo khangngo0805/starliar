@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Search, X } from "lucide-react";
 import { useEffect, useId, useState } from "react";
 import { formatVnd } from "@/lib/commerce/cart";
+import { useLanguage } from "./language-provider";
 
 type SearchProduct = {
   id: string;
@@ -111,6 +112,7 @@ function SearchProductTile({
 }
 
 export function SearchDialog() {
+  const { t } = useLanguage();
   const searchInputId = useId();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -171,7 +173,7 @@ export function SearchDialog() {
   return (
     <>
       <button
-        aria-label="Search"
+        aria-label={t("search")}
         className="icon-button"
         onClick={() => setOpen(true)}
         type="button"
@@ -179,13 +181,13 @@ export function SearchDialog() {
         <Search size={21} />
       </button>
       {open ? (
-        <div className="search-overlay" role="dialog" aria-modal="true" aria-label="Search products">
+        <div className="search-overlay" role="dialog" aria-modal="true" aria-label={t("searchDialog")}>
           <div className="search-overlay-header">
             <nav>
-              <Link href="/shop" onClick={closeSearch}>Shop</Link>
-              <Link href="/#campaign" onClick={closeSearch}>Campaign</Link>
-              <Link href="/shop?category=shirt" onClick={closeSearch}>Shirts</Link>
-              <Link href="/shop?category=bags" onClick={closeSearch}>Bags</Link>
+              <Link href="/shop" onClick={closeSearch}>{t("shop")}</Link>
+              <Link href="/#campaign" onClick={closeSearch}>{t("campaign")}</Link>
+              <Link href="/shop?category=shirt" onClick={closeSearch}>{t("shirts")}</Link>
+              <Link href="/shop?category=bags" onClick={closeSearch}>{t("bags")}</Link>
             </nav>
             <Link className="search-overlay-logo" href="/" onClick={closeSearch}>STARLIER</Link>
             <div>
@@ -194,7 +196,7 @@ export function SearchDialog() {
             </div>
           </div>
           <button
-            aria-label="Close search"
+            aria-label={t("closeSearch")}
             className="search-close-button"
             onClick={closeSearch}
             type="button"
@@ -204,7 +206,7 @@ export function SearchDialog() {
           <div className="search-panel">
             <div className="search-input-row">
               <Search size={22} />
-              <label className="sr-only" htmlFor={searchInputId}>Search products</label>
+              <label className="sr-only" htmlFor={searchInputId}>{t("searchDialog")}</label>
               <input
                 autoFocus
                 id={searchInputId}
@@ -215,16 +217,16 @@ export function SearchDialog() {
                     setLoading(false);
                   }
                 }}
-                placeholder="Please enter the search term(s)"
+                placeholder={t("searchPlaceholder")}
                 value={query}
               />
             </div>
             {hasSearchQuery ? (
               <section className="search-section">
                 <div className="search-section-heading">
-                  <h2>SEARCH RESULTS</h2>
+                  <h2>{t("searchResults")}</h2>
                   <p aria-live="polite">
-                    {loading ? "Searching..." : `${products.length} result${products.length === 1 ? "" : "s"}`}
+                    {loading ? t("searching") : t("resultCount", { count: products.length })}
                   </p>
                 </div>
                 {loading ? (
@@ -240,14 +242,14 @@ export function SearchDialog() {
                     ))}
                   </div>
                 ) : (
-                  <p className="search-empty">No exact match yet. Try product names, categories, collection names, or material words.</p>
+                  <p className="search-empty">{t("searchEmpty")}</p>
                 )}
               </section>
             ) : (
               <>
                 <section className="search-section">
                   <div className="search-section-heading">
-                    <h2>SEARCH TRENDS</h2>
+                    <h2>{t("searchTrends")}</h2>
                   </div>
                   <div className="search-product-grid search-trends-grid">
                     {searchTrendProducts.map((product) => (
@@ -257,9 +259,9 @@ export function SearchDialog() {
                 </section>
                 <section className="search-section search-recent-section">
                   <div className="search-section-heading">
-                    <h2>RECENTLY VIEWED</h2>
-                    <button aria-label="Remove recently viewed products" className="text-button" type="button">
-                      REMOVE
+                    <h2>{t("recentlyViewed")}</h2>
+                    <button aria-label={t("removeRecentlyViewed")} className="text-button" type="button">
+                      {t("remove")}
                     </button>
                   </div>
                   <div className="search-product-grid search-recent-grid">

@@ -6,11 +6,11 @@ import { useEffect, useState } from "react";
 import { SearchDialog } from "./search-dialog";
 import { CartLink } from "./cart-link";
 import { categoryLabel, categoryToParam, shopCategories } from "@/lib/commerce/categories";
-import { useLanguage, type StorefrontLanguage } from "./language-provider";
+import { categoryTranslationKey, useLanguage } from "./language-provider";
 
 export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
   const [heroScrolled, setHeroScrolled] = useState(false);
-  const { language, setLanguage, t } = useLanguage();
+  const { language, toggleLanguage, t } = useLanguage();
 
   useEffect(() => {
     if (!overlay) {
@@ -32,14 +32,16 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
 
   return (
     <header className={className}>
-      <nav className="site-header-nav" aria-label="Primary navigation">
+      <nav className="site-header-nav" aria-label={t("primaryNavigation")}>
         <div className="nav-dropdown">
           <Link href="/shop">{t("shop")}</Link>
           <div className="nav-dropdown-panel">
             <Link href="/shop">{t("shopAll")}</Link>
             {shopCategories.map((category) => (
               <Link href={`/shop?category=${categoryToParam(category)}`} key={category}>
-                {categoryLabel(category)}
+                {categoryTranslationKey(category)
+                  ? t(categoryTranslationKey(category)!)
+                  : categoryLabel(category)}
               </Link>
             ))}
           </div>
@@ -50,22 +52,17 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
         STARLIER
       </Link>
       <div className="site-header-actions">
-        <div className="language-switcher" aria-label="Language">
-          {(["en", "vi"] as StorefrontLanguage[]).map((option) => (
-            <button
-              aria-label={option === "en" ? t("languageEnglish") : t("languageVietnamese")}
-              aria-pressed={language === option}
-              className={language === option ? "language-option active" : "language-option"}
-              key={option}
-              onClick={() => setLanguage(option)}
-              type="button"
-            >
-              {option.toUpperCase()}
-            </button>
-          ))}
-        </div>
+        <button
+          aria-label={language === "en" ? t("switchToVietnamese") : t("switchToEnglish")}
+          className={`language-switcher language-switcher-${language}`}
+          onClick={toggleLanguage}
+          type="button"
+        >
+          <span className={language === "en" ? "language-option active" : "language-option"}>EN</span>
+          <span className={language === "vi" ? "language-option active" : "language-option"}>VI</span>
+        </button>
         <SearchDialog />
-        <Link aria-label="Account" className="icon-link" href="/account">
+        <Link aria-label={t("account")} className="icon-link" href="/account">
           <UserRound size={21} />
         </Link>
         <CartLink />

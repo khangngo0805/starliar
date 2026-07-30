@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ShoppingBag } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useLanguage } from "@/components/storefront/language-provider";
 import type { CartItem } from "@/lib/commerce/cart";
 
 function getCartCount() {
@@ -12,6 +13,7 @@ function getCartCount() {
 }
 
 export function CartLink() {
+  const { t } = useLanguage();
   const [count, setCount] = useState(0);
 
   useEffect(() => {
@@ -26,7 +28,11 @@ export function CartLink() {
   }, []);
 
   return (
-    <Link aria-label={`Cart${count ? `, ${count} items` : ""}`} className="cart-icon-link" href="/cart">
+    <Link
+      aria-label={count ? t("cartWithCount", { count }) : t("cart")}
+      className="cart-icon-link"
+      href="/cart"
+    >
       {count > 0 ? <span className="cart-badge">{count > 9 ? "9+" : count}</span> : null}
       <ShoppingBag size={21} />
     </Link>

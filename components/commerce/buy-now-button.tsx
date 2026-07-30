@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { BUY_NOW_STORAGE_KEY } from "@/lib/commerce/cart";
+import { useLanguage } from "@/components/storefront/language-provider";
 
 export function BuyNowButton({
   product,
@@ -11,6 +12,7 @@ export function BuyNowButton({
   variant: { id: string; size: string; stock: number };
 }) {
   const router = useRouter();
+  const { t } = useLanguage();
 
   function buyNow() {
     window.localStorage.setItem(
@@ -35,7 +37,7 @@ export function BuyNowButton({
   return (
     <div className="buy-now-control">
       <button className="buy-now-button" disabled={variant.stock < 1} onClick={buyNow} type="button">
-        Buy now
+        {t("buyNow")}
       </button>
     </div>
   );

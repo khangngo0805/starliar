@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { LocalizedText } from "@/components/storefront/localized-text";
+import { LocalizedStatus } from "@/components/storefront/localized-status";
 import { SiteHeader } from "@/components/storefront/site-header";
 import { clearUserSession, getCurrentUser } from "@/lib/auth/user";
 import { formatVnd } from "@/lib/commerce/cart";
@@ -20,17 +22,17 @@ export default async function AccountPage() {
       <>
         <SiteHeader />
         <main className="account-shell account-guest">
-          <p className="eyebrow">Starlier account</p>
-          <h1>Sign in to save favorites and see your orders.</h1>
+          <p className="eyebrow"><LocalizedText textKey="starlierAccount" /></p>
+          <h1><LocalizedText textKey="accountPrompt" /></h1>
           <div className="account-actions">
             <Link className="primary-link" href="/account/login">
-              Sign in
+              <LocalizedText textKey="signIn" />
             </Link>
             <Link className="text-link" href="/account/signup">
-              Create account
+              <LocalizedText textKey="createAccount" />
             </Link>
             <Link className="text-link" href="/orders">
-              Find guest orders
+              <LocalizedText textKey="findGuestOrders" />
             </Link>
           </div>
         </main>
@@ -58,13 +60,13 @@ export default async function AccountPage() {
       <main className="account-shell">
         <section className="account-hero">
           <div>
-            <p className="eyebrow">Account</p>
+            <p className="eyebrow"><LocalizedText textKey="account" /></p>
             <h1>{user.name ?? user.email}</h1>
             <p>{user.email}</p>
           </div>
           <form action={logout}>
             <button className="text-button" type="submit">
-              Sign out
+              <LocalizedText textKey="signOut" />
             </button>
           </form>
         </section>
@@ -72,9 +74,9 @@ export default async function AccountPage() {
         <section className="account-grid">
           <div className="account-panel">
             <div className="account-panel-heading">
-              <h2>Favorites</h2>
+              <h2><LocalizedText textKey="favorites" /></h2>
               <Link className="text-link" href="/shop">
-                Shop
+                <LocalizedText textKey="shop" />
               </Link>
             </div>
             <div className="account-product-list">
@@ -98,16 +100,16 @@ export default async function AccountPage() {
                   );
                 })
               ) : (
-                <p className="muted">No favorites yet.</p>
+                <p className="muted"><LocalizedText textKey="noFavorites" /></p>
               )}
             </div>
           </div>
 
           <div className="account-panel">
             <div className="account-panel-heading">
-              <h2>Orders</h2>
+              <h2><LocalizedText textKey="orders" /></h2>
               <Link className="text-link" href="/orders">
-                View all
+                <LocalizedText textKey="viewAll" />
               </Link>
             </div>
             <div className="account-order-list">
@@ -115,12 +117,12 @@ export default async function AccountPage() {
                 orders.map((order) => (
                   <Link className="account-order-row" href={`/order/${order.orderNumber}`} key={order.id}>
                     <span>{order.orderNumber}</span>
-                    <small>{order.status.replaceAll("_", " ")}</small>
+                    <small><LocalizedStatus status={order.status} /></small>
                     <strong>{formatVnd(order.totalVnd)}</strong>
                   </Link>
                 ))
               ) : (
-                <p className="muted">Orders placed while signed in will appear here.</p>
+                <p className="muted"><LocalizedText textKey="signedInOrdersEmpty" /></p>
               )}
             </div>
           </div>

@@ -1,5 +1,6 @@
 import { SiteHeader } from "@/components/storefront/site-header";
 import { CheckoutForm } from "@/components/commerce/checkout-form";
+import { LocalizedText } from "@/components/storefront/localized-text";
 import { getShippingFeeVnd } from "@/lib/commerce/store-settings";
 
 export default async function CheckoutPage({
@@ -16,8 +17,10 @@ export default async function CheckoutPage({
       <SiteHeader />
       <main className="page-shell checkout-shell">
         <div className="page-heading">
-          <h1>{mode === "buy-now" ? "Buy now" : "Checkout"}</h1>
-          <p>Enter delivery details, drop a location pin, then generate your SePay QR.</p>
+          <h1>
+            <LocalizedText textKey={mode === "buy-now" ? "buyNow" : "checkout"} />
+          </h1>
+          <p><LocalizedText textKey="checkoutDescription" /></p>
         </div>
         <CheckoutForm mode={mode} shippingFeeVnd={shippingFeeVnd} />
       </main>

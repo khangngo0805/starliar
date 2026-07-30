@@ -1,16 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { OrderStatusPayload } from "@/lib/commerce/order-status";
 import { formatVnd } from "@/lib/commerce/cart";
+import { statusTranslationKey, useLanguage } from "@/components/storefront/language-provider";
 
 export const ORDER_STATUS_POLL_INTERVAL_MS = 1500;
 export const PAYMENT_QR_EXPIRY_MS = 5 * 60 * 1000;
-
-function displayStatus(status: string) {
-  return status.replaceAll("_", " ");
-}
 
 function remainingQrMs(issuedAtMs: number) {
   return Math.max(0, issuedAtMs + PAYMENT_QR_EXPIRY_MS - Date.now());
@@ -35,9 +32,16 @@ export function OrderStatusPanel({
   totalVnd: number;
   qrIssuedAtMs?: number;
 }) {
+  const { t } = useLanguage();
+  const displayStatus = (value: string) => {
+    const textKey = statusTranslationKey(value);
+    return textKey ? t(textKey) : t("statusUnknown");
+  };
   const [status, setStatus] = useState(initialStatus);
   const [showSuccess, setShowSuccess] = useState(initialStatus.confirmed);
   const [qrRemainingMs, setQrRemainingMs] = useState(() => (qrIssuedAtMs ? remainingQrMs(qrIssuedAtMs) : null));
+  const successModalRef = useRef<HTMLDivElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     if (status.confirmed) return;
@@ -67,40 +71,87 @@ export function OrderStatusPanel({
     return () => window.clearInterval(interval);
   }, [qrIssuedAtMs, status.confirmed]);
 
+  useEffect(() => {
+    if (!showSuccess) return;
+
+    previousFocusRef.current =
+      document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const modal = successModalRef.current;
+    const focusable = Array.from(
+      modal?.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      ) ?? []
+    );
+    focusable[0]?.focus();
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setShowSuccess(false);
+        return;
+      }
+
+      if (event.key !== "Tab" || focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      previousFocusRef.current?.focus();
+    };
+  }, [showSuccess]);
+
   return (
     <>
       <aside className="order-panel order-status-panel">
-        <h2>Status</h2>
+        <h2>{t("status")}</h2>
         {status.confirmed ? (
           <p className="payment-confirmed" role="status">
-            Payment confirmed
+            {t("paymentConfirmed")}
           </p>
         ) : (
-          <p className="muted">Waiting for payment confirmation...</p>
+          <p className="muted">{t("waitingPayment")}</p>
         )}
         {qrRemainingMs !== null && !status.confirmed ? (
           <p className={qrRemainingMs > 0 ? "payment-countdown" : "payment-countdown expired"}>
-            {qrRemainingMs > 0 ? `QR còn hiệu lực ${formatCountdown(qrRemainingMs)}` : "QR đã hết hiệu lực"}
+            {qrRemainingMs > 0
+              ? t("qrValidFor", { time: formatCountdown(qrRemainingMs) })
+              : t("qrExpired")}
           </p>
         ) : null}
         <div className="status-row">
-          <span>Order</span>
+          <span>{t("order")}</span>
           <strong>{displayStatus(status.orderStatus)}</strong>
         </div>
         <div className="status-row">
-          <span>Payment</span>
-          <strong>{status.paymentStatus}</strong>
+          <span>{t("payment")}</span>
+          <strong>{displayStatus(status.paymentStatus)}</strong>
         </div>
         <div className="status-row total">
-          <span>Total</span>
+          <span>{t("total")}</span>
           <strong>{formatVnd(totalVnd)}</strong>
         </div>
       </aside>
       {showSuccess ? (
-        <div className="payment-success-overlay" role="dialog" aria-modal="true" aria-label="Thanh toán thành công">
-          <div className="payment-success-modal">
+        <div
+          className="payment-success-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-label={t("paymentSuccessful")}
+        >
+          <div className="payment-success-modal" ref={successModalRef} tabIndex={-1}>
             <button
-              aria-label="Đóng thông báo thanh toán"
+              aria-label={t("closePaymentNotification")}
               className="payment-success-close"
               type="button"
               onClick={() => setShowSuccess(false)}
@@ -113,14 +164,14 @@ export function OrderStatusPanel({
                 <path d="M29 50.5 42.4 64 68 34.5" />
               </svg>
             </span>
-            <h2>Thanh toán thành công</h2>
-            <p>Đơn hàng của bạn đã được xác nhận. Starlier sẽ chuẩn bị đơn và liên hệ khi cần.</p>
+            <h2>{t("paymentSuccessful")}</h2>
+            <p>{t("paymentSuccessDescription")}</p>
             <div className="payment-success-actions">
               <Link className="primary-link" href="/shop">
-                Tiếp tục mua sắm
+                {t("continueShopping")}
               </Link>
               <button type="button" onClick={() => setShowSuccess(false)}>
-                Đóng
+                {t("close")}
               </button>
             </div>
           </div>

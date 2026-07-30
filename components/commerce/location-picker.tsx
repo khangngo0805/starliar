@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { Map as LeafletMap, Marker } from "leaflet";
-import { geolocationErrorMessage, resolveMapProvider } from "@/lib/commerce/store-settings";
+import { resolveMapProvider } from "@/lib/commerce/store-settings";
+import { useLanguage, type TranslationKey } from "@/components/storefront/language-provider";
 
 declare global {
   interface Window {
@@ -41,6 +42,7 @@ function loadGoogleMaps(apiKey: string) {
 }
 
 export function LocationPicker() {
+  const { t } = useLanguage();
   const mapElement = useRef<HTMLDivElement | null>(null);
   const leafletMapRef = useRef<LeafletMap | null>(null);
   const leafletMarkerRef = useRef<Marker | null>(null);
@@ -49,11 +51,10 @@ export function LocationPicker() {
   const provider = resolveMapProvider(googleMapsKey());
   const [position, setPosition] = useState(defaultPosition);
   const [mapOpen, setMapOpen] = useState(false);
-  const [message, setMessage] = useState(
-    provider === "google"
-      ? "Google Maps is active for delivery pins."
-      : "Using OpenStreetMap. Add NEXT_PUBLIC_GOOGLE_MAPS_API_KEY to enable Google Maps."
+  const [messageKey, setMessageKey] = useState<TranslationKey>(
+    provider === "google" ? "googleMapsActive" : "openStreetMapActive"
   );
+  const [showPinFallback, setShowPinFallback] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -97,7 +98,7 @@ export function LocationPicker() {
           googleMapRef.current = map;
           googleMarkerRef.current = marker;
         } catch {
-          setMessage("Google Maps could not load. Check NEXT_PUBLIC_GOOGLE_MAPS_API_KEY.");
+          setMessageKey("googleMapsUnavailable");
         }
         return;
       }
@@ -149,46 +150,59 @@ export function LocationPicker() {
 
   function useCurrentLocation() {
     if (!navigator.geolocation) {
-      setMessage("Browser location is not available.");
+      setMessageKey("locationBrowserUnavailable");
+      setShowPinFallback(false);
       return;
     }
 
-    setMessage("Finding your location...");
+    setMessageKey("locationFinding");
+    setShowPinFallback(false);
     navigator.geolocation.getCurrentPosition(
       (location) => {
         setPosition({
           latitude: Number(location.coords.latitude.toFixed(6)),
           longitude: Number(location.coords.longitude.toFixed(6))
         });
-        setMessage("Location added.");
+        setMessageKey("locationAdded");
       },
-      (error) => setMessage(`${geolocationErrorMessage(error.code)} You can still click the map to drop a pin.`),
+      (error) => {
+        const key =
+          error.code === 1
+            ? "locationPermissionDenied"
+            : error.code === 2
+              ? "locationPositionUnavailable"
+              : "locationTimedOut";
+        setMessageKey(key);
+        setShowPinFallback(true);
+      },
       { enableHighAccuracy: true, timeout: 10000 }
     );
   }
 
   return (
-    <section className="location-picker" aria-label="Delivery location">
+    <section className="location-picker" aria-label={t("deliveryLocation")}>
       <div className="location-picker-heading">
         <div>
-          <h2>Delivery pin</h2>
-          <p className="muted">Click the map or use your current location.</p>
+          <h2>{t("deliveryPin")}</h2>
+          <p className="muted">{t("deliveryPinDescription")}</p>
         </div>
         <button type="button" onClick={useCurrentLocation}>
-          Use my location
+          {t("useMyLocation")}
         </button>
       </div>
       {mapOpen ? (
         <div className="location-map" ref={mapElement} data-provider={provider} />
       ) : (
         <button className="location-map-placeholder" type="button" onClick={() => setMapOpen(true)}>
-          <span>Open map</span>
-          <small>{provider === "google" ? "Google Maps" : "OpenStreetMap"} will load after this click.</small>
+          <span>{t("openMap")}</span>
+          <small>
+            {t("mapLoadsAfterClick", { provider: provider === "google" ? "Google Maps" : "OpenStreetMap" })}
+          </small>
         </button>
       )}
       <div className="location-coordinates">
         <label>
-          Latitude
+          {t("latitude")}
           <input
             name="deliveryLatitude"
             step="0.000001"
@@ -198,7 +212,7 @@ export function LocationPicker() {
           />
         </label>
         <label>
-          Longitude
+          {t("longitude")}
           <input
             name="deliveryLongitude"
             step="0.000001"
@@ -208,7 +222,10 @@ export function LocationPicker() {
           />
         </label>
       </div>
-      {message ? <p className="muted">{message}</p> : null}
+      <p className="muted">
+        {t(messageKey)}
+        {showPinFallback ? ` ${t("locationPinFallback")}` : ""}
+      </p>
     </section>
   );
 }

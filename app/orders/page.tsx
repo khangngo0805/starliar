@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { GuestOrderLookup } from "@/components/commerce/guest-order-lookup";
+import { LocalizedText } from "@/components/storefront/localized-text";
+import { LocalizedStatus } from "@/components/storefront/localized-status";
 import { SiteHeader } from "@/components/storefront/site-header";
 import { getCurrentUser } from "@/lib/auth/user";
 import { formatVnd } from "@/lib/commerce/cart";
@@ -21,14 +23,14 @@ export default async function OrdersPage() {
       <main className="account-shell">
         <section className="account-hero">
           <div>
-            <p className="eyebrow">Orders</p>
-            <h1>{user ? "Your order history" : "Order history"}</h1>
-            <p>{user ? user.email : "Search guest orders using the same email and phone from checkout."}</p>
+            <p className="eyebrow"><LocalizedText textKey="orders" /></p>
+            <h1><LocalizedText textKey={user ? "yourOrderHistory" : "orderHistory"} /></h1>
+            <p>{user ? user.email : <LocalizedText textKey="guestOrderHistoryDescription" />}</p>
           </div>
           {!user ? (
             <div className="account-actions">
               <Link className="text-link" href="/account/login?next=/orders">
-                Sign in
+                <LocalizedText textKey="signIn" />
               </Link>
             </div>
           ) : null}
@@ -42,16 +44,22 @@ export default async function OrdersPage() {
                   <Link className="account-order-row" href={`/order/${order.orderNumber}`} key={order.id}>
                     <span>
                       {order.orderNumber}
-                      <small>{order.items.length} item{order.items.length === 1 ? "" : "s"}</small>
+                      <small>
+                        <LocalizedText
+                          textKey={order.items.length === 1 ? "cartItemCount" : "cartItemCountPlural"}
+                          values={{ count: order.items.length }}
+                        />
+                      </small>
                     </span>
                     <small>
-                      {order.status.replaceAll("_", " ")} / {order.payments[0]?.status ?? "PENDING"}
+                      <LocalizedStatus status={order.status} /> /{" "}
+                      <LocalizedStatus status={order.payments[0]?.status ?? "PENDING"} />
                     </small>
                     <strong>{formatVnd(order.totalVnd)}</strong>
                   </Link>
                 ))
               ) : (
-                <p className="muted">Orders placed while signed in will appear here.</p>
+                <p className="muted"><LocalizedText textKey="signedInOrdersEmpty" /></p>
               )}
             </div>
           </section>

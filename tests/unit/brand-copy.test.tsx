@@ -33,7 +33,7 @@ describe("Starlier brand copy", () => {
     );
 
     const footer = screen.getByRole("contentinfo");
-    expect(footer).toHaveTextContent("Hanoi, VN");
+    expect(footer).toHaveTextContent("Hanoi, Vietnam");
     expect(footer).not.toHaveTextContent("Ho Chi Minh");
   });
 });

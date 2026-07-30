@@ -1,15 +1,16 @@
 import Link from "next/link";
 import { SiteHeader } from "@/components/storefront/site-header";
+import { LocalizedText } from "@/components/storefront/localized-text";
 
 export default function CheckoutResultPage() {
   return (
     <>
       <SiteHeader />
       <main className="page-shell">
-        <h1>Payment status</h1>
-        <p>Your payment is being confirmed. Starlier updates the order from the payment provider callback.</p>
+        <h1><LocalizedText textKey="paymentStatus" /></h1>
+        <p><LocalizedText textKey="paymentResultDescription" /></p>
         <Link className="text-link" href="/shop">
-          Return to shop
+          <LocalizedText textKey="returnToShop" />
         </Link>
       </main>
     </>

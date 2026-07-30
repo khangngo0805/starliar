@@ -2,8 +2,10 @@ import bcrypt from "bcryptjs";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { GoogleAuthButton } from "@/components/storefront/google-auth-button";
+import { GoogleAuthError } from "@/components/storefront/google-auth-error";
+import { LocalizedInput } from "@/components/storefront/localized-input";
+import { LocalizedText } from "@/components/storefront/localized-text";
 import { SiteHeader } from "@/components/storefront/site-header";
-import { googleErrorMessage } from "@/lib/auth/google-errors";
 import { isUserEmail, normalizeCustomerRedirect, setUserSession } from "@/lib/auth/user";
 import { prisma } from "@/lib/prisma";
 
@@ -29,27 +31,26 @@ export default async function LoginPage({
 }) {
   const params = await searchParams;
   const next = normalizeCustomerRedirect(params.next);
-  const googleMessage = googleErrorMessage(params.googleError);
 
   return (
     <>
       <SiteHeader />
       <main className="account-auth-shell">
         <form action={login} className="account-card">
-          <p className="eyebrow">Starlier account</p>
-          <h1>Sign in</h1>
-          {params.error ? <p className="form-error">Email or password is incorrect.</p> : null}
-          {googleMessage ? <p className="form-error">{googleMessage}</p> : null}
-          {params.exists ? <p className="muted">This email already has an account. Sign in instead.</p> : null}
+          <p className="eyebrow"><LocalizedText textKey="starlierAccount" /></p>
+          <h1><LocalizedText textKey="signIn" /></h1>
+          {params.error ? <p className="form-error"><LocalizedText textKey="incorrectCredentials" /></p> : null}
+          <GoogleAuthError code={params.googleError} />
+          {params.exists ? <p className="muted"><LocalizedText textKey="accountExists" /></p> : null}
           <GoogleAuthButton href={`/api/auth/google?next=${encodeURIComponent(next)}`} />
-          <input name="email" placeholder="Email" required type="email" />
-          <input name="password" placeholder="Password" required type="password" />
+          <LocalizedInput name="email" placeholderKey="email" required type="email" />
+          <LocalizedInput name="password" placeholderKey="password" required type="password" />
           <input name="next" type="hidden" value={next} />
           <button className="primary-button" type="submit">
-            Sign in
+            <LocalizedText textKey="signIn" />
           </button>
           <Link className="text-link" href={`/account/signup?next=${encodeURIComponent(next)}`}>
-            Create account
+            <LocalizedText textKey="createAccount" />
           </Link>
         </form>
       </main>

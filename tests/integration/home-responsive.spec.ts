@@ -29,7 +29,30 @@ test("homepage presents editorial storefront sections", async ({ page }) => {
   await expect(page.getByRole("heading", { name: /Latest release/i })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Discover" })).toBeVisible();
   await expect(page.getByRole("link", { name: /Explore Bags/i })).toHaveAttribute("href", "/shop?category=bags");
-  await expect(page.getByRole("link", { name: /Explore Shirts/i })).toHaveAttribute("href", "/shop?category=Shirt");
+  await expect(page.getByRole("link", { name: /Explore Shirts/i })).toHaveAttribute("href", "/shop?category=shirt");
+});
+
+test("language selection persists across storefront navigation", async ({ page }) => {
+  const hydrationErrors: string[] = [];
+  page.on("console", (message) => {
+    if (message.type() === "error" && /hydration/i.test(message.text())) {
+      hydrationErrors.push(message.text());
+    }
+  });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  await page.getByRole("button", { name: "Switch to Tiếng Việt" }).click();
+
+  await expect(page.getByRole("button", { name: "Switch to English" })).toBeVisible();
+  await page.reload();
+  await expect(page.locator("html")).toHaveAttribute("lang", "vi");
+  await expect(page.getByRole("button", { name: "Switch to English" })).toBeVisible();
+  await page.goto("/shop");
+
+  await expect(page).toHaveURL(/\/shop$/);
+  await expect(page.getByRole("heading", { name: "Tất cả sản phẩm" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Switch to English" })).toBeVisible();
+  expect(hydrationErrors).toEqual([]);
 });
 
 test("featured product cards remain navigable", async ({ page }) => {

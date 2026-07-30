@@ -1,8 +1,11 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { FavoriteButton } from "@/components/commerce/favorite-button";
 import { formatVnd } from "@/lib/commerce/cart";
 import { categoryLabel } from "@/lib/commerce/categories";
+import { categoryTranslationKey, useLanguage } from "./language-provider";
 
 type GridProduct = {
   id: string;
@@ -14,8 +17,10 @@ type GridProduct = {
 };
 
 export function ProductGrid({ products }: { products: GridProduct[] }) {
+  const { t } = useLanguage();
+
   if (!products.length) {
-    return <p className="muted">No products are visible yet.</p>;
+    return <p className="muted">{t("emptyProducts")}</p>;
   }
 
   return (
@@ -38,9 +43,13 @@ export function ProductGrid({ products }: { products: GridProduct[] }) {
             </div>
             <div className="product-card-meta">
               <div>
-                <small>{categoryLabel(product.category)}</small>
+                <small>
+                  {categoryTranslationKey(product.category)
+                    ? t(categoryTranslationKey(product.category)!)
+                    : categoryLabel(product.category)}
+                </small>
                 <span className="product-card-name">{product.name}</span>
-                <span className="product-card-stock">In stock</span>
+                <span className="product-card-stock">{t("inStock")}</span>
               </div>
               <span className="product-card-price">{formatVnd(product.priceVnd)}</span>
             </div>

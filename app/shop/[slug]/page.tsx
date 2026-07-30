@@ -6,6 +6,10 @@ import { FavoriteButton } from "@/components/commerce/favorite-button";
 import { formatVnd } from "@/lib/commerce/cart";
 import { getPublishedProduct } from "@/lib/commerce/catalog";
 import { getProductAvailability } from "@/lib/commerce/product-presentation";
+import {
+  LocalizedProductCollectionText,
+  LocalizedText
+} from "@/components/storefront/localized-text";
 
 export const revalidate = 300;
 
@@ -14,6 +18,14 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const product = await getPublishedProduct(slug);
   if (!product) notFound();
   const availability = getProductAvailability(product.variants);
+  const availabilityTextKey =
+    availability.tone === "sold-out"
+      ? "soldOut"
+      : availability.tone === "low-stock"
+        ? "lowStock"
+        : availability.totalStock === 1
+          ? "pieceAvailable"
+          : "piecesAvailable";
   const gallery = product.media.length ? product.media : [""];
 
   return (
@@ -39,7 +51,9 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         <section className="product-detail-copy">
           <div className="product-copy-topline">
             <p className="eyebrow">{product.collection?.name}</p>
-            <span className={`availability-pill ${availability.tone}`}>{availability.label}</span>
+            <span className={`availability-pill ${availability.tone}`}>
+              <LocalizedText textKey={availabilityTextKey} values={{ count: availability.totalStock }} />
+            </span>
           </div>
           <h1>{product.name}</h1>
           <div className="product-detail-price-row">
@@ -48,32 +62,37 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           </div>
           <p>{product.description}</p>
           <VariantPicker product={product} />
-          <div className="product-service-notes" aria-label="Product service details">
+          <div className="product-service-notes">
             <article>
-              <span>Fit</span>
-              <strong>Structured unisex silhouette</strong>
+              <span><LocalizedText textKey="fit" /></span>
+              <strong><LocalizedText textKey="fitStructured" /></strong>
             </article>
             <article>
-              <span>Shipping</span>
-              <strong>Vietnam delivery prepared at checkout</strong>
+              <span><LocalizedText textKey="shipping" /></span>
+              <strong><LocalizedText textKey="shippingAtCheckout" /></strong>
             </article>
           </div>
           <div className="product-info-panels">
             <details open>
-              <summary>Details</summary>
-              <p>{product.category} from {product.collection?.name ?? "Starlier"} with a clean everyday finish.</p>
+              <summary><LocalizedText textKey="details" /></summary>
+              <p>
+                <LocalizedProductCollectionText
+                  category={product.category}
+                  collection={product.collection?.name ?? "Starlier"}
+                />
+              </p>
             </details>
             <details>
-              <summary>Size & fit</summary>
-              <p>Select your usual size for a regular fit, or size up for a more relaxed campaign silhouette.</p>
+              <summary><LocalizedText textKey="sizeFit" /></summary>
+              <p><LocalizedText textKey="sizeFitDescription" /></p>
             </details>
             <details>
-              <summary>Shipping & returns</summary>
-              <p>Orders are prepared after payment confirmation. Return support is available for unworn items.</p>
+              <summary><LocalizedText textKey="shippingReturns" /></summary>
+              <p><LocalizedText textKey="shippingReturnsDescription" /></p>
             </details>
             <details>
-              <summary>Care</summary>
-              <p>Cold gentle wash, dry flat, and avoid direct heat to preserve the garment surface.</p>
+              <summary><LocalizedText textKey="care" /></summary>
+              <p><LocalizedText textKey="careDescription" /></p>
             </details>
           </div>
         </section>

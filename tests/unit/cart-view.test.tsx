@@ -3,6 +3,8 @@ import { hydrateRoot } from "react-dom/client";
 import { renderToString } from "react-dom/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { CartView } from "@/components/commerce/cart-view";
+import { LanguageProvider } from "@/components/storefront/language-provider";
+import { cleanup, render, screen } from "@testing-library/react";
 
 const cartItem = {
   variantId: "sample-variant",
@@ -18,6 +20,7 @@ const cartItem = {
 
 describe("CartView hydration", () => {
   afterEach(() => {
+    cleanup();
     window.localStorage.clear();
     vi.restoreAllMocks();
   });
@@ -25,7 +28,11 @@ describe("CartView hydration", () => {
   it("hydrates without mismatch when browser cart exists", async () => {
     window.localStorage.clear();
     const container = document.createElement("div");
-    container.innerHTML = renderToString(<CartView />);
+    container.innerHTML = renderToString(
+      <LanguageProvider>
+        <CartView />
+      </LanguageProvider>
+    );
     document.body.append(container);
 
     window.localStorage.setItem("starliar-cart", JSON.stringify([cartItem]));
@@ -33,7 +40,12 @@ describe("CartView hydration", () => {
 
     let root: ReturnType<typeof hydrateRoot> | undefined;
     await act(async () => {
-      root = hydrateRoot(container, <CartView />);
+      root = hydrateRoot(
+        container,
+        <LanguageProvider>
+          <CartView />
+        </LanguageProvider>
+      );
     });
 
     expect(consoleError.mock.calls.flat().join("\n")).not.toContain("Hydration failed");
@@ -42,5 +54,18 @@ describe("CartView hydration", () => {
       root?.unmount();
     });
     container.remove();
+  });
+
+  it("localizes the empty cart in Vietnamese", () => {
+    window.localStorage.setItem("starliar-language", "vi");
+
+    render(
+      <LanguageProvider>
+        <CartView />
+      </LanguageProvider>
+    );
+
+    expect(screen.getByRole("heading", { name: "Giỏ hàng của bạn đang trống." })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Vào cửa hàng" })).toHaveAttribute("href", "/shop");
   });
 });

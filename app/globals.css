@@ -263,34 +263,51 @@ textarea {
 }
 
 .language-switcher {
+  appearance: none;
   align-items: center;
+  background: transparent;
   border: 1px solid currentColor;
   border-radius: 999px;
-  display: inline-flex;
-  gap: 0;
+  color: currentColor;
+  cursor: pointer;
+  display: inline-grid;
+  grid-template-columns: repeat(2, 1fr);
   min-height: 28px;
+  min-width: 72px;
   overflow: hidden;
+  padding: 0;
+  position: relative;
+  transition: opacity 220ms var(--starliar-ease);
+}
+
+.language-switcher::after {
+  background: currentColor;
+  bottom: 0;
+  content: "";
+  left: 50%;
+  opacity: 0.7;
+  position: absolute;
+  top: 0;
+  transform: translateX(-0.5px);
+  width: 1px;
+  z-index: 2;
 }
 
 .language-option {
-  appearance: none;
   background: transparent;
-  border: 0;
   color: currentColor;
-  cursor: pointer;
+  display: inline-flex;
   font-size: 11px;
+  justify-content: center;
   line-height: 1;
   min-height: 28px;
-  min-width: 36px;
-  padding: 0 9px;
+  min-width: 35px;
+  padding: 0 8px;
+  align-items: center;
   transition:
     background 220ms var(--starliar-ease),
     color 220ms var(--starliar-ease),
     opacity 220ms var(--starliar-ease);
-}
-
-.language-option + .language-option {
-  border-left: 1px solid currentColor;
 }
 
 .language-option.active {
@@ -306,7 +323,7 @@ textarea {
   color: var(--starliar-paper);
 }
 
-.language-option:hover {
+.language-switcher:hover {
   opacity: 0.76;
 }
 

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { PAYMENT_QR_EXPIRY_MS } from "@/components/commerce/order-status-panel";
+import { useLanguage } from "@/components/storefront/language-provider";
 
 type SePayQrPanelProps = {
   accountHolder: string;
@@ -32,6 +33,7 @@ export function SePayQrPanel({
   orderNumber,
   qrUrl
 }: SePayQrPanelProps) {
+  const { t } = useLanguage();
   const [remainingMs, setRemainingMs] = useState(() => getRemainingMs(issuedAtMs));
   const expired = remainingMs <= 0;
 
@@ -46,39 +48,39 @@ export function SePayQrPanel({
   return (
     <aside className="order-panel order-payment-panel">
       <div className="payment-panel-heading">
-        <h2>Scan to pay</h2>
+        <h2>{t("scanToPay")}</h2>
         <span className={expired ? "payment-countdown expired" : "payment-countdown"}>
-          {expired ? "QR đã hết hiệu lực" : `Còn ${formatCountdown(remainingMs)}`}
+          {expired ? t("qrExpired") : t("qrRemaining", { time: formatCountdown(remainingMs) })}
         </span>
       </div>
       {expired ? (
         <div className="payment-qr-expired">
-          <strong>QR đã hết hiệu lực sau 5 phút.</strong>
-          <p>Tạo lại đơn hàng để nhận mã QR mới trước khi chuyển khoản.</p>
+          <strong>{t("qrExpiredTitle")}</strong>
+          <p>{t("qrExpiredDescription")}</p>
         </div>
       ) : (
         // eslint-disable-next-line @next/next/no-img-element
-        <img alt={`SePay QR for order ${orderNumber}`} src={qrUrl} />
+        <img alt={t("qrAlt", { orderNumber })} src={qrUrl} />
       )}
       <div className="payment-transfer-lines">
         <div className="status-row">
-          <span>Bank</span>
+          <span>{t("bank")}</span>
           <strong>{bankName}</strong>
         </div>
         <div className="status-row">
-          <span>Account</span>
+          <span>{t("accountNumber")}</span>
           <strong>{accountNumber}</strong>
         </div>
         <div className="status-row">
-          <span>Name</span>
+          <span>{t("name")}</span>
           <strong>{accountHolder}</strong>
         </div>
         <div className="status-row">
-          <span>Memo</span>
+          <span>{t("memo")}</span>
           <strong>{orderNumber}</strong>
         </div>
       </div>
-      <p className="muted">Keep the amount and memo unchanged so SePay can confirm the payment automatically.</p>
+      <p className="muted">{t("sepayInstruction")}</p>
     </aside>
   );
 }

@@ -21,7 +21,7 @@ export default async function HomePage() {
       <section className="home-section featured-section">
         <div className="section-heading-row">
           <div>
-            <p className="section-kicker">New arrival</p>
+            <p className="section-kicker"><LocalizedText textKey="newArrival" /></p>
             <h2 className="release-heading">
               <LocalizedText textKey="latestRelease" />
             </h2>
@@ -33,18 +33,21 @@ export default async function HomePage() {
         <ProductGrid products={products} />
       </section>
       <DiscoverSection />
-      <section className="material-notes" aria-label="Collection notes">
+      <section className="material-notes" aria-labelledby="collection-notes-heading">
+        <h2 className="sr-only" id="collection-notes-heading">
+          <LocalizedText textKey="collectionNotes" />
+        </h2>
         <article>
-          <span>Material</span>
-          <p>Poplin, mesh, and compact fleece balanced for sharp everyday wear.</p>
+          <span><LocalizedText textKey="material" /></span>
+          <p><LocalizedText textKey="materialDescription" /></p>
         </article>
         <article>
-          <span>Palette</span>
-          <p>Paper, ink, frost gray, and small cold-blue signals.</p>
+          <span><LocalizedText textKey="palette" /></span>
+          <p><LocalizedText textKey="paletteDescription" /></p>
         </article>
         <article>
-          <span>Fit</span>
-          <p>Relaxed volume with clean shoulders, cropped layers, and utility lines.</p>
+          <span><LocalizedText textKey="fit" /></span>
+          <p><LocalizedText textKey="fitDescription" /></p>
         </article>
       </section>
     </main>

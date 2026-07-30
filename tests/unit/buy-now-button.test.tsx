@@ -2,6 +2,7 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { BUY_NOW_STORAGE_KEY } from "@/lib/commerce/cart";
 import { BuyNowButton } from "@/components/commerce/buy-now-button";
+import { LanguageProvider } from "@/components/storefront/language-provider";
 
 const pushMock = vi.fn();
 
@@ -20,17 +21,19 @@ describe("BuyNowButton", () => {
 
   it("stores the selected product as a buy-now checkout draft", () => {
     render(
-      <BuyNowButton
-        product={{
-          id: "product-1",
-          name: "SePay Test 10K",
-          slug: "sepay-test-10k",
-          category: "Accessories",
-          media: ["/media/test.svg"],
-          priceVnd: 10000
-        }}
-        variant={{ id: "variant-1", size: "OS", stock: 5 }}
-      />
+      <LanguageProvider>
+        <BuyNowButton
+          product={{
+            id: "product-1",
+            name: "SePay Test 10K",
+            slug: "sepay-test-10k",
+            category: "Accessories",
+            media: ["/media/test.svg"],
+            priceVnd: 10000
+          }}
+          variant={{ id: "variant-1", size: "OS", stock: 5 }}
+        />
+      </LanguageProvider>
     );
 
     fireEvent.click(screen.getByRole("button", { name: "Buy now" }));

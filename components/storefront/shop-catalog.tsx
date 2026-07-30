@@ -10,7 +10,7 @@ import {
   paramToCategory,
   shopCategories
 } from "@/lib/commerce/categories";
-import { useLanguage } from "./language-provider";
+import { categoryTranslationKey, useLanguage } from "./language-provider";
 
 type ShopProduct = {
   id: string;
@@ -67,19 +67,24 @@ export function ShopCatalog({
     window.history.pushState({}, "", nextUrl);
   }
 
+  function localizedCategory(category: string) {
+    const key = categoryTranslationKey(category);
+    return key ? t(key) : categoryLabel(category);
+  }
+
   return (
     <>
       <div className="shop-hero">
-        <nav aria-label="Shop breadcrumb" className="shop-breadcrumb">
+        <nav aria-label={t("shopBreadcrumb")} className="shop-breadcrumb">
           <span>{t("firstSignal")}</span>
           <span aria-hidden="true">/</span>
-          <span>{activeCategory ? categoryLabel(activeCategory) : t("shop")}</span>
+          <span>{activeCategory ? localizedCategory(activeCategory) : t("shop")}</span>
         </nav>
-        <h1>{activeCategory ? categoryLabel(activeCategory) : t("shop")}</h1>
+        <h1>{activeCategory ? localizedCategory(activeCategory) : t("shop")}</h1>
         <p className="shop-description">{t("shopDescription")}</p>
-        <p className="shop-stock-summary">In stock · {visibleProducts.length} styles</p>
+        <p className="shop-stock-summary">{t("shopStockSummary", { count: visibleProducts.length })}</p>
       </div>
-      <div className="shop-toolbar" aria-label="Product categories">
+      <div className="shop-toolbar" aria-label={t("productCategories")}>
         <button
           className={!activeCategory ? "category-chip active" : "category-chip"}
           onClick={() => selectCategory(null)}
@@ -94,7 +99,7 @@ export function ShopCatalog({
             onClick={() => selectCategory(category)}
             type="button"
           >
-            {categoryLabel(category)}
+            {localizedCategory(category)}
           </button>
         ))}
       </div>

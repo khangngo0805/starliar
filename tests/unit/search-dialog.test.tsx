@@ -1,17 +1,27 @@
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { SearchDialog } from "@/components/storefront/search-dialog";
+import { LanguageProvider } from "@/components/storefront/language-provider";
+
+function renderSearch() {
+  return render(
+    <LanguageProvider>
+      <SearchDialog />
+    </LanguageProvider>
+  );
+}
 
 describe("SearchDialog", () => {
   afterEach(() => {
     cleanup();
+    window.localStorage.clear();
     vi.useRealTimers();
     vi.restoreAllMocks();
     vi.unstubAllGlobals();
   });
 
   it("opens a full-screen editorial search surface with trends and recently viewed products", () => {
-    render(<SearchDialog />);
+    renderSearch();
 
     fireEvent.click(screen.getByRole("button", { name: "Search" }));
 
@@ -19,7 +29,7 @@ describe("SearchDialog", () => {
     expect(screen.getByPlaceholderText("Please enter the search term(s)")).toBeInTheDocument();
     expect(screen.getByText("SEARCH TRENDS")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /Trace Cap/i })).toHaveAttribute("href", "/shop/trace-cap");
-    expect(screen.getByRole("link", { name: "Shop" })).toHaveAttribute("href", "/shop");
+    expect(screen.getByRole("link", { name: "All products" })).toHaveAttribute("href", "/shop");
     expect(screen.getByRole("link", { name: "Campaign" })).toHaveAttribute("href", "/#campaign");
     expect(screen.getByRole("link", { name: "STARLIER" })).toHaveAttribute("href", "/");
     expect(screen.getByText("RECENTLY VIEWED")).toBeInTheDocument();
@@ -47,7 +57,7 @@ describe("SearchDialog", () => {
       }))
     );
 
-    render(<SearchDialog />);
+    renderSearch();
     fireEvent.click(screen.getByRole("button", { name: "Search" }));
     fireEvent.change(screen.getByPlaceholderText("Please enter the search term(s)"), {
       target: { value: "shell" }
@@ -59,7 +69,7 @@ describe("SearchDialog", () => {
   });
 
   it("closes the search overlay with escape", () => {
-    render(<SearchDialog />);
+    renderSearch();
     fireEvent.click(screen.getByRole("button", { name: "Search" }));
 
     fireEvent.keyDown(window, { key: "Escape" });
@@ -78,7 +88,7 @@ describe("SearchDialog", () => {
 
     vi.stubGlobal("AbortController", ThrowingAbortController);
 
-    const { unmount } = render(<SearchDialog />);
+    const { unmount } = renderSearch();
     fireEvent.click(screen.getByRole("button", { name: "Search" }));
     fireEvent.change(screen.getByPlaceholderText("Please enter the search term(s)"), {
       target: { value: "shell" }
@@ -98,12 +108,25 @@ describe("SearchDialog", () => {
 
     vi.stubGlobal("AbortController", ThrowingAbortController);
 
-    const { unmount } = render(<SearchDialog />);
+    const { unmount } = renderSearch();
     fireEvent.click(screen.getByRole("button", { name: "Search" }));
     fireEvent.change(screen.getByPlaceholderText("Please enter the search term(s)"), {
       target: { value: "shell" }
     });
 
     expect(() => unmount()).not.toThrow();
+  });
+
+  it("localizes the complete search surface in Vietnamese", () => {
+    window.localStorage.setItem("starliar-language", "vi");
+    renderSearch();
+    fireEvent.click(screen.getByRole("button", { name: "Tìm kiếm" }));
+
+    expect(screen.getByRole("dialog", { name: "Tìm sản phẩm" })).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("Nhập từ khóa tìm kiếm")).toBeInTheDocument();
+    expect(screen.getByText("XU HƯỚNG TÌM KIẾM")).toBeInTheDocument();
+    expect(screen.getByText("ĐÃ XEM GẦN ĐÂY")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Sơ mi" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Túi" })).toBeInTheDocument();
   });
 });

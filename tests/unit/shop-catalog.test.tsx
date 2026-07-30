@@ -52,6 +52,7 @@ describe("ShopCatalog", () => {
 
   afterEach(() => {
     cleanup();
+    window.localStorage.clear();
   });
 
   it("filters categories instantly without leaving the shop page", () => {
@@ -99,5 +100,16 @@ describe("ShopCatalog", () => {
 
     const grid = screen.getByTestId("shop-product-grid");
     expect(within(grid).getAllByText("In stock")).toHaveLength(products.length);
+  });
+
+  it("localizes category, stock, and product card labels in Vietnamese", () => {
+    window.localStorage.setItem("starliar-language", "vi");
+    renderCatalog(<ShopCatalog initialCategory={null} products={products} />);
+
+    expect(screen.getByRole("heading", { name: "Tất cả sản phẩm" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Sơ mi" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Túi" })).toBeInTheDocument();
+    expect(screen.getByText("Còn hàng · 3 mẫu")).toBeInTheDocument();
+    expect(screen.getAllByText("Còn hàng")).toHaveLength(products.length);
   });
 });

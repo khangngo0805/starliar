@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { addCartItem, CART_STORAGE_KEY, type CartItem } from "@/lib/commerce/cart";
+import { useLanguage } from "@/components/storefront/language-provider";
 
 function readCart(): CartItem[] {
   if (typeof window === "undefined") return [];
@@ -15,6 +16,7 @@ export function AddToCartButton({
   product: { id: string; name: string; slug: string; category?: string; media?: string[]; priceVnd: number };
   variant: { id: string; size: string; stock: number };
 }) {
+  const { t } = useLanguage();
   const [toast, setToast] = useState("");
 
   return (
@@ -36,12 +38,12 @@ export function AddToCartButton({
           });
           window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(next));
           window.dispatchEvent(new Event("starliar-cart-updated"));
-          setToast(`${product.name} added to cart`);
+          setToast(t("addedToCart", { product: product.name }));
           window.setTimeout(() => setToast(""), 1800);
         }}
         type="button"
       >
-        Add to cart
+        {t("addToCart")}
       </button>
       {toast ? <p className="cart-toast" role="status">{toast}</p> : null}
     </div>

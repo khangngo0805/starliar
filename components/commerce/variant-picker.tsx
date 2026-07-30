@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { AddToCartButton } from "./add-to-cart-button";
 import { BuyNowButton } from "./buy-now-button";
+import { useLanguage } from "@/components/storefront/language-provider";
 
 type VariantProduct = {
   id: string;
@@ -15,13 +16,14 @@ type VariantProduct = {
 };
 
 export function VariantPicker({ product }: { product: VariantProduct }) {
+  const { t } = useLanguage();
   const [variantId, setVariantId] = useState(product.variants[0]?.id ?? "");
   const selected = product.variants.find((variant) => variant.id === variantId);
 
   return (
     <div className="variant-picker">
       <fieldset>
-        <legend>Size</legend>
+        <legend>{t("size")}</legend>
         <div className="size-options">
           {product.variants.map((variant) => (
             <button

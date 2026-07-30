@@ -3,6 +3,7 @@
 import { Heart } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState, type MouseEvent } from "react";
+import { useLanguage } from "@/components/storefront/language-provider";
 
 export function FavoriteButton({
   productId,
@@ -15,6 +16,7 @@ export function FavoriteButton({
 }) {
   const pathname = usePathname();
   const router = useRouter();
+  const { t } = useLanguage();
   const [active, setActive] = useState(false);
   const [authenticated, setAuthenticated] = useState<boolean | null>(null);
   const [busy, setBusy] = useState(false);
@@ -73,7 +75,7 @@ export function FavoriteButton({
 
   return (
     <button
-      aria-label={active ? `Remove ${productName} from favorites` : `Add ${productName} to favorites`}
+      aria-label={active ? t("removeFavorite", { product: productName }) : t("addFavorite", { product: productName })}
       aria-pressed={active}
       className={compact ? "favorite-button favorite-button-compact" : "favorite-button"}
       disabled={busy}

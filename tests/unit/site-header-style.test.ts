@@ -12,4 +12,10 @@ describe("site header visual states", () => {
     expect(css).toMatch(/\.site-header-overlay\.site-header-scrolled\s*{[^}]*backdrop-filter:\s*blur\(22px\)\s*saturate\(1\.12\);/s);
     expect(css).not.toMatch(/\.site-header:has\(\.nav-dropdown:hover\),\s*\.site-header:has\(\.nav-dropdown:focus-within\)/s);
   });
+
+  it("keeps one centered divider visible in every language state", () => {
+    expect(css).toMatch(/\.language-switcher\s*{[^}]*grid-template-columns:\s*repeat\(2,\s*1fr\);/s);
+    expect(css).toMatch(/\.language-switcher::after\s*{[^}]*background:\s*currentColor;/s);
+    expect(css).not.toMatch(/\.language-option\s*\+\s*\.language-option\s*{/s);
+  });
 });

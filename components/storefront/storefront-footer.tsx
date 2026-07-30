@@ -43,16 +43,16 @@ export function StorefrontFooter() {
         <h2>{t("footerContact")}</h2>
         <a href={`mailto:${t("footerEmail")}`}>{t("footerEmail")}</a>
         <span>{t("footerHours")}</span>
-        <span>Hanoi, VN</span>
+        <span>{t("footerLocation")}</span>
       </div>
       <div className="footer-column footer-newsletter">
         <h2>{t("newsletter")}</h2>
         <p>{t("newsletterCopy")}</p>
         <form className="footer-newsletter-form" onSubmit={(event) => event.preventDefault()}>
           <label className="sr-only" htmlFor="footer-email">
-            Email
+            {t("email")}
           </label>
-          <input id="footer-email" name="email" placeholder="Email" type="email" />
+          <input id="footer-email" name="email" placeholder={t("email")} type="email" />
           <button type="submit">OK</button>
         </form>
       </div>
