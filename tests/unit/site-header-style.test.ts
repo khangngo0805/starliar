@@ -13,6 +13,13 @@ describe("site header visual states", () => {
     expect(css).not.toMatch(/\.site-header:has\(\.nav-dropdown:hover\),\s*\.site-header:has\(\.nav-dropdown:focus-within\)/s);
   });
 
+  it("diffuses the white navbar softly into page content", () => {
+    expect(css).toMatch(/\.site-header::after\s*{[^}]*pointer-events:\s*none;/s);
+    expect(css).toMatch(/\.site-header::after\s*{[^}]*backdrop-filter:\s*blur\(18px\)/s);
+    expect(css).toMatch(/\.site-header::after\s*{[^}]*mask-image:\s*linear-gradient\(to bottom, black, transparent\);/s);
+    expect(css).toMatch(/\.site-header-overlay:not\(\.site-header-scrolled\)::after\s*{[^}]*opacity:\s*0;/s);
+  });
+
   it("keeps one centered divider visible in every language state", () => {
     expect(css).toMatch(/\.language-switcher\s*{[^}]*grid-template-columns:\s*repeat\(2,\s*1fr\);/s);
     expect(css).toMatch(/\.language-switcher::after\s*{[^}]*background:\s*currentColor;/s);
