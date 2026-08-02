@@ -72,7 +72,6 @@ textarea {
   --header-diffusion-height: 76px;
   --header-dropdown-blur: 34px;
   --header-material-fade-stop: 72%;
-  --header-material-opacity: 0.72;
   --header-surface-opacity: 0.9;
   --header-white-rgb: 255, 255, 255;
   --header-surface: rgba(var(--header-white-rgb), var(--header-surface-opacity));
@@ -101,7 +100,7 @@ textarea {
 
 .site-header::after {
   backdrop-filter: blur(var(--header-diffusion-blur)) saturate(1.02);
-  background: linear-gradient(to bottom, rgba(var(--header-white-rgb), var(--header-material-opacity)), rgba(var(--header-white-rgb), 0));
+  background: transparent;
   content: "";
   height: var(--header-diffusion-height);
   left: 0;
@@ -235,12 +234,7 @@ textarea {
 
 .nav-dropdown-panel::before {
   backdrop-filter: blur(var(--header-dropdown-blur)) saturate(1.04);
-  background: linear-gradient(
-    to bottom,
-    var(--header-surface) 0%,
-    rgba(var(--header-white-rgb), var(--header-material-opacity)) var(--header-material-fade-stop),
-    rgba(var(--header-white-rgb), 0) 100%
-  );
+  background: transparent;
   content: "";
   inset: 0;
   mask-image: linear-gradient(to bottom, black 0%, black var(--header-material-fade-stop), transparent 100%);

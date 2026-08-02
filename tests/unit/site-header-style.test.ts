@@ -8,7 +8,6 @@ describe("site header visual states", () => {
   it("defines the shared navbar material values", () => {
     expect(css).toMatch(/\.site-header\s*{[^}]*--header-white-rgb:\s*255,\s*255,\s*255;/s);
     expect(css).toMatch(/\.site-header\s*{[^}]*--header-surface-opacity:\s*0\.9;/s);
-    expect(css).toMatch(/\.site-header\s*{[^}]*--header-material-opacity:\s*0\.72;/s);
     expect(css).toMatch(/\.site-header\s*{[^}]*--header-blur:\s*18px;/s);
     expect(css).toMatch(/\.site-header\s*{[^}]*--header-diffusion-blur:\s*18px;/s);
     expect(css).toMatch(/\.site-header\s*{[^}]*--header-dropdown-blur:\s*34px;/s);
@@ -29,10 +28,11 @@ describe("site header visual states", () => {
     expect(css).not.toMatch(/\.site-header:has\(\.nav-dropdown:hover\),\s*\.site-header:has\(\.nav-dropdown:focus-within\)/s);
   });
 
-  it("diffuses the white navbar softly into page content", () => {
+  it("diffuses page content without adding a white glow", () => {
     expect(css).toMatch(/\.site-header::after\s*{[^}]*pointer-events:\s*none;/s);
     expect(css).toMatch(/\.site-header::after\s*{[^}]*backdrop-filter:\s*blur\(var\(--header-diffusion-blur\)\)\s*saturate\(1\.02\);/s);
-    expect(css).toMatch(/\.site-header::after\s*{[^}]*background:\s*linear-gradient\(to bottom, rgba\(var\(--header-white-rgb\), var\(--header-material-opacity\)\), rgba\(var\(--header-white-rgb\), 0\)\);/s);
+    expect(css).toMatch(/\.site-header::after\s*{[^}]*background:\s*transparent;/s);
+    expect(css).not.toMatch(/\.site-header::after\s*{[^}]*background:\s*linear-gradient/s);
     expect(css).toMatch(/\.site-header::after\s*{[^}]*height:\s*var\(--header-diffusion-height\);/s);
     expect(css).toMatch(/\.site-header::after\s*{[^}]*left:\s*0;[^}]*position:\s*absolute;[^}]*right:\s*0;[^}]*top:\s*100%;/s);
     expect(css).toMatch(/\.site-header::after\s*{[^}]*mask-image:\s*linear-gradient\(to bottom, black, transparent\);/s);
@@ -47,7 +47,8 @@ describe("site header visual states", () => {
     expect(css).toMatch(/\.nav-dropdown-panel\s*{[^}]*isolation:\s*isolate;/s);
     expect(css).toMatch(/\.nav-dropdown-panel\s*{[^}]*pointer-events:\s*none;/s);
     expect(css).toMatch(/\.nav-dropdown-panel::before\s*{[^}]*backdrop-filter:\s*blur\(var\(--header-dropdown-blur\)\)\s*saturate\(1\.04\);/s);
-    expect(css).toMatch(/\.nav-dropdown-panel::before\s*{[^}]*background:\s*linear-gradient\(\s*to bottom,\s*var\(--header-surface\) 0%,\s*rgba\(var\(--header-white-rgb\), var\(--header-material-opacity\)\) var\(--header-material-fade-stop\),\s*rgba\(var\(--header-white-rgb\), 0\) 100%\s*\);/s);
+    expect(css).toMatch(/\.nav-dropdown-panel::before\s*{[^}]*background:\s*transparent;/s);
+    expect(css).not.toMatch(/\.nav-dropdown-panel::before\s*{[^}]*background:\s*linear-gradient/s);
     expect(css).toMatch(/\.nav-dropdown-panel::before\s*{[^}]*mask-image:\s*linear-gradient\(to bottom, black 0%, black var\(--header-material-fade-stop\), transparent 100%\);/s);
     expect(css).toMatch(/\.nav-dropdown-panel::before\s*{[^}]*-webkit-backdrop-filter:\s*blur\(var\(--header-dropdown-blur\)\)\s*saturate\(1\.04\);/s);
     expect(css).toMatch(/\.nav-dropdown-panel::before\s*{[^}]*-webkit-mask-image:\s*linear-gradient\(to bottom, black 0%, black var\(--header-material-fade-stop\), transparent 100%\);/s);
