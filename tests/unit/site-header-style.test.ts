@@ -59,7 +59,8 @@ describe("site header visual states", () => {
     expect(css).toMatch(/\.nav-dropdown-panel\s*{[^}]*isolation:\s*isolate;/s);
     expect(css).toMatch(/\.nav-dropdown-panel\s*{[^}]*pointer-events:\s*none;/s);
     expect(css).toMatch(/\.nav-dropdown-panel::before\s*{[^}]*backdrop-filter:\s*blur\(var\(--header-dropdown-blur\)\)\s*saturate\(0\.76\);/s);
-    expect(css).toMatch(/\.nav-dropdown-panel::before\s*{[^}]*background:\s*transparent;/s);
+    expect(css).toMatch(/\.site-header\s*{[^}]*--header-dropdown-surface-opacity:\s*0\.82;/s);
+    expect(css).toMatch(/\.nav-dropdown-panel::before\s*{[^}]*background:\s*rgba\(var\(--header-white-rgb\),\s*var\(--header-dropdown-surface-opacity\)\);/s);
     expect(css).not.toMatch(/\.nav-dropdown-panel::before\s*{[^}]*background:\s*linear-gradient/s);
     expect(css).toMatch(/\.nav-dropdown-panel::before\s*{[^}]*mask-image:\s*linear-gradient\(to bottom, black 0%, black var\(--header-material-fade-stop\), transparent 100%\);/s);
     expect(css).toMatch(/\.nav-dropdown-panel::before\s*{[^}]*-webkit-mask-image:\s*linear-gradient\(to bottom, black 0%, black var\(--header-material-fade-stop\), transparent 100%\);/s);

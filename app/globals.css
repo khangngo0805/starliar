@@ -71,6 +71,7 @@ textarea {
   --header-diffusion-blur: 34px;
   --header-diffusion-height: 28px;
   --header-dropdown-blur: 58px;
+  --header-dropdown-surface-opacity: 0.82;
   --header-material-fade-stop: 72%;
   --header-surface-opacity: 0.74;
   --header-white-rgb: 255, 255, 255;
@@ -229,7 +230,7 @@ textarea {
 
 .nav-dropdown-panel::before {
   backdrop-filter: blur(var(--header-dropdown-blur)) saturate(0.76);
-  background: transparent;
+  background: rgba(var(--header-white-rgb), var(--header-dropdown-surface-opacity));
   content: "";
   inset: 0;
   mask-image: linear-gradient(to bottom, black 0%, black var(--header-material-fade-stop), transparent 100%);
