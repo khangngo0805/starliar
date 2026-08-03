@@ -67,17 +67,17 @@ textarea {
 }
 
 .site-header {
-  --header-blur: 18px;
-  --header-diffusion-blur: 18px;
+  --header-blur: 34px;
+  --header-diffusion-blur: 26px;
   --header-diffusion-height: 76px;
-  --header-dropdown-blur: 34px;
+  --header-dropdown-blur: 42px;
   --header-material-fade-stop: 72%;
-  --header-surface-opacity: 0.9;
+  --header-surface-opacity: 0.8;
   --header-white-rgb: 255, 255, 255;
   --header-surface: rgba(var(--header-white-rgb), var(--header-surface-opacity));
   align-items: center;
   background: var(--header-surface);
-  backdrop-filter: blur(var(--header-blur)) saturate(1.04);
+  backdrop-filter: blur(var(--header-blur)) saturate(0.92);
   border-bottom: 1px solid transparent;
   color: var(--starliar-ink);
   display: grid;
@@ -93,13 +93,13 @@ textarea {
     border-color 280ms var(--starliar-ease),
     color 280ms var(--starliar-ease),
     box-shadow 280ms var(--starliar-ease);
-  -webkit-backdrop-filter: blur(var(--header-blur)) saturate(1.04);
+  -webkit-backdrop-filter: blur(var(--header-blur)) saturate(0.92);
   isolation: isolate;
   z-index: 20;
 }
 
 .site-header::after {
-  backdrop-filter: blur(var(--header-diffusion-blur)) saturate(1.02);
+  backdrop-filter: blur(var(--header-diffusion-blur)) saturate(0.94);
   background: transparent;
   content: "";
   height: var(--header-diffusion-height);
@@ -111,7 +111,7 @@ textarea {
   right: 0;
   top: 100%;
   transition: opacity 280ms var(--starliar-ease);
-  -webkit-backdrop-filter: blur(var(--header-diffusion-blur)) saturate(1.02);
+  -webkit-backdrop-filter: blur(var(--header-diffusion-blur)) saturate(0.94);
   -webkit-mask-image: linear-gradient(to bottom, black, transparent);
   z-index: -1;
 }
@@ -135,12 +135,12 @@ textarea {
 
 .site-header-overlay.site-header-scrolled {
   background: var(--header-surface);
-  backdrop-filter: blur(var(--header-blur)) saturate(1.04);
+  backdrop-filter: blur(var(--header-blur)) saturate(0.92);
   border-bottom-color: transparent;
   color: var(--starliar-ink);
   box-shadow: none;
   text-shadow: none;
-  -webkit-backdrop-filter: blur(var(--header-blur)) saturate(1.04);
+  -webkit-backdrop-filter: blur(var(--header-blur)) saturate(0.92);
 }
 
 .site-header-nav,
@@ -233,14 +233,14 @@ textarea {
 }
 
 .nav-dropdown-panel::before {
-  backdrop-filter: blur(var(--header-dropdown-blur)) saturate(1.04);
+  backdrop-filter: blur(var(--header-dropdown-blur)) saturate(0.9);
   background: transparent;
   content: "";
   inset: 0;
   mask-image: linear-gradient(to bottom, black 0%, black var(--header-material-fade-stop), transparent 100%);
   pointer-events: none;
   position: absolute;
-  -webkit-backdrop-filter: blur(var(--header-dropdown-blur)) saturate(1.04);
+  -webkit-backdrop-filter: blur(var(--header-dropdown-blur)) saturate(0.9);
   -webkit-mask-image: linear-gradient(to bottom, black 0%, black var(--header-material-fade-stop), transparent 100%);
   z-index: -1;
 }

@@ -7,10 +7,10 @@ const css = readFileSync(join(process.cwd(), "app/globals.css"), "utf8");
 describe("site header visual states", () => {
   it("defines the shared navbar material values", () => {
     expect(css).toMatch(/\.site-header\s*{[^}]*--header-white-rgb:\s*255,\s*255,\s*255;/s);
-    expect(css).toMatch(/\.site-header\s*{[^}]*--header-surface-opacity:\s*0\.9;/s);
-    expect(css).toMatch(/\.site-header\s*{[^}]*--header-blur:\s*18px;/s);
-    expect(css).toMatch(/\.site-header\s*{[^}]*--header-diffusion-blur:\s*18px;/s);
-    expect(css).toMatch(/\.site-header\s*{[^}]*--header-dropdown-blur:\s*34px;/s);
+    expect(css).toMatch(/\.site-header\s*{[^}]*--header-surface-opacity:\s*0\.8;/s);
+    expect(css).toMatch(/\.site-header\s*{[^}]*--header-blur:\s*34px;/s);
+    expect(css).toMatch(/\.site-header\s*{[^}]*--header-diffusion-blur:\s*26px;/s);
+    expect(css).toMatch(/\.site-header\s*{[^}]*--header-dropdown-blur:\s*42px;/s);
     expect(css).toMatch(/\.site-header\s*{[^}]*--header-diffusion-height:\s*76px;/s);
     expect(css).toMatch(/\.site-header\s*{[^}]*--header-material-fade-stop:\s*72%;/s);
     expect(css).toMatch(/\.site-header\s*{[^}]*--header-surface:\s*rgba\(var\(--header-white-rgb\),\s*var\(--header-surface-opacity\)\);/s);
@@ -22,7 +22,7 @@ describe("site header visual states", () => {
     expect(css).toMatch(/\.site-header-overlay\s*{[^}]*border-bottom-color:\s*transparent;/s);
     expect(css).toMatch(/\.site-header-overlay\s*{[^}]*box-shadow:\s*none;/s);
     expect(css).toMatch(/\.site-header-overlay\.site-header-scrolled\s*{[^}]*background:\s*var\(--header-surface\);/s);
-    expect(css).toMatch(/\.site-header-overlay\.site-header-scrolled\s*{[^}]*backdrop-filter:\s*blur\(var\(--header-blur\)\)\s*saturate\(1\.04\);/s);
+    expect(css).toMatch(/\.site-header-overlay\.site-header-scrolled\s*{[^}]*backdrop-filter:\s*blur\(var\(--header-blur\)\)\s*saturate\(0\.92\);/s);
     expect(css).not.toMatch(/background:\s*rgba\(248,\s*249,\s*250,\s*0\.78\);/s);
     expect(css).not.toMatch(/backdrop-filter:\s*blur\(22px\)\s*saturate\(1\.12\);/s);
     expect(css).not.toMatch(/\.site-header:has\(\.nav-dropdown:hover\),\s*\.site-header:has\(\.nav-dropdown:focus-within\)/s);
@@ -30,7 +30,7 @@ describe("site header visual states", () => {
 
   it("diffuses page content without adding a white glow", () => {
     expect(css).toMatch(/\.site-header::after\s*{[^}]*pointer-events:\s*none;/s);
-    expect(css).toMatch(/\.site-header::after\s*{[^}]*backdrop-filter:\s*blur\(var\(--header-diffusion-blur\)\)\s*saturate\(1\.02\);/s);
+    expect(css).toMatch(/\.site-header::after\s*{[^}]*backdrop-filter:\s*blur\(var\(--header-diffusion-blur\)\)\s*saturate\(0\.94\);/s);
     expect(css).toMatch(/\.site-header::after\s*{[^}]*background:\s*transparent;/s);
     expect(css).not.toMatch(/\.site-header::after\s*{[^}]*background:\s*linear-gradient/s);
     expect(css).toMatch(/\.site-header::after\s*{[^}]*height:\s*var\(--header-diffusion-height\);/s);
@@ -46,11 +46,11 @@ describe("site header visual states", () => {
     expect(css).toMatch(/\.nav-dropdown-panel\s*{[^}]*backdrop-filter:\s*none;/s);
     expect(css).toMatch(/\.nav-dropdown-panel\s*{[^}]*isolation:\s*isolate;/s);
     expect(css).toMatch(/\.nav-dropdown-panel\s*{[^}]*pointer-events:\s*none;/s);
-    expect(css).toMatch(/\.nav-dropdown-panel::before\s*{[^}]*backdrop-filter:\s*blur\(var\(--header-dropdown-blur\)\)\s*saturate\(1\.04\);/s);
+    expect(css).toMatch(/\.nav-dropdown-panel::before\s*{[^}]*backdrop-filter:\s*blur\(var\(--header-dropdown-blur\)\)\s*saturate\(0\.9\);/s);
     expect(css).toMatch(/\.nav-dropdown-panel::before\s*{[^}]*background:\s*transparent;/s);
     expect(css).not.toMatch(/\.nav-dropdown-panel::before\s*{[^}]*background:\s*linear-gradient/s);
     expect(css).toMatch(/\.nav-dropdown-panel::before\s*{[^}]*mask-image:\s*linear-gradient\(to bottom, black 0%, black var\(--header-material-fade-stop\), transparent 100%\);/s);
-    expect(css).toMatch(/\.nav-dropdown-panel::before\s*{[^}]*-webkit-backdrop-filter:\s*blur\(var\(--header-dropdown-blur\)\)\s*saturate\(1\.04\);/s);
+    expect(css).toMatch(/\.nav-dropdown-panel::before\s*{[^}]*-webkit-backdrop-filter:\s*blur\(var\(--header-dropdown-blur\)\)\s*saturate\(0\.9\);/s);
     expect(css).toMatch(/\.nav-dropdown-panel::before\s*{[^}]*-webkit-mask-image:\s*linear-gradient\(to bottom, black 0%, black var\(--header-material-fade-stop\), transparent 100%\);/s);
     expect(css).toMatch(/\.nav-dropdown-panel::before\s*{[^}]*pointer-events:\s*none;/s);
     expect(css).toMatch(/\.site-header-overlay:not\(\.site-header-scrolled\) \.nav-dropdown-panel::before\s*{[^}]*opacity:\s*0;/s);
