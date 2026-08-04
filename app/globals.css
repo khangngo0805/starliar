@@ -70,9 +70,6 @@ textarea {
   --header-blur: 52px;
   --header-diffusion-blur: 34px;
   --header-diffusion-height: 28px;
-  --header-dropdown-blur: 58px;
-  --header-dropdown-surface-opacity: 0.82;
-  --header-material-fade-stop: 72%;
   --header-surface-opacity: 0.74;
   --header-white-rgb: 255, 255, 255;
   --header-surface: rgba(var(--header-white-rgb), var(--header-surface-opacity));
@@ -89,8 +86,6 @@ textarea {
   right: 0;
   top: 0;
   transition:
-    background 280ms var(--starliar-ease),
-    backdrop-filter 280ms var(--starliar-ease),
     border-color 280ms var(--starliar-ease),
     color 280ms var(--starliar-ease),
     box-shadow 280ms var(--starliar-ease);
@@ -110,7 +105,6 @@ textarea {
   position: absolute;
   right: 0;
   top: 100%;
-  transition: opacity 280ms var(--starliar-ease);
   -webkit-mask-image: linear-gradient(to bottom, black, transparent);
   z-index: -1;
 }
@@ -138,6 +132,17 @@ textarea {
   color: var(--starliar-ink);
   box-shadow: none;
   text-shadow: none;
+}
+
+.site-header:has(.nav-dropdown:hover),
+.site-header:has(.nav-dropdown:focus-within) {
+  background: transparent;
+  backdrop-filter: none;
+}
+
+.site-header:has(.nav-dropdown:hover)::after,
+.site-header:has(.nav-dropdown:focus-within)::after {
+  opacity: 0;
 }
 
 .site-header-nav,
@@ -221,22 +226,18 @@ textarea {
   right: 0;
   top: 0;
   transform: none;
-  transition:
-    opacity 240ms var(--starliar-ease);
   width: 100vw;
   min-height: 500px;
   z-index: 1;
 }
 
 .nav-dropdown-panel::before {
-  backdrop-filter: blur(var(--header-dropdown-blur)) saturate(0.76);
-  background: rgba(var(--header-white-rgb), var(--header-dropdown-surface-opacity));
+  backdrop-filter: blur(var(--header-blur)) saturate(0.78);
+  background: var(--header-surface);
   content: "";
   inset: 0;
-  mask-image: linear-gradient(to bottom, black 0%, black var(--header-material-fade-stop), transparent 100%);
   pointer-events: none;
   position: absolute;
-  -webkit-mask-image: linear-gradient(to bottom, black 0%, black var(--header-material-fade-stop), transparent 100%);
   z-index: -1;
 }
 
@@ -258,6 +259,7 @@ textarea {
 .nav-dropdown:hover .nav-dropdown-panel,
 .nav-dropdown:focus-within .nav-dropdown-panel {
   opacity: 1;
+  pointer-events: auto;
 }
 
 .nav-dropdown:hover::after,
