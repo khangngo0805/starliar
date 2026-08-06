@@ -5,43 +5,182 @@ import { describe, expect, it } from "vitest";
 
 const css = readFileSync(join(process.cwd(), "app/globals.css"), "utf8");
 
-function splitTopLevelCssList(value: string) {
-  const entries: string[] = [];
-  let depth = 0;
-  let start = 0;
+const transitionProperties = new Set(["transition", "transition-property"]);
+const disallowedTransitionTargets = new Set(["all", "backdrop-filter"]);
+const vendorPropertyPrefixes = [
+  ["-webkit-", "webkit"],
+  ["-moz-", "moz"],
+  ["-ms-", "ms"],
+  ["-o-", "o"]
+] as const;
 
-  for (let index = 0; index < value.length; index += 1) {
-    if (value[index] === "(") depth += 1;
-    if (value[index] === ")") depth -= 1;
-    if (value[index] === "," && depth === 0) {
-      entries.push(value.slice(start, index));
-      start = index + 1;
+function visitStyleRules(stylesheet: string) {
+  const rules: Array<{ selectors: unknown[]; declarations: unknown[] }> = [];
+
+  transform({
+    code: Buffer.from(stylesheet),
+    filename: "site-header-fixture.css",
+    visitor: {
+      Rule(rule) {
+        if (rule.type !== "style") return;
+        rules.push({
+          selectors: rule.value.selectors,
+          declarations: [
+            ...rule.value.declarations.declarations,
+            ...rule.value.declarations.importantDeclarations
+          ]
+        });
+      }
     }
-  }
+  });
 
-  entries.push(value.slice(start));
-  return entries;
+  return rules;
 }
 
-function collectTransitionDeclarationValues(stylesheet: string) {
-  return Array.from(
-    stylesheet.matchAll(
-      /(?:^|[;{}])\s*(?:transition|transition-property)\s*:\s*([^;{}]+)/gi
-    ),
-    ([, value]) => value.trim().toLowerCase()
+function getSemanticProperty(declaration: any) {
+  if (declaration.property === "unparsed") {
+    return {
+      name: declaration.value.propertyId.property,
+      vendorPrefix: declaration.value.propertyId.vendor_prefix ?? [],
+      value: declaration.value.value
+    };
+  }
+
+  if (declaration.property === "custom") {
+    return {
+      name: declaration.value.name,
+      vendorPrefix: [],
+      value: declaration.value.value
+    };
+  }
+
+  return {
+    name: declaration.property,
+    vendorPrefix: declaration.vendorPrefix ?? [],
+    value: declaration.value
+  };
+}
+
+function collectTransitionDeclarations(stylesheet: string) {
+  return visitStyleRules(stylesheet).flatMap((rule) =>
+    rule.declarations.flatMap((declaration) => {
+      const semanticProperty = getSemanticProperty(declaration);
+      if (!transitionProperties.has(semanticProperty.name)) return [];
+
+      return [{
+        name: semanticProperty.name,
+        vendorPrefix: semanticProperty.vendorPrefix,
+        value: semanticProperty.value
+      }];
+    })
   );
 }
 
-describe("site header visual states", () => {
-  it("splits transition lists only at top-level commas", () => {
-    expect(splitTopLevelCssList(
-      "background 280ms cubic-bezier(0.22, 1, 0.36, 1), border-color 280ms var(--starliar-ease)"
-    )).toEqual([
-      "background 280ms cubic-bezier(0.22, 1, 0.36, 1)",
-      " border-color 280ms var(--starliar-ease)"
-    ]);
-  });
+function splitTokenList(tokens: any[]) {
+  const entries: any[][] = [[]];
 
+  for (const token of tokens) {
+    if (token.type === "token" && token.value.type === "comma") {
+      entries.push([]);
+    } else {
+      entries.at(-1)?.push(token);
+    }
+  }
+
+  return entries;
+}
+
+function getTransitionTargets(declaration: any) {
+  const transitionTarget = (property: any, entryVendorPrefix: string[] = []) => {
+    const rawName = (typeof property === "string" ? property : property.property).toLowerCase();
+    const astVendorPrefix = entryVendorPrefix.length > 0
+      ? entryVendorPrefix
+      : typeof property === "string"
+        ? []
+        : property.vendor_prefix ?? [];
+    const fallbackVendorPrefix = vendorPropertyPrefixes.find(([prefix]) => rawName.startsWith(prefix));
+
+    return {
+      name: fallbackVendorPrefix ? rawName.slice(fallbackVendorPrefix[0].length) : rawName,
+      vendorPrefix: astVendorPrefix.length > 0
+        ? astVendorPrefix
+        : fallbackVendorPrefix
+          ? [fallbackVendorPrefix[1]]
+          : []
+    };
+  };
+
+  if (declaration.name === "transition") {
+    if (!Array.isArray(declaration.value)) return [];
+
+    if (declaration.value.every((entry: any) => entry.property)) {
+      return declaration.value.flatMap((entry: any) => {
+        const target = transitionTarget(entry.property, entry.vendor_prefix ?? []);
+        return target.name === "none" ? [] : [target];
+      });
+    }
+
+    return splitTokenList(declaration.value).flatMap((entry) => {
+      const propertyToken = entry.find(
+        (token) => token.type === "token" && token.value.type === "ident"
+      );
+      return propertyToken
+        ? [{ name: propertyToken.value.value.toLowerCase(), vendorPrefix: [] }]
+        : [];
+    });
+  }
+
+  if (Array.isArray(declaration.value)) {
+    if (declaration.value.every((entry: any) => entry.property)) {
+      return declaration.value.map((entry: any) =>
+        transitionTarget(entry.property, entry.vendor_prefix ?? [])
+      );
+    }
+
+    return splitTokenList(declaration.value).flatMap((entry) => {
+      const propertyToken = entry.find(
+        (token) => token.type === "token" && token.value.type === "ident"
+      );
+      return propertyToken
+        ? [{ name: propertyToken.value.value.toLowerCase(), vendorPrefix: [] }]
+        : [];
+    });
+  }
+
+  return [];
+}
+
+function isSingleClassSelector(selector: any[], className: string) {
+  return selector.length === 1 && selector[0]?.type === "class" && selector[0].name === className;
+}
+
+function getSiteHeaderTransitions(stylesheet: string) {
+  const siteHeaderRule = visitStyleRules(stylesheet).find((rule) =>
+    rule.selectors.some((selector: any[]) => isSingleClassSelector(selector, "site-header"))
+  );
+
+  return siteHeaderRule
+    ? siteHeaderRule.declarations
+        .map(getSemanticProperty)
+        .filter((declaration) => transitionProperties.has(declaration.name))
+        .flatMap(getTransitionTargets)
+        .map((target) => target.name)
+    : [];
+}
+
+function assertNoDisallowedTransitions(stylesheet: string) {
+  for (const declaration of collectTransitionDeclarations(stylesheet)) {
+    expect(declaration.vendorPrefix).toEqual([]);
+    for (const target of getTransitionTargets(declaration)) {
+      expect(target.vendorPrefix).toEqual([]);
+      for (const disallowedTarget of disallowedTransitionTargets) {
+        expect(target.name).not.toBe(disallowedTarget);
+      }
+    }
+  }
+}
+
+describe("site header visual states", () => {
   it("defines the shared navbar material values", () => {
     expect(css).toMatch(/\.site-header\s*{[^}]*--header-white-rgb:\s*255,\s*255,\s*255;/s);
     expect(css).toMatch(/\.site-header\s*{[^}]*--header-surface-opacity:\s*0\.74;/s);
@@ -74,29 +213,57 @@ describe("site header visual states", () => {
   });
 
   it("animates normal scroll material without animating the dropdown handoff", () => {
-    const siteHeaderRule = css.match(/\.site-header\s*{([^}]*)}/s)?.[1] ?? "";
-    const transition = siteHeaderRule.match(/transition:\s*([^;]+);/s)?.[1] ?? "";
-    const transitionEntries = splitTopLevelCssList(transition)
-      .map((entry) => entry.trim().replace(/\s+/g, " "));
-    const allowedTransitions = [
-      "background 280ms var(--starliar-ease)",
-      "border-color 280ms var(--starliar-ease)",
-      "color 280ms var(--starliar-ease)",
-      "box-shadow 280ms var(--starliar-ease)"
-    ];
-
-    expect(transitionEntries).toHaveLength(4);
-    expect(transitionEntries).toEqual(expect.arrayContaining(allowedTransitions));
-
-    for (const value of collectTransitionDeclarationValues(css)) {
-      expect(value).not.toMatch(
-        /(?:^|[^-_a-zA-Z0-9])(?:all|backdrop-filter|-webkit-backdrop-filter)(?=$|[^-_a-zA-Z0-9])/
-      );
-    }
+    expect(getSiteHeaderTransitions(css)).toEqual([
+      "background",
+      "border-color",
+      "color",
+      "box-shadow"
+    ]);
+    assertNoDisallowedTransitions(css);
 
     expect(css).toMatch(/\.site-header::after\s*{[^}]*transition:\s*opacity\s+280ms\s+var\(--starliar-ease\);/s);
     expect(css).toMatch(/\.site-header:has\(\.nav-dropdown:hover\),\s*\.site-header:has\(\.nav-dropdown:focus-within\)\s*{[^}]*transition:\s*none;/s);
     expect(css).toMatch(/\.site-header:has\(\.nav-dropdown:hover\)::after,\s*\.site-header:has\(\.nav-dropdown:focus-within\)::after\s*{[^}]*transition:\s*none;/s);
+  });
+
+  it("inspects escaped transition identifiers and ignores custom properties semantically", () => {
+    expect(() => assertNoDisallowedTransitions(`
+      .fixture {
+        --transition: backdrop-filter;
+        transition: opacity 1ms;
+        transition-property: \\61 ll;
+      }
+    `)).toThrow();
+
+    expect(() => assertNoDisallowedTransitions(`
+      .fixture {
+        --transition: all;
+        transition: opacity 1ms;
+        transition-property: transform;
+      }
+    `)).not.toThrow();
+
+    expect(() => assertNoDisallowedTransitions(`
+      .fixture {
+        -webkit-transition: backdrop-filter 1ms;
+        transition-property: -webkit-backdrop-filter;
+      }
+    `)).toThrow();
+  });
+
+  it("rejects vendor-prefixed transition targets", () => {
+    const fixture = `
+      .fixture {
+        transition-property: -webkit-transform, -moz-opacity;
+      }
+    `;
+    const declarations = collectTransitionDeclarations(fixture);
+
+    expect(getTransitionTargets(declarations[0])).toEqual([
+      { name: "transform", vendorPrefix: ["webkit"] },
+      { name: "opacity", vendorPrefix: ["moz"] }
+    ]);
+    expect(() => assertNoDisallowedTransitions(fixture)).toThrow();
   });
 
   it("diffuses page content without adding a white glow", () => {
