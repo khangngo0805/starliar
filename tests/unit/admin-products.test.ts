@@ -3,10 +3,22 @@ import {
   adminProductErrorMessage,
   buildProductFormInitialValue,
   adminProductSchema,
-  adminProductVisibilitySchema
+  adminProductVisibilitySchema,
+  normalizeAdminProductIds
 } from "@/lib/commerce/admin-products";
 
 describe("adminProductSchema", () => {
+  it("normalizes selected product ids for bulk deletion", () => {
+    expect(normalizeAdminProductIds({ ids: [" product-1 ", "product-1", "product-2"] })).toEqual([
+      "product-1",
+      "product-2"
+    ]);
+  });
+
+  it("rejects an empty bulk product deletion request", () => {
+    expect(() => normalizeAdminProductIds({ ids: [] })).toThrow("Select at least one product to delete.");
+  });
+
   it("requires slug, price, media, and variants", () => {
     expect(adminProductSchema.safeParse({ name: "Only a name" }).success).toBe(false);
   });

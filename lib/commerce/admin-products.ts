@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { prisma } from "@/lib/prisma";
 
 export const adminProductSchema = z.object({
   slug: z.string().min(2).regex(/^[a-z0-9-]+$/),
@@ -22,6 +23,41 @@ export const adminProductSchema = z.object({
 export const adminProductVisibilitySchema = z.object({
   published: z.boolean()
 });
+
+export function normalizeAdminProductIds(input: unknown) {
+  if (!input || typeof input !== "object" || !("ids" in input)) {
+    throw new Error("Select at least one product to delete.");
+  }
+
+  const ids = (input as { ids?: unknown }).ids;
+  if (!Array.isArray(ids)) {
+    throw new Error("Select at least one product to delete.");
+  }
+
+  const normalizedIds = Array.from(
+    new Set(ids.filter((id): id is string => typeof id === "string").map((id) => id.trim()).filter(Boolean))
+  );
+
+  if (normalizedIds.length === 0) {
+    throw new Error("Select at least one product to delete.");
+  }
+
+  return normalizedIds;
+}
+
+export async function deleteAdminProducts(input: unknown) {
+  const ids = normalizeAdminProductIds(input);
+
+  return prisma.$transaction(async (transaction) => {
+    const referencedOrderItems = await transaction.orderItem.count({ where: { productId: { in: ids } } });
+    if (referencedOrderItems > 0) {
+      throw new Error("Some selected products are part of an order and cannot be deleted.");
+    }
+
+    const result = await transaction.product.deleteMany({ where: { id: { in: ids } } });
+    return { deletedCount: result.count };
+  });
+}
 
 export type ProductFormInitialValue = z.infer<typeof adminProductSchema>;
 

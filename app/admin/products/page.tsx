@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { AdminNav } from "@/components/admin/admin-nav";
+import { AdminProductsList } from "@/components/admin/admin-products-list";
 import { requireAdmin } from "@/lib/auth/admin";
 import { prisma } from "@/lib/prisma";
-import { formatVnd } from "@/lib/commerce/cart";
 
 export default async function AdminProductsPage() {
   await requireAdmin();
@@ -20,15 +20,7 @@ export default async function AdminProductsPage() {
           New product
         </Link>
       </div>
-      <div className="admin-list">
-        {products.map((product) => (
-          <Link className="admin-row" href={`/admin/products/${product.id}`} key={product.id}>
-            <span>{product.name}</span>
-            <span>{formatVnd(product.priceVnd)}</span>
-            <span>{product.published ? "Published" : "Hidden"}</span>
-          </Link>
-        ))}
-      </div>
+      <AdminProductsList products={products} />
     </main>
   );
 }

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireAdminSessionEmail } from "@/lib/auth/admin";
-import { adminProductErrorMessage, adminProductSchema } from "@/lib/commerce/admin-products";
+import { adminProductErrorMessage, adminProductSchema, deleteAdminProducts } from "@/lib/commerce/admin-products";
 import { prisma } from "@/lib/prisma";
 
 export async function POST(request: Request) {
@@ -26,5 +26,18 @@ export async function POST(request: Request) {
     return NextResponse.json(product, { status: 201 });
   } catch (error) {
     return NextResponse.json({ error: adminProductErrorMessage(error) }, { status: 400 });
+  }
+}
+
+export async function DELETE(request: Request) {
+  if (!(await requireAdminSessionEmail())) {
+    return NextResponse.json({ error: "UNAUTHORIZED" }, { status: 401 });
+  }
+
+  try {
+    const result = await deleteAdminProducts(await request.json());
+    return NextResponse.json({ ok: true, ...result });
+  } catch (error) {
+    return NextResponse.json({ error: error instanceof Error ? error.message : "INVALID_PRODUCT_DELETE_REQUEST" }, { status: 400 });
   }
 }

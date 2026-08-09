@@ -2191,6 +2191,10 @@ button.category-chip {
   grid-template-columns: 28px 1.25fr repeat(3, minmax(0, 1fr));
 }
 
+.admin-product-row {
+  grid-template-columns: 28px 1.5fr repeat(2, minmax(0, 1fr));
+}
+
 .admin-row-selectable > a {
   text-decoration: underline;
   text-underline-offset: 4px;
