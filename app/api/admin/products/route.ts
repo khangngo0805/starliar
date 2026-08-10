@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidateTag } from "next/cache";
 import { requireAdminSessionEmail } from "@/lib/auth/admin";
 import { adminProductErrorMessage, adminProductSchema, deleteAdminProducts } from "@/lib/commerce/admin-products";
 import { prisma } from "@/lib/prisma";
@@ -23,6 +24,7 @@ export async function POST(request: Request) {
       }
     });
 
+    revalidateTag("products", "max");
     return NextResponse.json(product, { status: 201 });
   } catch (error) {
     return NextResponse.json({ error: adminProductErrorMessage(error) }, { status: 400 });
