@@ -18,17 +18,23 @@ type SearchableProduct = {
 };
 
 export async function getFeaturedProducts(category?: string | null) {
-  const products = await prisma.product.findMany({
-    where: {
-      published: true,
-      ...(category ? { category } : { category: { in: shopCategories } })
-    },
-    include: { images: { orderBy: { position: "asc" } }, variants: true, collection: true },
-    orderBy: { createdAt: "desc" },
-    take: 8
-  });
+  const where = {
+    published: true,
+    ...(category ? { category } : { category: { in: shopCategories } })
+  };
+  const [productCount, products] = await Promise.all([
+    prisma.product.count({ where }),
+    prisma.product.findMany({
+      where,
+      include: { images: { orderBy: { position: "asc" } }, variants: true, collection: true },
+      orderBy: { createdAt: "desc" },
+      take: 8
+    })
+  ]);
 
-  return products.map(({ images, ...product }) => ({
+  const featuredProducts = products.slice(0, productCount >= 8 ? 8 : Math.min(4, productCount));
+
+  return featuredProducts.map(({ images, ...product }) => ({
     ...product,
     media: images.map((image) => image.src)
   }));
