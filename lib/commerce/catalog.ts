@@ -20,7 +20,7 @@ type SearchableProduct = {
 export async function getFeaturedProducts(category?: string | null) {
   const where = {
     published: true,
-    ...(category ? { category } : { category: { in: shopCategories } })
+    ...(category ? { category } : {})
   };
   const [productCount, products] = await Promise.all([
     prisma.product.count({ where }),
