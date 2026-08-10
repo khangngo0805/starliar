@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import Image from "next/image";
 import { SiteHeader } from "@/components/storefront/site-header";
+import { ProductGallery } from "@/components/storefront/product-gallery";
 import { VariantPicker } from "@/components/commerce/variant-picker";
 import { FavoriteButton } from "@/components/commerce/favorite-button";
 import { formatVnd } from "@/lib/commerce/cart";
@@ -32,22 +32,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
     <>
       <SiteHeader />
       <main className="product-detail">
-        <section className="product-gallery" aria-label={`${product.name} imagery`}>
-          <div className="product-hero-media">
-            {gallery[0] ? (
-              <Image alt={product.name} src={gallery[0]} fill priority sizes="(max-width: 820px) 100vw, 52vw" />
-            ) : null}
-          </div>
-          {gallery.length > 1 ? (
-            <div className="product-gallery-thumbs">
-              {gallery.slice(1, 5).map((src, index) => (
-                <div className="product-gallery-thumb" key={src}>
-                  <Image alt={`${product.name} view ${index + 2}`} src={src} fill sizes="(max-width: 820px) 50vw, 24vw" />
-                </div>
-              ))}
-            </div>
-          ) : null}
-        </section>
+        <ProductGallery media={gallery} name={product.name} />
         <section className="product-detail-copy">
           <div className="product-copy-topline">
             <p className="eyebrow">{product.collection?.name}</p>

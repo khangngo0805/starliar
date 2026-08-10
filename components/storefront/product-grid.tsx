@@ -31,12 +31,12 @@ export function ProductGrid({ products }: { products: GridProduct[] }) {
           <Link className="product-card-link" href={`/shop/${product.slug}`}>
             <div className="product-card-media">
               {product.media[0] ? (
-                <Image
-                  alt={product.name}
-                  src={product.media[0]}
-                  fill
-                  sizes="(max-width: 820px) 100vw, 25vw"
-                />
+                <>
+                  <Image alt={product.name} className="product-card-image product-card-image-primary" src={product.media[0]} fill sizes="(max-width: 820px) 100vw, 25vw" />
+                  {product.media[1] ? (
+                    <Image alt={`${product.name} alternate view`} className="product-card-image product-card-image-secondary" src={product.media[1]} fill sizes="(max-width: 820px) 100vw, 25vw" />
+                  ) : null}
+                </>
               ) : (
                 <div className="media-fallback">{product.name}</div>
               )}
