@@ -7,6 +7,7 @@ import {
   categoryLabel,
   categoryToParam,
   isStorefrontCategory,
+  normalizeStorefrontCategory,
   paramToCategory,
   shopCategories
 } from "@/lib/commerce/categories";
@@ -43,7 +44,10 @@ export function ShopCatalog({
   }, []);
 
   const visibleProducts = useMemo(() => {
-    const storefrontProducts = products.filter((product) => isStorefrontCategory(product.category));
+    const storefrontProducts = products.flatMap((product) => {
+      if (!isStorefrontCategory(product.category)) return [];
+      return [{ ...product, category: normalizeStorefrontCategory(product.category)! }];
+    });
     if (!activeCategory) return storefrontProducts;
     return storefrontProducts.filter((product) => product.category === activeCategory);
   }, [activeCategory, products]);

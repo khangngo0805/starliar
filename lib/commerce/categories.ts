@@ -20,6 +20,12 @@ export function categoryLabel(category: string) {
   return category === "Accessories" ? "Bags" : category;
 }
 
+export function normalizeStorefrontCategory(category: string) {
+  const normalized = category.trim().toLowerCase();
+  if (normalized === "bags" || normalized === "accessories") return "Accessories";
+  return shopCategories.find((item) => item.toLowerCase() === normalized) ?? null;
+}
+
 export function isStorefrontCategory(category: string) {
-  return shopCategories.includes(category);
+  return normalizeStorefrontCategory(category) !== null;
 }
