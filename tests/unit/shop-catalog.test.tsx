@@ -95,6 +95,23 @@ describe("ShopCatalog", () => {
     expect(window.location.search).toBe("");
   });
 
+  it("syncs the selected category when navigation updates the server prop", () => {
+    const { rerender } = renderCatalog(<ShopCatalog initialCategory="Accessories" products={products} />);
+
+    expect(screen.getByRole("heading", { name: "Bags" })).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: /Axis Cropped Shirt/i })).not.toBeInTheDocument();
+
+    rerender(
+      <LanguageProvider>
+        <ShopCatalog initialCategory="Shirt" products={products} />
+      </LanguageProvider>
+    );
+
+    expect(screen.getByRole("heading", { name: "Shirt" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Axis Cropped Shirt/i })).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: /Starlier Canvas Bag/i })).not.toBeInTheDocument();
+  });
+
   it("shows in-stock status on product cards", () => {
     renderCatalog(<ShopCatalog initialCategory={null} products={products} />);
 

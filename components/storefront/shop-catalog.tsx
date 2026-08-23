@@ -8,7 +8,6 @@ import {
   categoryToParam,
   isStorefrontCategory,
   normalizeStorefrontCategory,
-  paramToCategory,
   shopCategories
 } from "@/lib/commerce/categories";
 import { categoryTranslationKey, useLanguage } from "./language-provider";
@@ -34,14 +33,8 @@ export function ShopCatalog({
   const [activeCategory, setActiveCategory] = useState(initialCategory);
 
   useEffect(() => {
-    const syncCategoryFromUrl = () => {
-      setActiveCategory(paramToCategory(new URLSearchParams(window.location.search).get("category")));
-    };
-
-    syncCategoryFromUrl();
-    window.addEventListener("popstate", syncCategoryFromUrl);
-    return () => window.removeEventListener("popstate", syncCategoryFromUrl);
-  }, []);
+    setActiveCategory(initialCategory);
+  }, [initialCategory]);
 
   const visibleProducts = useMemo(() => {
     const storefrontProducts = products.flatMap((product) => {
