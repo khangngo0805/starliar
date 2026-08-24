@@ -136,15 +136,13 @@ textarea {
   text-shadow: none;
 }
 
-.site-header:has(.nav-dropdown:hover),
-.site-header:has(.nav-dropdown:focus-within) {
+.site-header:has(.nav-dropdown:hover) {
   background: transparent;
   backdrop-filter: none;
   transition: none;
 }
 
-.site-header:has(.nav-dropdown:hover)::after,
-.site-header:has(.nav-dropdown:focus-within)::after {
+.site-header:has(.nav-dropdown:hover)::after {
   opacity: 0;
   transition: none;
 }
@@ -180,7 +178,6 @@ textarea {
 
 .site-header-nav a:hover,
 .nav-dropdown:hover > a,
-.nav-dropdown:focus-within > a,
 .site-header-actions a:hover,
 .site-logo:hover,
 .text-link:hover {
@@ -260,14 +257,12 @@ textarea {
   color: var(--starliar-ink);
 }
 
-.nav-dropdown:hover .nav-dropdown-panel,
-.nav-dropdown:focus-within .nav-dropdown-panel {
+.nav-dropdown:hover .nav-dropdown-panel {
   opacity: 1;
   pointer-events: auto;
 }
 
-.nav-dropdown:hover::after,
-.nav-dropdown:focus-within::after {
+.nav-dropdown:hover::after {
   pointer-events: auto;
 }
 
@@ -284,8 +279,7 @@ textarea {
   width: max-content;
 }
 
-.nav-dropdown:hover .nav-dropdown-panel a,
-.nav-dropdown:focus-within .nav-dropdown-panel a {
+.nav-dropdown:hover .nav-dropdown-panel a {
   pointer-events: auto;
 }
 
