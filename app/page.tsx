@@ -14,7 +14,7 @@ export default async function HomePage() {
     <main>
       <HeroVideo
         mediaSlides={[
-          { src: "/media/starliar-visible-pixel-hero.mp4", type: "video" },
+          { src: "/media/starliar-hero-2026-08-24.mov", type: "video" },
           { src: "/media/horsonic-hero.webp", type: "image" }
         ]}
       />
