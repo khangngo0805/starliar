@@ -742,9 +742,7 @@ button.category-chip {
 }
 
 .product-card-media {
-  border: 1px solid rgba(199, 204, 212, 0.62);
   transition:
-    border-color 260ms var(--starliar-ease),
     box-shadow 260ms var(--starliar-ease),
     transform 260ms var(--starliar-ease);
 }
@@ -778,8 +776,7 @@ button.category-chip {
 }
 
 .product-card:hover .product-card-media {
-  border-color: rgba(8, 8, 8, 0.2);
-  box-shadow: var(--starliar-shadow-soft);
+  box-shadow: none;
 }
 
 .product-card-link:hover img {
@@ -2583,7 +2580,6 @@ button.category-chip {
   background:
     linear-gradient(145deg, rgba(255, 255, 255, 0.34), rgba(8, 8, 8, 0.06)),
     var(--starliar-panel);
-  border: 1px solid rgba(8, 8, 8, 0.11);
   border-radius: var(--starliar-radius);
 }
 
