@@ -33,23 +33,6 @@ export default async function HomePage() {
         <ProductGrid products={products} />
       </section>
       <DiscoverSection />
-      <section className="material-notes" aria-labelledby="collection-notes-heading">
-        <h2 className="sr-only" id="collection-notes-heading">
-          <LocalizedText textKey="collectionNotes" />
-        </h2>
-        <article>
-          <span><LocalizedText textKey="material" /></span>
-          <p><LocalizedText textKey="materialDescription" /></p>
-        </article>
-        <article>
-          <span><LocalizedText textKey="palette" /></span>
-          <p><LocalizedText textKey="paletteDescription" /></p>
-        </article>
-        <article>
-          <span><LocalizedText textKey="fit" /></span>
-          <p><LocalizedText textKey="fitDescription" /></p>
-        </article>
-      </section>
     </main>
   );
 }
