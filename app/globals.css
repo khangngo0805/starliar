@@ -664,13 +664,17 @@ textarea {
 }
 
 .shop-category-hero {
-  min-height: min(680px, 68vw);
+  height: 80svh;
+  min-height: 560px;
+  margin-left: calc(50% - 50vw);
   overflow: hidden;
   position: relative;
+  width: 100vw;
 }
 
 .shop-category-hero > img {
   object-fit: cover;
+  transform: scale(1.07);
 }
 
 .shop-category-hero-scrim {
@@ -701,7 +705,7 @@ textarea {
 .shop-category-hero-copy h1 {
   color: #fff;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(44px, 7vw, 96px);
+  font-size: clamp(38px, 5vw, 68px);
   font-weight: 400;
   line-height: 0.95;
   margin: 18px 0 22px;
@@ -3337,7 +3341,8 @@ button.category-chip {
   }
 
   .shop-category-hero {
-    min-height: 560px;
+    height: 80svh;
+    min-height: 500px;
   }
 
   .shop-category-hero-copy {
@@ -3345,7 +3350,7 @@ button.category-chip {
   }
 
   .shop-category-hero-copy h1 {
-    font-size: 3.25rem;
+    font-size: 2.75rem;
   }
 
   .home-section {
