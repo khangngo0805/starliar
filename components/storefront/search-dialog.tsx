@@ -17,54 +17,6 @@ type SearchProduct = {
 
 type SearchPreviewProduct = Omit<SearchProduct, "id"> & { id?: string };
 
-const searchTrendProducts: SearchPreviewProduct[] = [
-  {
-    slug: "trace-cap",
-    name: "Trace Cap",
-    priceVnd: 690000,
-    collection: "First Signal",
-    media: ["/media/placeholders/static-crossbody.svg"]
-  },
-  {
-    slug: "orbital-shell-jacket",
-    name: "Orbital Shell",
-    priceVnd: 2890000,
-    collection: "First Signal",
-    media: ["/media/placeholders/orbital-shell.svg"]
-  },
-  {
-    slug: "lowlight-cargo-trouser",
-    name: "Lowlight Cargo",
-    priceVnd: 2190000,
-    collection: "First Signal",
-    media: ["/media/placeholders/signal-trouser.svg"]
-  },
-  {
-    slug: "nocturne-layer-shirt",
-    name: "Nocturne Layer",
-    priceVnd: 1590000,
-    collection: "First Signal",
-    media: ["/media/placeholders/nocturne-shirt.svg"]
-  },
-  {
-    slug: "cold-cut-short",
-    name: "Cold Cut Short",
-    priceVnd: 1490000,
-    collection: "First Signal",
-    media: ["/media/placeholders/signal-trouser.svg"]
-  }
-];
-
-const recentlyViewedProducts: SearchPreviewProduct[] = [
-  {
-    slug: "cold-cut-short",
-    name: "Cold Cut Short",
-    priceVnd: 1490000,
-    collection: "First Signal",
-    media: ["/media/placeholders/signal-trouser.svg"]
-  }
-];
-
 function safelyAbort(controller: AbortController) {
   try {
     controller.abort();
@@ -117,6 +69,7 @@ export function SearchDialog() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [products, setProducts] = useState<SearchProduct[]>([]);
+  const [trendProducts, setTrendProducts] = useState<SearchProduct[]>([]);
   const [loading, setLoading] = useState(false);
   const trimmedQuery = query.trim();
   const hasSearchQuery = trimmedQuery.length >= 2;
@@ -156,6 +109,28 @@ export function SearchDialog() {
       safelyAbort(controller);
     };
   }, [hasSearchQuery, open, trimmedQuery]);
+
+  useEffect(() => {
+    if (!open || hasSearchQuery || trendProducts.length) return;
+
+    const controller = new AbortController();
+    fetch("/api/search", { signal: controller.signal })
+      .then((response) => (response.ok ? response.json() : { products: [] }))
+      .then((data: { products: SearchProduct[] }) => {
+        if (!controller.signal.aborted) {
+          setTrendProducts(
+            data.products
+              .filter((product) => product.media.some((src) => !src.includes("/media/placeholders/")))
+              .slice(0, 5)
+          );
+        }
+      })
+      .catch(() => {
+        // Search trends are optional and should never block opening search.
+      });
+
+    return () => safelyAbort(controller);
+  }, [hasSearchQuery, open, trendProducts.length]);
 
   useEffect(() => {
     if (!open) return;
@@ -252,21 +227,8 @@ export function SearchDialog() {
                     <h2>{t("searchTrends")}</h2>
                   </div>
                   <div className="search-product-grid search-trends-grid">
-                    {searchTrendProducts.map((product) => (
+                    {trendProducts.map((product) => (
                       <SearchProductTile product={product} key={product.slug} onNavigate={closeSearch} />
-                    ))}
-                  </div>
-                </section>
-                <section className="search-section search-recent-section">
-                  <div className="search-section-heading">
-                    <h2>{t("recentlyViewed")}</h2>
-                    <button aria-label={t("removeRecentlyViewed")} className="text-button" type="button">
-                      {t("remove")}
-                    </button>
-                  </div>
-                  <div className="search-product-grid search-recent-grid">
-                    {recentlyViewedProducts.map((product) => (
-                      <SearchProductTile product={product} key={product.slug} compact onNavigate={closeSearch} />
                     ))}
                   </div>
                 </section>
