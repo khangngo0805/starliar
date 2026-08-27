@@ -59,7 +59,7 @@ export function StorefrontFooter() {
       <div className="storefront-footer-bottom">
         <p>{t("footerNote")}</p>
         <div aria-label={t("footerSocial")}>
-          <a href="https://instagram.com" rel="noreferrer" target="_blank">
+            <a href="https://www.instagram.com/starlierlabel/" rel="noreferrer" target="_blank">
             Instagram
           </a>
           <a href="https://tiktok.com" rel="noreferrer" target="_blank">
